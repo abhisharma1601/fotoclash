@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "823688478103",
+    "project_id": "fotoclash-b6968",
+    "storage_bucket": "fotoclash-b6968.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:823688478103:android:a7a6559b2fdd8100e0d8d2",
+        "android_client_info": {
+          "package_name": "com.example.fotoclash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "823688478103-dgle5pbpbslckkqlenj00g1puh0bomdl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyByBdQK_qxRyjkWCMZdGom5eWBC5ca5QY0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "823688478103-dgle5pbpbslckkqlenj00g1puh0bomdl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
