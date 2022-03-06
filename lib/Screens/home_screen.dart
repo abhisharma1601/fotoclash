@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Controllers/user_class.dart';
 import 'package:fotoclash/Screens/Chats/chat_home.dart';
@@ -9,8 +10,7 @@ import 'package:fotoclash/Widgets/bottom_bar.dart';
 import 'package:fotoclash/main.dart';
 
 class HomeScreen extends StatefulWidget {
-  HomeScreen({required this.uid});
-  String uid;
+  HomeScreen();
 
   @override
   _HomeScreenState createState() => _HomeScreenState();
@@ -26,11 +26,11 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> fetch_data() async {
     var key = await FirebaseFirestore.instance
         .collection("Users")
-        .doc(widget.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     app_user = user_class(
         name: (key.data() as dynamic)["fullname"],
-        uid: widget.uid,
+        uid: FirebaseAuth.instance.currentUser!.uid,
         username: (key.data() as dynamic)["userName"],
         phone: (key.data() as dynamic)["phoneNo"],
         email: (key.data() as dynamic)["email"],

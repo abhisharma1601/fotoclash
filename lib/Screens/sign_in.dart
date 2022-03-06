@@ -26,8 +26,11 @@ class _LoginState extends State<Login> {
         // SharedPreferences prefs = await SharedPreferences.getInstance();
         // prefs.setBool("isAuth", true);
         Fluttertoast.showToast(msg: "Login Successful");
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomeScreen(uid: value.uid,)));
+        
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+            builder: (context) => HomeScreen(
+                  
+                )));
       }).catchError((e) {
         Fluttertoast.showToast(msg: e.toString());
       });
@@ -239,7 +242,7 @@ class _LoginState extends State<Login> {
                                                                 .circular(16)),
                                                   )),
                                               onPressed: () {
-                                               signIn(emailC.text, passC.text);
+                                                signIn(emailC.text, passC.text);
                                               },
                                               child: const Text(
                                                 "Login",

@@ -7,18 +7,21 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Models/userModel.dart';
 import 'package:fotoclash/Screens/Join-createContest/screen1.dart';
+import 'package:fotoclash/main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
 class CreateContest extends StatefulWidget {
   String? prize;
   String? pass;
+  int balance;
   String private;
   String? winnerPrize;
   String? ContestName;
   CreateContest(
       {required this.prize,
       required this.pass,
+      required this.balance,
       required this.private,
       this.winnerPrize,
       this.ContestName});
@@ -79,7 +82,7 @@ class _CreateContestState extends State<CreateContest> {
         "password": widget.pass ?? "",
         "Protected": widget.private,
         "winnerPrize": widget.winnerPrize,
-        "Voters":[]
+        "Voters": []
       });
     });
   }
@@ -113,7 +116,7 @@ class _CreateContestState extends State<CreateContest> {
         "password": widget.pass ?? "",
         "Protected": widget.private,
         "winnerPrize": widget.winnerPrize,
-        "Voters":[]
+        "Voters": []
       });
     });
   }
@@ -139,9 +142,9 @@ class _CreateContestState extends State<CreateContest> {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: (){
-                      Navigator.pop(context);
-                    },
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                         child: Icon(
                           Icons.arrow_back_ios,
                           color: Colors.white,
@@ -311,12 +314,29 @@ class _CreateContestState extends State<CreateContest> {
                                       )),
                                   TextButton(
                                       onPressed: () {
-                                        postDataToFirestore();
-                                        postDataToFirestoreUser();
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) => ContestS()));
+                                        if (int.parse(widget.prize!) <=
+                                            widget.balance) {
+                                          postDataToFirestore();
+                                          postDataToFirestoreUser();
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          FirebaseFirestore.instance
+                                              .collection("Users")
+                                              .doc(app_user.uid)
+                                              .set({
+                                            "Wallet": {
+                                              "Balance": FieldValue.increment(
+                                                  int.parse(widget.prize!) *
+                                                      -1),
+                                            }
+                                          }, SetOptions(merge: true));
+                                          Fluttertoast.showToast(
+                                              msg: "Contest Creted!");
+                                        } else {
+                                          Fluttertoast.showToast(
+                                              msg: "Low Wallet Balance!");
+                                        }
                                       },
                                       child: Text(
                                         "Yes",

@@ -14,7 +14,16 @@ Future<void> main() async {
   runApp(const MyApp());
 }
 
-late user_class app_user;
+user_class app_user = user_class(
+    name: "",
+    uid: "",
+    username: "",
+    phone: "",
+    email: "",
+    photo: "",
+    place: "",
+    data: [],
+    balance: 0);
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -32,9 +41,7 @@ class MyApp extends StatelessWidget {
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if (snapshot.hasData) {
-            return HomeScreen(
-              uid: snapshot.data.uid,
-            );
+            return HomeScreen();
           }
           return const SignUp();
         },

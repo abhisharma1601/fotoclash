@@ -23,6 +23,8 @@ class _WalletState extends State<Wallet> {
     super.initState();
   }
 
+  List<Widget> _cardlist = [];
+
   Future<void> get_data() async {
     var key = await FirebaseFirestore.instance
         .collection("Users")
@@ -77,8 +79,7 @@ class _WalletState extends State<Wallet> {
               ),
               Spacer(),
               CircleAvatar(
-                backgroundImage: NetworkImage(
-                    "https://media-exp1.licdn.com/dms/image/C5603AQFRy4yeFl0CFw/profile-displayphoto-shrink_400_400/0/1594993496452?e=1651104000&v=beta&t=IEK2TdHoYF3by565ttqCgiQSINHY--AsJuGrhWi0w-c"),
+                backgroundImage: NetworkImage(app_user.photo),
                 radius: 24,
               ),
               SizedBox(
@@ -157,7 +158,11 @@ class _WalletState extends State<Wallet> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => WithdrawBalance()));
+                                      builder: (context) => WithdrawBalance(
+                                            balance: balance,
+                                            pending: pending,
+                                            withdrawn: withdrawn,
+                                          )));
                             },
                             child: Container(
                                 alignment: Alignment.topRight,
@@ -247,34 +252,43 @@ class _WalletState extends State<Wallet> {
                   fontSize: 25)),
           SizedBox(height: size.height * 20 / 812),
           Expanded(
-            child: SingleChildScrollView(
-              child: Column(
-                children: [
-                  History(size: size),
-                  SizedBox(
-                    height: 9,
-                  ),
-                  History(size: size),
-                  SizedBox(
-                    height: 9,
-                  ),
-                  History(size: size),
-                  SizedBox(
-                    height: 9,
-                  ),
-                  History(size: size),
-                  SizedBox(
-                    height: 9,
-                  ),
-                  History(size: size),
-                  SizedBox(
-                    height: 9,
-                  ),
-                  History(size: size)
-                ],
+            child: Scrollbar(
+              radius: Radius.circular(50),
+              child: SingleChildScrollView(
+                scrollDirection: Axis.vertical,
+                child: Column(
+                  children: [
+                    StreamBuilder(
+                      stream: FirebaseFirestore.instance
+                          .collection("Users")
+                          .doc(app_user.uid)
+                          .collection("Transactions")
+                          .snapshots(),
+                      builder:
+                          (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                        _cardlist = [];
+                        if (snapshot.hasData) {
+                          final List<DocumentSnapshot> d = snapshot.data!.docs;
+                          for (var i in d.reversed) {
+                            _cardlist.add(History(
+                                amount: (i.data() as dynamic)["Amount"],
+                                type: (i.data() as dynamic)["Type"],
+                                date: (i.data() as dynamic)["Date"],
+                                time: (i.data() as dynamic)["Time"],
+                                size: size));
+                          }
+                        }
+                        return Column(
+                          children:
+                              _cardlist.length != 0 ? _cardlist : [Container()],
+                        );
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
-          )
+          ),
         ],
       ),
     ));
@@ -282,16 +296,23 @@ class _WalletState extends State<Wallet> {
 }
 
 class History extends StatelessWidget {
-  const History({
-    Key? key,
+  History({
+    required this.amount,
+    required this.type,
+    required this.date,
+    required this.time,
     required this.size,
-  }) : super(key: key);
+  });
+
+  String type, date, time;
+  int amount;
 
   final Size size;
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      margin: EdgeInsets.only(bottom: 9),
       padding: EdgeInsets.all(20),
       width: size.width * 343 / 375,
       decoration: BoxDecoration(
@@ -302,24 +323,23 @@ class History extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "Added",
+                type,
                 style:
                     TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
               ),
               SizedBox(
                 height: 7,
               ),
-              Text("2022.01.05    8.05 PM",
-                  style: TextStyle(color: Color(0xFFBBC0C6)))
+              Text("$date    $time", style: TextStyle(color: Color(0xFFBBC0C6)))
             ],
           ),
           Spacer(),
           Column(
             children: [
               Text(
-                "+ 80.69",
+                type == "Added" ? "+ \u{20B9}$amount" : "- \u{20B9}$amount",
                 style: TextStyle(
-                    color: Colors.green,
+                    color: type == "Added" ? Colors.green : Colors.red,
                     fontWeight: FontWeight.bold,
                     fontSize: 16),
               )

@@ -188,6 +188,19 @@ class _AddBalanceState extends State<AddBalance> {
                       "Added": widget.added + int.parse(amount.text)
                     }
                   }, SetOptions(merge: true));
+                  FirebaseFirestore.instance
+                      .collection("Users")
+                      .doc(app_user.uid)
+                      .collection("Transactions")
+                      .doc(DateTime.now().toString())
+                      .set({
+                    "Type": "Added",
+                    "Date":
+                        "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
+                    "Time": "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
+                    "Amount": int.parse(amount.text)
+                  });
+                  Navigator.pop(context);
                   Navigator.pop(context);
                   Fluttertoast.showToast(
                       msg: "₹${int.parse(amount.text)} added!");
@@ -195,7 +208,7 @@ class _AddBalanceState extends State<AddBalance> {
                 child: GestureDetector(
                   onTap: () {},
                   child: Text(
-                    "Add  ₹${amount.text}",
+                    "Add Money",
                     style: TextStyle(fontSize: 14, color: Colors.white),
                   ),
                 ),

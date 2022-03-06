@@ -75,7 +75,8 @@ class _SignUpState extends State<SignUp> {
       'fullname': fullname.text,
       'phoneNo': mobileC.text,
       'State': value,
-      "Data": ["0", "0", "0"]
+      "Data": [0, 0, 0],
+      "Wallet": {}
     }, SetOptions(merge: true));
 
     Fluttertoast.showToast(msg: "Account created successfully !!");

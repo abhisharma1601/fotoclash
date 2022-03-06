@@ -55,7 +55,7 @@ class _SetProfileState extends State<SetProfile> {
         MaterialPageRoute(
             builder: (context) => HomeScreen(
 
-                  uid: app_user.uid,
+                  
                 )),
         (route) => false);
   }

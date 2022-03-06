@@ -17,6 +17,7 @@ class ContestS extends StatefulWidget {
 
 bool _private = false;
 int _amount = 50;
+int _balance_amount = 0;
 int _con_size = 2;
 final _auth = FirebaseAuth.instance;
 final TextEditingController PasswordC = TextEditingController();
@@ -49,6 +50,21 @@ class _ContestSState extends State<ContestS> {
   ]);
 
   Widget _show = JOinConS();
+
+  @override
+  void initState() {
+    get_balance();
+    super.initState();
+  }
+
+  Future<void> get_balance() async {
+    var key = await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(app_user.uid)
+        .get();
+    _balance_amount = (key.data() as dynamic)["Wallet"]["Balance"];
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -94,7 +110,7 @@ class _ContestSState extends State<ContestS> {
                             MaterialPageRoute(builder: (context) => Wallet()));
                       },
                       child: Chip(
-                        label: Text("₹${app_user.balance}"),
+                        label: Text("₹$_balance_amount"),
                       ),
                     ),
                     SizedBox(
@@ -460,6 +476,7 @@ class _CreateConSState extends State<CreateConS> {
               if (_con_size == 4) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => CreateContest(
+                      balance: _balance_amount,
                           prize: _amount.toString(),
                           pass: PasswordC.text,
                           private: _private.toString(),
@@ -471,6 +488,7 @@ class _CreateConSState extends State<CreateConS> {
               if (_con_size == 3) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => CreateContest3v3(
+                      balance: _balance_amount,
                           prize: _amount.toString(),
                           pass: PasswordC.text,
                           private: _private.toString(),
@@ -482,6 +500,7 @@ class _CreateConSState extends State<CreateConS> {
               if (_con_size == 2) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => CreateContest2v2(
+                      balance: _balance_amount,
                           prize: _amount.toString(),
                           pass: PasswordC.text,
                           private: _private.toString(),
@@ -812,6 +831,7 @@ class _joinBlock extends StatelessWidget {
                                 Navigator.of(context)
                                     .push(MaterialPageRoute(builder: (_) {
                                   return JoinContest(
+                                    balance: _balance_amount,
                                     ContestID: contestID,
                                     contestSize: players,
                                     CreatorID: CreatorID,

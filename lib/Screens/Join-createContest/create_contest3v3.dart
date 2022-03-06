@@ -3,20 +3,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Models/userModel.dart';
 import 'package:fotoclash/Screens/Join-createContest/screen1.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../main.dart';
+
 class CreateContest3v3 extends StatefulWidget {
   String? prize;
   String? pass;
   String private;
+  int balance;
   String? winnerPrize;
   String? ContestName;
   CreateContest3v3(
       {required this.prize,
       required this.pass,
+      required this.balance,
       required this.private,
       this.winnerPrize,
       this.ContestName});
@@ -309,12 +314,29 @@ class _CreateContest3v3State extends State<CreateContest3v3> {
                                       )),
                                   TextButton(
                                       onPressed: () {
-                                        postDataToFirestore();
-                                        postDataToFirestoreUser();
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) => ContestS()));
+                                        if (int.parse(widget.prize!) <=
+                                            widget.balance) {
+                                          postDataToFirestore();
+                                          postDataToFirestoreUser();
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          FirebaseFirestore.instance
+                                              .collection("Users")
+                                              .doc(app_user.uid)
+                                              .set({
+                                            "Wallet": {
+                                              "Balance": FieldValue.increment(
+                                                  int.parse(widget.prize!) *
+                                                      -1),
+                                            }
+                                          }, SetOptions(merge: true));
+                                          Fluttertoast.showToast(
+                                              msg: "Contest Creted!");
+                                        } else {
+                                          Fluttertoast.showToast(
+                                              msg: "Low Wallet Balance!");
+                                        }
                                       },
                                       child: Text(
                                         "Yes",

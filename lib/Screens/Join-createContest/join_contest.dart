@@ -3,16 +3,25 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Models/userModel.dart';
 import 'package:fotoclash/Screens/Join-createContest/screen1.dart';
 import 'package:image_picker/image_picker.dart';
 
+import '../../main.dart';
+
 class JoinContest extends StatefulWidget {
   String? ContestID;
   int? contestSize;
+  int balance;
   String? CreatorID;
   String? EntryFee;
-  JoinContest({this.ContestID, this.contestSize, this.CreatorID,this.EntryFee});
+  JoinContest(
+      {this.ContestID,
+      this.contestSize,
+      required this.balance,
+      this.CreatorID,
+      this.EntryFee});
   @override
   State<JoinContest> createState() => _JoinContestState();
 }
@@ -189,7 +198,7 @@ class _JoinContestState extends State<JoinContest> {
     userModel UserModel = userModel();
     UserModel.uid = user!.uid;
     UserModel.email = user.email;
-        QuerySnapshot snapshot = await FirebaseFirestore.instance
+    QuerySnapshot snapshot = await FirebaseFirestore.instance
         .collection("Users")
         .doc(widget.CreatorID)
         .collection("Contests")
@@ -206,7 +215,7 @@ class _JoinContestState extends State<JoinContest> {
       "Likes": likes,
       "isActive": isActive,
       "Winner": winnerisME,
-      "images":prevImages,
+      "images": prevImages,
     }, SetOptions(merge: true));
   }
 
@@ -232,9 +241,9 @@ class _JoinContestState extends State<JoinContest> {
                   child: Row(
                     children: [
                       InkWell(
-                        onTap: (){
-                      Navigator.pop(context);
-                    },
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
                         child: Icon(
                           Icons.arrow_back_ios,
                           color: Colors.white,
@@ -340,7 +349,7 @@ class _JoinContestState extends State<JoinContest> {
                                 borderRadius: BorderRadius.circular(16)),
                           )),
                       onPressed: () {
-                           showDialog(
+                        showDialog(
                             context: context,
                             builder: (context) {
                               return AlertDialog(
@@ -366,13 +375,29 @@ class _JoinContestState extends State<JoinContest> {
                                       )),
                                   TextButton(
                                       onPressed: () {
-                                        postDataToFirestore();
-                                        postDataToFirestoreUser();
-                                        postDataToFirestoreParticipations();
-                                        Navigator.pushReplacement(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) => ContestS()));
+                                        if (int.parse(widget.EntryFee!) <=
+                                            widget.balance) {
+                                          postDataToFirestore();
+                                          postDataToFirestoreUser();
+                                          postDataToFirestoreParticipations();
+                                          Navigator.pop(context);
+                                          Navigator.pop(context);
+                                          FirebaseFirestore.instance
+                                              .collection("Users")
+                                              .doc(app_user.uid)
+                                              .set({
+                                            "Wallet": {
+                                              "Balance": FieldValue.increment(
+                                                  int.parse(widget.EntryFee!) *
+                                                      -1),
+                                            }
+                                          },SetOptions(merge: true));
+                                          Fluttertoast.showToast(
+                                              msg: "Contest Joined!");
+                                        } else {
+                                          Fluttertoast.showToast(
+                                              msg: "Low Wallet Balance!");
+                                        }
                                       },
                                       child: Text(
                                         "Yes",

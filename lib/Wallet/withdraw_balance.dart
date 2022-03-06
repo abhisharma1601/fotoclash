@@ -1,7 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
+import '../main.dart';
+
 class WithdrawBalance extends StatefulWidget {
-  const WithdrawBalance({Key? key}) : super(key: key);
+  WithdrawBalance(
+      {required this.balance, required this.pending, required this.withdrawn});
+  int balance, pending, withdrawn;
 
   @override
   State<WithdrawBalance> createState() => _WithdrawBalanceState();
@@ -74,9 +79,9 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                         bottomRight: Radius.circular(150))),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
-                  children: const [
+                  children: [
                     Text(
-                      "\u{20B9} 115.55",
+                      "\u{20B9} ${widget.balance}",
                       style:
                           TextStyle(fontSize: 40, fontWeight: FontWeight.w600),
                     ),
@@ -248,7 +253,31 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                                 borderRadius: BorderRadius.circular(16)),
                           )),
                       onPressed: () {
-                        //process of req widhdrawl
+                        if (int.parse(amount) <= widget.balance) {
+                          FirebaseFirestore.instance
+                              .collection("Users")
+                              .doc(app_user.uid)
+                              .set({
+                            "Wallet": {
+                              "Balance": widget.balance - int.parse(amount),
+                              "Withdrawn": widget.withdrawn + int.parse(amount),
+                              "Pending": widget.pending + int.parse(amount),
+                            }
+                          }, SetOptions(merge: true));
+                          FirebaseFirestore.instance
+                              .collection("Users")
+                              .doc(app_user.uid)
+                              .collection("Transactions")
+                              .doc(DateTime.now().toString())
+                              .set({
+                            "Type": "Withdrawn",
+                            "Date":
+                                "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
+                            "Time":
+                                "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
+                            "Amount": int.parse(amount)
+                          });
+                        }
                       },
                       child: const Text(
                         "Request Withdrawal",
