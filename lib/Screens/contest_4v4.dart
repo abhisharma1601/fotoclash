@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/single_image.dart';
 import 'package:like_button/like_button.dart';
@@ -5,7 +6,11 @@ import 'contest_2v2.dart';
 import 'drawer_details.dart';
 
 class Contest4v4 extends StatefulWidget {
-  const Contest4v4({Key? key}) : super(key: key);
+  Contest4v4(
+      {required this.images, required this.likes, required this.contest_id});
+  List images;
+  List likes;
+  String contest_id;
 
   @override
   _Contest4v4State createState() => _Contest4v4State();
@@ -16,23 +21,16 @@ class _Contest4v4State extends State<Contest4v4> {
   int index = 0;
 
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
-  List images = [
-    "https://cdn.vox-cdn.com/thumbor/J2XSqgAqREtpkGAWa6rMhkHA1Y0=/0x0:1600x900/1400x933/filters:focal(672x322:928x578):no_upscale()/cdn.vox-cdn.com/uploads/chorus_image/image/66320060/Tanjiro__Demon_Slayer_.0.png",
-    "https://i.insider.com/5e820b04671de06758588fb8?width=700",
-    "https://pbs.twimg.com/profile_images/1402894430173110274/5zrO8sS5_400x400.jpg",
-    "https://www.cartoonbrew.com/wp-content/uploads/2020/10/demon_slayer_mugen-580x326.jpg"
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        key: _scaffoldkey,
-        drawer: const Drawer(
-          backgroundColor: Color(0xffbac333863),
-          child: ProfileDrawer(),
-        ),
-        extendBody: true,
         body: _Comp4v4(
-            images: images, scaffoldkey: _scaffoldkey, isLiked: isLiked));
+            contest_id: widget.contest_id,
+            images: widget.images,
+            likes: widget.likes,
+            scaffoldkey: _scaffoldkey,
+            isLiked: isLiked));
   }
 }
 
@@ -42,14 +40,17 @@ class _Comp4v4 extends StatelessWidget {
   const _Comp4v4({
     Key? key,
     required this.images,
+    required this.likes,
+    required this.contest_id,
     required GlobalKey<ScaffoldState> scaffoldkey,
     required this.isLiked,
   })  : _scaffoldkey = scaffoldkey,
         super(key: key);
 
-  final List images;
+  final List images, likes;
   final GlobalKey<ScaffoldState> _scaffoldkey;
   final bool isLiked;
+  final String contest_id;
 
   @override
   Widget build(BuildContext context) {
@@ -111,10 +112,7 @@ class _Comp4v4 extends StatelessWidget {
         left: MediaQuery.of(context).size.width * 310 / 375,
         top: 18,
         child: GestureDetector(
-          onTap: () {
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => const Contest2v2()));
-          },
+          onTap: () {},
           child: const Icon(
             Icons.search,
             color: Colors.white,
@@ -122,10 +120,10 @@ class _Comp4v4 extends StatelessWidget {
           ),
         ),
       ),
-      likebuttom(context, isLiked, 60, 350),
-      likebuttom(context, isLiked, 250, 350),
-      likebuttom(context, isLiked, 60, 400),
-      likebuttom(context, isLiked, 250, 400),
+      likebuttom(context, isLiked, 60, 350, likes[0], contest_id, 0, likes),
+      likebuttom(context, isLiked, 250, 350, likes[1], contest_id, 1, likes),
+      likebuttom(context, isLiked, 60, 400, likes[2], contest_id, 2, likes),
+      likebuttom(context, isLiked, 250, 400, likes[3], contest_id, 3, likes),
       Positioned(
           left: MediaQuery.of(context).size.width * 330 / 375,
           top: MediaQuery.of(context).size.height * 700 / 812,
@@ -275,8 +273,10 @@ class _Comp4v4 extends StatelessWidget {
 imageContainer(BuildContext context, String image) {
   return InkWell(
     onTap: () {
-      Navigator.of(context)
-          .push(MaterialPageRoute(builder: (context) => SingleImage(image: image,)));
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => SingleImage(
+                image: image,
+              )));
     },
     child: Container(
       decoration: BoxDecoration(
@@ -288,15 +288,21 @@ imageContainer(BuildContext context, String image) {
   );
 }
 
-likebuttom(BuildContext context, bool liked, int left, int top) {
+likebuttom(BuildContext context, bool liked, int left, int top, int count,
+    String id, int index, List likes) {
   return Positioned(
     left: MediaQuery.of(context).size.width * left / 375,
     top: MediaQuery.of(context).size.height * top / 812,
     child: LikeButton(
       size: 40,
       isLiked: liked,
-      likeCount: 10,
+      likeCount: count,
       likeBuilder: (liked) {
+        // likes[index] += 1;
+        // FirebaseFirestore.instance
+        //     .collection("Contests")
+        //     .doc(id)
+        //     .set({"Likes": likes}, SetOptions(merge: true));
         final color = liked ? Colors.red : Colors.white;
         return Icon(
           Icons.favorite,
@@ -305,6 +311,12 @@ likebuttom(BuildContext context, bool liked, int left, int top) {
         );
       },
       countBuilder: (count, isliked, text) {
+        print(isliked);
+        likes[index] = isliked ? count! + 1 : count! + 0;
+        FirebaseFirestore.instance
+            .collection("Contests")
+            .doc(id)
+            .set({"Likes": likes}, SetOptions(merge: true));
         final color = liked ? Colors.black : Colors.white;
         return Text(
           text,

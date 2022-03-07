@@ -3,7 +3,8 @@ import 'package:fotoclash/Screens/drawer_details.dart';
 import 'package:like_button/like_button.dart';
 
 class Contest2v2 extends StatefulWidget {
-  const Contest2v2({Key? key}) : super(key: key);
+  Contest2v2({required this.images, required this.likes});
+  List images, likes;
 
   @override
   _Contest2v2State createState() => _Contest2v2State();
@@ -12,12 +13,7 @@ class Contest2v2 extends StatefulWidget {
 class _Contest2v2State extends State<Contest2v2> {
   bool isLiked = false;
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
-  List images = [
-    "https://cdn.vox-cdn.com/thumbor/J2XSqgAqREtpkGAWa6rMhkHA1Y0=/0x0:1600x900/1400x933/filters:focal(672x322:928x578):no_upscale()/cdn.vox-cdn.com/uploads/chorus_image/image/66320060/Tanjiro__Demon_Slayer_.0.png",
-    "https://i.insider.com/5e820b04671de06758588fb8?width=700",
-    "https://pbs.twimg.com/profile_images/1402894430173110274/5zrO8sS5_400x400.jpg",
-    "https://www.cartoonbrew.com/wp-content/uploads/2020/10/demon_slayer_mugen-580x326.jpg"
-  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,8 +33,8 @@ class _Contest2v2State extends State<Contest2v2> {
         ),
         Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Row(children: [
-            imageContainer(context, images[0]),
-            imageContainer(context, images[1])
+            imageContainer(context, widget.images[0]),
+            imageContainer(context, widget.images[1])
           ]),
         ]),
         Positioned(
@@ -87,8 +83,8 @@ class _Contest2v2State extends State<Contest2v2> {
             ),
           ),
         ),
-        likebuttom(context, isLiked, 60, 560),
-        likebuttom(context, isLiked, 250, 560),
+        likebuttom(context, isLiked, 60, 560, widget.likes[0]),
+        likebuttom(context, isLiked, 250, 560, widget.likes[1]),
         Positioned(
             left: MediaQuery.of(context).size.width * 330 / 375,
             top: MediaQuery.of(context).size.height * 700 / 812,
@@ -119,14 +115,14 @@ imageContainer(BuildContext context, String image) {
   );
 }
 
-likebuttom(BuildContext context, bool liked, int left, int top) {
+likebuttom(BuildContext context, bool liked, int left, int top, count) {
   return Positioned(
     left: MediaQuery.of(context).size.width * left / 375,
     top: MediaQuery.of(context).size.height * top / 812,
     child: LikeButton(
       size: 40,
       isLiked: liked,
-      likeCount: 10,
+      likeCount: count,
       likeBuilder: (liked) {
         final color = liked ? Colors.red : Colors.white;
         return Icon(
