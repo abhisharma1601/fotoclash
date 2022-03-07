@@ -1,10 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/drawer_details.dart';
 import 'package:like_button/like_button.dart';
 
 class Contest2v2 extends StatefulWidget {
-  Contest2v2({required this.images, required this.likes});
+  Contest2v2(
+      {required this.images, required this.likes, required this.contest_id});
   List images, likes;
+  String contest_id;
 
   @override
   _Contest2v2State createState() => _Contest2v2State();
@@ -78,8 +81,10 @@ class _Contest2v2State extends State<Contest2v2> {
             ),
           ),
         ),
-        likebuttom(context, isLiked, 60, 560, widget.likes[0]),
-        likebuttom(context, isLiked, 250, 560, widget.likes[1]),
+        likebuttom(context, isLiked, 60, 560, widget.likes[0],
+            widget.contest_id, 0, widget.likes),
+        likebuttom(context, isLiked, 250, 560, widget.likes[1],
+            widget.contest_id, 1, widget.likes),
         Positioned(
             left: MediaQuery.of(context).size.width * 330 / 375,
             top: MediaQuery.of(context).size.height * 700 / 812,
@@ -110,7 +115,8 @@ imageContainer(BuildContext context, String image) {
   );
 }
 
-likebuttom(BuildContext context, bool liked, int left, int top, count) {
+likebuttom(BuildContext context, bool liked, int left, int top, int count,
+    String id, int index, List likes) {
   return Positioned(
     left: MediaQuery.of(context).size.width * left / 375,
     top: MediaQuery.of(context).size.height * top / 812,
@@ -127,6 +133,11 @@ likebuttom(BuildContext context, bool liked, int left, int top, count) {
         );
       },
       countBuilder: (count, isliked, text) {
+        likes[index] += 1;
+        FirebaseFirestore.instance
+            .collection("Contests")
+            .doc(id)
+            .set({"Likes": likes}, SetOptions(merge: true));
         final color = liked ? Colors.black : Colors.white;
         return Text(
           text,

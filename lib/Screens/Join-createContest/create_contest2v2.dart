@@ -123,10 +123,13 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
     });
   }
 
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
     return Scaffold(
+      key: _scaffoldkey,
       backgroundColor: Colors.transparent,
       body: SingleChildScrollView(
         child: Container(

@@ -19,7 +19,7 @@ class _VoteScreenState extends State<VoteScreen> {
 
   @override
   void initState() {
-    // get_contest();
+    get_contest();
     super.initState();
   }
 
@@ -36,6 +36,7 @@ class _VoteScreenState extends State<VoteScreen> {
           _piclist.add(Contest2v2(
             images: i.data()["images"],
             likes: i.data()["Likes"],
+            contest_id: i.data()["ContestID"],
           ));
         } else if (i.data()["Participations"].length == 4 &&
             !i.data()["images"].contains("")) {

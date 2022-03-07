@@ -298,11 +298,11 @@ likebuttom(BuildContext context, bool liked, int left, int top, int count,
       isLiked: liked,
       likeCount: count,
       likeBuilder: (liked) {
-        // likes[index] += 1;
-        // FirebaseFirestore.instance
-        //     .collection("Contests")
-        //     .doc(id)
-        //     .set({"Likes": likes}, SetOptions(merge: true));
+        likes[index] += 1;
+        FirebaseFirestore.instance
+            .collection("Contests")
+            .doc(id)
+            .set({"Likes": likes}, SetOptions(merge: true));
         final color = liked ? Colors.red : Colors.white;
         return Icon(
           Icons.favorite,
