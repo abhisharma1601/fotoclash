@@ -67,6 +67,7 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('user_image')
+        .child(ID!)
         .child(user.uid + '.jpg');
     ref.putFile(_photo!).whenComplete(() async {
       String url = await ref.getDownloadURL();
@@ -96,6 +97,7 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('user_image')
+        .child(ID!)
         .child(user.uid + '.jpg');
     ref.putFile(_photo!).whenComplete(() async {
       String url = await ref.getDownloadURL();

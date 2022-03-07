@@ -16,6 +16,7 @@ class CreateContest extends StatefulWidget {
   String? pass;
   int balance;
   String private;
+
   String? winnerPrize;
   String? ContestName;
   CreateContest(
@@ -32,6 +33,7 @@ class CreateContest extends StatefulWidget {
 class _CreateContestState extends State<CreateContest> {
   File? _photo;
   String? ID;
+
   Future getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
     File? pickedFile;
@@ -67,6 +69,7 @@ class _CreateContestState extends State<CreateContest> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('user_image')
+        .child(ID!)
         .child(user.uid + '.jpg');
     ref.putFile(_photo!).whenComplete(() async {
       String url = await ref.getDownloadURL();
@@ -96,6 +99,7 @@ class _CreateContestState extends State<CreateContest> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('user_image')
+        .child(ID!)
         .child(user.uid + '.jpg');
     ref.putFile(_photo!).whenComplete(() async {
       String url = await ref.getDownloadURL();

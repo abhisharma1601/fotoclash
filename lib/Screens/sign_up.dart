@@ -76,14 +76,12 @@ class _SignUpState extends State<SignUp> {
       'phoneNo': mobileC.text,
       'State': value,
       "Data": [0, 0, 0],
-      "Wallet": {}
+      "Wallet": {"Balance": 0, "Added": 0, "Withdrawn": 0, "Pending": 0}
     }, SetOptions(merge: true));
 
     Fluttertoast.showToast(msg: "Account created successfully !!");
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => const SetProfile()),
-        (route) => false);
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => SetProfile()));
   }
 
   @override

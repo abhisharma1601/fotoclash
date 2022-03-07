@@ -17,11 +17,6 @@ class _Contest2v2State extends State<Contest2v2> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldkey,
-      drawer: const Drawer(
-        backgroundColor: Color(0xffbac333863),
-        child: ProfileDrawer(),
-      ),
       extendBody: true,
       body: Stack(children: [
         Container(

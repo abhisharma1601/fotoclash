@@ -39,6 +39,7 @@ class _SetProfileState extends State<SetProfile> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('user_image')
+        .child("Profiles")
         .child(user.uid + '.jpg');
     ref.putFile(_userImageFile!).whenComplete(() async {
       String url = await ref.getDownloadURL();
@@ -52,11 +53,7 @@ class _SetProfileState extends State<SetProfile> {
     Fluttertoast.showToast(msg: "Data updated sucessfully!!");
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(
-            builder: (context) => HomeScreen(
-
-                  
-                )),
+        MaterialPageRoute(builder: (context) => HomeScreen()),
         (route) => false);
   }
 

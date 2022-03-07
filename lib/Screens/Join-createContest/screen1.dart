@@ -483,7 +483,8 @@ class _CreateConSState extends State<CreateConS> {
                           winnerPrize:
                               "₹${((_con_size * _amount) / 1.25).ceil()}",
                           ContestName: ContestNameC.text,
-                        )));
+                          
+                        ),),);
               }
               if (_con_size == 3) {
                 Navigator.of(context).push(MaterialPageRoute(

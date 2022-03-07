@@ -19,7 +19,7 @@ class _VoteScreenState extends State<VoteScreen> {
 
   @override
   void initState() {
-    get_contest();
+    // get_contest();
     super.initState();
   }
 
@@ -55,25 +55,32 @@ class _VoteScreenState extends State<VoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      key: _scaffoldkey,
       drawer: const Drawer(
         backgroundColor: Color(0xffbac333863),
         child: ProfileDrawer(),
       ),
+      key: _scaffoldkey,
       extendBody: true,
-      body: Swiper(
-        loop: false,
-        scrollDirection: Axis.vertical,
-        itemBuilder: (BuildContext context, int index) {
-          return _piclist[index];
-        },
-        itemCount: _piclist.length,
-        pagination: SwiperPagination(builder: SwiperPagination.fraction),
-        control: SwiperControl(
-          color: Colors.transparent,
-          size: 0,
-        ),
-      ),
+      body: _piclist.length != 0
+          ? Swiper(
+              loop: false,
+              scrollDirection: Axis.vertical,
+              itemBuilder: (BuildContext context, int index) {
+                return _piclist[index];
+              },
+              itemCount: _piclist.length,
+              pagination: SwiperPagination(builder: SwiperPagination.fraction),
+              control: SwiperControl(
+                color: Colors.transparent,
+                size: 0,
+              ),
+            )
+          : Container(
+              decoration: BoxDecoration(
+                  image: DecorationImage(
+                      image: AssetImage("assets/background.png"),
+                      fit: BoxFit.fill)),
+            ),
     );
   }
 }

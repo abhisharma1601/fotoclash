@@ -140,6 +140,7 @@ class _JoinContestState extends State<JoinContest> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('user_image')
+        .child(widget.ContestID!)
         .child(user.uid + '.jpg');
     ref
         .putFile(
@@ -174,6 +175,7 @@ class _JoinContestState extends State<JoinContest> {
     final ref = FirebaseStorage.instance
         .ref()
         .child('user_image')
+        .child(widget.ContestID!)
         .child(user.uid + '.jpg');
     ref
         .putFile(
@@ -391,7 +393,7 @@ class _JoinContestState extends State<JoinContest> {
                                                   int.parse(widget.EntryFee!) *
                                                       -1),
                                             }
-                                          },SetOptions(merge: true));
+                                          }, SetOptions(merge: true));
                                           Fluttertoast.showToast(
                                               msg: "Contest Joined!");
                                         } else {

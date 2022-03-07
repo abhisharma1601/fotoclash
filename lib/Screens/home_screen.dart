@@ -13,6 +13,8 @@ import 'package:fotoclash/Screens/vote-screen.dart';
 import 'package:fotoclash/Widgets/bottom_bar.dart';
 import 'package:fotoclash/main.dart';
 
+import 'drawer_details.dart';
+
 class HomeScreen extends StatefulWidget {
   HomeScreen();
 
