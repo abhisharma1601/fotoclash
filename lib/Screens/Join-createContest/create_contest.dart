@@ -2,11 +2,9 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Models/userModel.dart';
-import 'package:fotoclash/Screens/Join-createContest/screen1.dart';
 import 'package:fotoclash/main.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -16,6 +14,8 @@ class CreateContest extends StatefulWidget {
   String? pass;
   int balance;
   String private;
+  bool isActive;
+  bool winnerisME;
 
   String? winnerPrize;
   String? ContestName;
@@ -25,7 +25,9 @@ class CreateContest extends StatefulWidget {
       required this.balance,
       required this.private,
       this.winnerPrize,
-      this.ContestName});
+      this.ContestName,
+      required this.isActive,
+      required this.winnerisME});
   @override
   State<CreateContest> createState() => _CreateContestState();
 }
@@ -33,6 +35,7 @@ class CreateContest extends StatefulWidget {
 class _CreateContestState extends State<CreateContest> {
   File? _photo;
   String? ID;
+  int likes=0;
 
   Future getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
@@ -123,8 +126,20 @@ class _CreateContestState extends State<CreateContest> {
         "Voters": []
       });
     });
+    String url = await ref.getDownloadURL();
+      await firebaseFirestore
+        .collection("Users")
+        .doc(user.uid)
+        .collection("Participations")
+        .doc(ID)
+        .set({
+      "ContestId": ID,
+      "Likes": [0, 0, 0, 0],
+      "isActive":widget.isActive,
+      "Winner":widget.winnerisME,
+      "images": [url, "", "", ""],
+    }, SetOptions(merge: true));
   }
-
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;

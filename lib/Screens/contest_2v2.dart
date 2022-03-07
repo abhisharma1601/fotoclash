@@ -14,12 +14,112 @@ class Contest2v2 extends StatefulWidget {
 }
 
 class _Contest2v2State extends State<Contest2v2> {
-  bool isLiked = false;
+    bool isLiked = false;
+  _isLiked(){
+    setState(() {
+      isLiked=true;
+    });
+  }
+
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  likebuttom1(BuildContext context, bool liked, int left, int top, int count,
+      String id, int index, List likes) {
+    return Positioned(
+        left: MediaQuery.of(context).size.width * left / 375,
+        top: MediaQuery.of(context).size.height * top / 812,
+        child: 
+        // GestureDetector(
+        //   onTap: (){
+        //     _isLiked();
+            
+        //   },
+        //   child: Container(
+        //     child: liked
+        //         ? Icon(
+        //             Icons.favorite,
+        //             color: Colors.red,
+        //             size: 25,
+        //           )
+        //         : Icon(
+        //             Icons.favorite,
+        //             color: Colors.white,
+        //             size: 25,
+        //           ),
+        //   ),
+        // )
+        LikeButton(
+          size: 40,
+          isLiked: liked,
+          likeCount: count,
+          likeBuilder: (liked) {
+            final color = liked ? Colors.red : Colors.white;
+            return Icon(
+              Icons.favorite,
+              color: color,
+              size: 36,
+            );
+          },
+          countBuilder: (count, liked, text) {
+            final color = Colors.white;
+            likes[index] = count;
+            FirebaseFirestore.instance
+                .collection("Contests")
+                .doc(id)
+                .set({"Likes": likes}, SetOptions(merge: true));
+
+            return Text(
+              text,
+              style: TextStyle(
+                  color: color, fontSize: 24, fontWeight: FontWeight.bold),
+            );
+          },
+        ),
+        );
+  }
+
+  likebuttom2(BuildContext context, bool liked, int left, int top, int count,
+      String id, int index, List likes) {
+    return Positioned(
+      left: MediaQuery.of(context).size.width * left / 375,
+      top: MediaQuery.of(context).size.height * top / 812,
+      child: LikeButton(
+        size: 40,
+        isLiked: liked,
+        likeCount: count,
+        likeBuilder: (liked) {
+          final color = liked ? Colors.red : Colors.white;
+          return Icon(
+            Icons.favorite,
+            color: color,
+            size: 36,
+          );
+        },
+        countBuilder: (count, liked, text) {
+          final color = Colors.white;
+          likes[index] = count;
+          FirebaseFirestore.instance
+              .collection("Contests")
+              .doc(id)
+              .set({"Likes": likes}, SetOptions(merge: true));
+
+          return Text(
+            text,
+            style: TextStyle(
+                color: color, fontSize: 24, fontWeight: FontWeight.bold),
+          );
+        },
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldkey,
+      drawer: const Drawer(
+        backgroundColor: Color(0xffbac333863),
+        child: ProfileDrawer(),
+      ),
       extendBody: true,
       body: Stack(children: [
         Container(
@@ -81,9 +181,9 @@ class _Contest2v2State extends State<Contest2v2> {
             ),
           ),
         ),
-        likebuttom(context, isLiked, 60, 560, widget.likes[0],
+        likebuttom1(context, isLiked, 60, 560, widget.likes[0],
             widget.contest_id, 0, widget.likes),
-        likebuttom(context, isLiked, 250, 560, widget.likes[1],
+        likebuttom2(context, isLiked, 250, 560, widget.likes[1],
             widget.contest_id, 1, widget.likes),
         Positioned(
             left: MediaQuery.of(context).size.width * 330 / 375,
@@ -112,39 +212,5 @@ imageContainer(BuildContext context, String image) {
         image: DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
     width: MediaQuery.of(context).size.width * 187 / 375,
     height: MediaQuery.of(context).size.height * 420 / 865,
-  );
-}
-
-likebuttom(BuildContext context, bool liked, int left, int top, int count,
-    String id, int index, List likes) {
-  return Positioned(
-    left: MediaQuery.of(context).size.width * left / 375,
-    top: MediaQuery.of(context).size.height * top / 812,
-    child: LikeButton(
-      size: 40,
-      isLiked: liked,
-      likeCount: count,
-      likeBuilder: (liked) {
-        final color = liked ? Colors.red : Colors.white;
-        return Icon(
-          Icons.favorite,
-          color: color,
-          size: 36,
-        );
-      },
-      countBuilder: (count, isliked, text) {
-        likes[index] += 1;
-        FirebaseFirestore.instance
-            .collection("Contests")
-            .doc(id)
-            .set({"Likes": likes}, SetOptions(merge: true));
-        final color = liked ? Colors.black : Colors.white;
-        return Text(
-          text,
-          style: TextStyle(
-              color: color, fontSize: 24, fontWeight: FontWeight.bold),
-        );
-      },
-    ),
   );
 }

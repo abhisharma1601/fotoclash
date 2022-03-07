@@ -19,6 +19,8 @@ bool _private = false;
 int _amount = 50;
 int _balance_amount = 0;
 int _con_size = 2;
+bool winnerisME=false;
+bool isActive=false;
 final _auth = FirebaseAuth.instance;
 final TextEditingController PasswordC = TextEditingController();
 final TextEditingController ContestNameC = TextEditingController();
@@ -476,6 +478,8 @@ class _CreateConSState extends State<CreateConS> {
               if (_con_size == 4) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => CreateContest(
+                      isActive: isActive,
+                      winnerisME:winnerisME ,
                       balance: _balance_amount,
                           prize: _amount.toString(),
                           pass: PasswordC.text,
@@ -501,6 +505,8 @@ class _CreateConSState extends State<CreateConS> {
               if (_con_size == 2) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => CreateContest2v2(
+                       isActive: isActive,
+                      winnerisME:winnerisME ,
                       balance: _balance_amount,
                           prize: _amount.toString(),
                           pass: PasswordC.text,
@@ -619,6 +625,7 @@ class JOinConS extends StatelessWidget {
                                             .add(Duration(days: 1))
                                             .difference(DateTime.now()) >
                                         Duration(seconds: 0)) {
+                                          isActive =true;
                                   int join = 0;
                                   print(DateTime.parse(futureSnapshot
                                               .requireData
@@ -831,7 +838,9 @@ class _joinBlock extends StatelessWidget {
                               onTap: () {
                                 Navigator.of(context)
                                     .push(MaterialPageRoute(builder: (_) {
-                                  return JoinContest(
+                                  return JoinContest( 
+                                    isActive: isActive,
+                                    winnerisME:winnerisME ,
                                     balance: _balance_amount,
                                     ContestID: contestID,
                                     contestSize: players,

@@ -98,7 +98,7 @@ List<TabPair> TabPairs = [
             .collection("Users")
             .doc(_auth.currentUser!.uid)
             .collection("Participations")
-            .where("isActive", isEqualTo: false)
+            .where("isActive", isEqualTo: true)
             .get(),
         builder: (context, AsyncSnapshot snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {

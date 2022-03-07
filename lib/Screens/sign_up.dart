@@ -76,7 +76,8 @@ class _SignUpState extends State<SignUp> {
       'phoneNo': mobileC.text,
       'State': value,
       "Data": [0, 0, 0],
-      "Wallet": {"Balance": 0, "Added": 0, "Withdrawn": 0, "Pending": 0}
+      "Wallet": {"Balance": 0, "Added": 0, "Withdrawn": 0, "Pending": 0},
+      "WinningData":{"Won":0,"Lost":0,"Contest Tie":0},
     }, SetOptions(merge: true));
 
     Fluttertoast.showToast(msg: "Account created successfully !!");

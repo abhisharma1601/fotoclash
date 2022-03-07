@@ -18,13 +18,17 @@ class CreateContest2v2 extends StatefulWidget {
   int balance;
   String? winnerPrize;
   String? ContestName;
+   bool isActive;
+  bool winnerisME;
   CreateContest2v2(
       {required this.prize,
       required this.balance,
       required this.pass,
       required this.private,
       this.winnerPrize,
-      this.ContestName});
+      this.ContestName,
+      required this.isActive,
+      required this.winnerisME});
   @override
   State<CreateContest2v2> createState() => _CreateContest2v2State();
 }
@@ -120,7 +124,21 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
         "winnerPrize": widget.winnerPrize,
         "Voters": []
       });
+            await firebaseFirestore
+        .collection("Users")
+        .doc(user.uid)
+        .collection("Participations")
+        .doc(ID)
+        .set({
+      "ContestId": ID,
+      "Likes": [0, 0, 0, 0],
+      "isActive":widget.isActive,
+      "Winner":widget.winnerisME,
+      "images": [url, "", "", ""],
+    }, SetOptions(merge: true));
     });
+
+
   }
 
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();

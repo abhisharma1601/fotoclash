@@ -56,11 +56,9 @@ class _VoteScreenState extends State<VoteScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: const Drawer(
-        backgroundColor: Color(0xffbac333863),
-        child: ProfileDrawer(),
-      ),
       key: _scaffoldkey,
+      
+      
       extendBody: true,
       body: _piclist.length != 0
           ? Swiper(

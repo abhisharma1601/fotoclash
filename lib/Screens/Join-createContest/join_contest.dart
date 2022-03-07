@@ -16,12 +16,16 @@ class JoinContest extends StatefulWidget {
   int balance;
   String? CreatorID;
   String? EntryFee;
+  bool isActive;
+  bool winnerisME; 
   JoinContest(
       {this.ContestID,
       this.contestSize,
       required this.balance,
       this.CreatorID,
-      this.EntryFee});
+      this.EntryFee,
+      required this.isActive,
+      required this.winnerisME});
   @override
   State<JoinContest> createState() => _JoinContestState();
 }
@@ -31,8 +35,6 @@ class _JoinContestState extends State<JoinContest> {
   File? _photo1;
   File? _photo2;
   File? _photo3;
-  bool isActive = false;
-  bool winnerisME = false;
   int likes = 0;
   int index = 0;
   Future getImage(bool gallery) async {
@@ -215,8 +217,8 @@ class _JoinContestState extends State<JoinContest> {
         .set({
       "ContestId": widget.ContestID,
       "Likes": likes,
-      "isActive": isActive,
-      "Winner": winnerisME,
+      "isActive":widget.isActive,
+      "Winner":widget.winnerisME,
       "images": prevImages,
     }, SetOptions(merge: true));
   }
