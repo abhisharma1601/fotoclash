@@ -70,6 +70,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   .doc(i.data()["ContestID"])
                   .set({"Declared": true}, SetOptions(merge: true));
               String winner_id = i.data()["Participations"][index];
+              var key = await FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(winner_id)
+                  .get();
               FirebaseFirestore.instance
                   .collection("Users")
                   .doc(winner_id)
@@ -88,7 +92,10 @@ class _HomeScreenState extends State<HomeScreen> {
                     i.data()["winnerPrize"].replaceAll("₹", ""),
                   ),
                 ),
-                "Wins": FieldValue.increment(1)
+                "Wins": FieldValue.increment(1),
+                "ID": winner_id,
+                "image": (key.data() as dynamic)["imageUrl"],
+                "uname": (key.data() as dynamic)["userName"],
               }, SetOptions(merge: true));
               FirebaseFirestore.instance
                   .collection("Users")
@@ -112,6 +119,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 .doc(i.data()["ContestID"])
                 .set({"Declared": true}, SetOptions(merge: true));
             String winner_id = i.data()["Participations"][index];
+            var key = await FirebaseFirestore.instance
+                .collection("Users")
+                .doc(winner_id)
+                .get();
             FirebaseFirestore.instance.collection("Users").doc(winner_id).set({
               "Wallet": {
                 "Balance": FieldValue.increment(
@@ -127,7 +138,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   i.data()["winnerPrize"].replaceAll("₹", ""),
                 ),
               ),
-              "Wins": FieldValue.increment(1)
+              "Wins": FieldValue.increment(1),
+              "ID": winner_id,
+              "image": (key.data() as dynamic)["imageUrl"],
+              "uname": (key.data() as dynamic)["userName"],
             }, SetOptions(merge: true));
             FirebaseFirestore.instance
                 .collection("Users")
