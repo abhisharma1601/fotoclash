@@ -1,4 +1,4 @@
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class SearchInput extends StatelessWidget {
@@ -7,6 +7,12 @@ class SearchInput extends StatelessWidget {
   const SearchInput(
       {required this.textController, required this.hintText, Key? key})
       : super(key: key);
+  searchuser(String userName) async {
+    return await FirebaseFirestore.instance
+        .collection("Users")
+        .where("userName", isEqualTo: userName)
+        .get();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +27,7 @@ class SearchInput extends StatelessWidget {
       child: TextField(
         controller: textController,
         onChanged: (value) {
-        
+          searchuser(value);
         },
         decoration: InputDecoration(
           prefixIcon: Icon(

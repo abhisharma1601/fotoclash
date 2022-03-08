@@ -59,7 +59,6 @@ class _SignUpState extends State<SignUp> {
       });
     }
   }
-
   postDataToFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
@@ -81,10 +80,14 @@ class _SignUpState extends State<SignUp> {
     }, SetOptions(merge: true));
 
     Fluttertoast.showToast(msg: "Account created successfully !!");
-    Navigator.pushReplacement(
-        context, MaterialPageRoute(builder: (context) => SetProfile()));
+    Navigator.of(context).pushReplacement(
+         MaterialPageRoute(builder: (context) => SetProfile()));
   }
-
+  @override
+  void dispose() {
+    fullname.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     final usernameField = TextFormField(

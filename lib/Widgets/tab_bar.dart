@@ -8,7 +8,6 @@ class TabPair {
   final Widget view;
   TabPair({required this.tab, required this.view});
 }
-
 final _auth = FirebaseAuth.instance;
 List<TabPair> TabPairs = [
   TabPair(
@@ -38,7 +37,9 @@ List<TabPair> TabPairs = [
                         mainAxisSpacing: 8,
                         itemCount: snapshot.requireData.docs.length,
                         itemBuilder: (_, index) {
+                          print(snapshot.requireData.docs[index]['Winner']);
                           return Card(
+                            
                               color: Colors.transparent,
                               margin: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(
@@ -64,16 +65,16 @@ List<TabPair> TabPairs = [
                                             height: 22,
                                             width: 50,
                                             decoration: BoxDecoration(
-                                                color: index.isEven
-                                                    ? Colors.green[300]
-                                                    : Colors.red[300]),
+                                                color: snapshot.requireData.docs[index]['Winner']==false
+                                                    ? Colors.red[300]
+                                                    : Colors.green[300]),
                                             child: Center(
                                                 child: Text(
-                                              index.isEven ? "Won" : "lost",
+                                              snapshot.requireData.docs[index]['Winner']==false ? "Lost" : "Won",
                                               style: TextStyle(
-                                                  color: index.isEven
-                                                      ? Colors.green
-                                                      : Colors.red,
+                                                  color: snapshot.requireData.docs[index]['Winner']==false
+                                                      ? Colors.red
+                                                      : Colors.green,
                                                   fontWeight: FontWeight.bold),
                                             )),
                                           ),

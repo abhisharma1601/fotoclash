@@ -44,6 +44,7 @@ class _HomeScreenState extends State<HomeScreen> {
         photo: (key.data() as dynamic)["imageUrl"],
         place: (key.data() as dynamic)["State"],
         data: (key.data() as dynamic)["Data"],
+        bio: (key.data() as dynamic)["bio"],
         balance: (key.data() as dynamic)["Wallet"]["Balance"]);
   }
 

@@ -174,8 +174,7 @@ class _ProfileState extends State<Profile> {
                   children: [
                     _winDetails(head: "Won", body: "60", color: Colors.green),
                     _winDetails(head: "Lost", body: "60", color: Colors.red),
-                    _winDetails(
-                        head: "Contest Tie", body: "60", color: Colors.yellow)
+                   
                   ],
                 ),
                 Divider(
@@ -193,10 +192,10 @@ class _ProfileState extends State<Profile> {
                         fontWeight: FontWeight.w700),
                   ),
                 ),
-                const Padding(
+                 Padding(
                   padding: EdgeInsets.symmetric(vertical: 5.0, horizontal: 16),
                   child: Text(
-                    "Amet minim mollit non deserunt ullamco est sit aliqua This is test.",
+                    app_user.bio,
                     style: TextStyle(
                         color: Colors.white,
                         fontSize: 14,

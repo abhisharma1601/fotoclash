@@ -23,6 +23,7 @@ user_class app_user = user_class(
     photo: "",
     place: "",
     data: [],
+    bio: "",
     balance: 0);
 
 class MyApp extends StatelessWidget {
