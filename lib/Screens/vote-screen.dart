@@ -57,6 +57,10 @@ class _VoteScreenState extends State<VoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldkey,
+      drawer: const Drawer(
+        backgroundColor: Color(0xffbac333863),
+        child: ProfileDrawer(),
+      ),
       extendBody: true,
       body: _piclist.length != 0
           ? Swiper(
@@ -73,11 +77,45 @@ class _VoteScreenState extends State<VoteScreen> {
               ),
             )
           : Container(
-              decoration: BoxDecoration(
-                image: DecorationImage(
-                    image: AssetImage("assets/background.png"),
-                    fit: BoxFit.fill),
-              ),
+              child: Stack(children: [
+                Container(
+                  decoration: const BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("background.png"),
+                          fit: BoxFit.cover)),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                ),
+                Center(
+                    child: Text(
+                  "No Conests available",
+                  style: TextStyle(color: Colors.white),
+                )),
+                Padding(
+                  padding: const EdgeInsets.all(20.0),
+                  child: IconButton(
+                      onPressed: () {
+                        _scaffoldkey.currentState!.openDrawer();
+                      },
+                      icon: const Icon(
+                        Icons.menu,
+                        color: Colors.white,
+                        size: 30,
+                      )),
+                ),
+                Positioned(
+                  left: MediaQuery.of(context).size.width * 310 / 375,
+                  top: 24,
+                  child: GestureDetector(
+                    onTap: () {},
+                    child: const Icon(
+                      Icons.search,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ),
+                ),
+              ]),
             ),
     );
   }

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/Chats/home_body.dart';
 import 'package:fotoclash/Screens/Chats/messages.dart';
@@ -46,7 +47,7 @@ class _HomeChatsState extends State<HomeChats> {
                   //     color: Colors.white,
                   //   ),
                   // ),
-                   SizedBox(
+                  SizedBox(
                     width: MediaQuery.of(context).size.width * 150 / 375,
                   ),
                   const Center(
@@ -69,18 +70,37 @@ class _HomeChatsState extends State<HomeChats> {
                   child:
                       SearchInput(textController: searchC, hintText: "Search")),
               Expanded(
-                child: ListView.builder(
-                    itemCount: 4,
-                    itemBuilder: (context, index) {
-                      return HomeBody(
-                        index: index,
-                        press: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const Messages()));
-                        },
-                      );
+                child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("Users")
+                        .snapshots(),
+                    builder:
+                        (context, AsyncSnapshot<QuerySnapshot> streamsnapshot) {
+                      if (streamsnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      }
+                      return ListView.builder(
+                          itemCount: streamsnapshot.data?.docs.length,
+                          itemBuilder: (context, index) {
+                            return HomeBody(
+                              streamsnapshot.data?.docs[index]['userName'],
+                              streamsnapshot.data?.docs[index]['imageUrl'],
+                              index: index,
+                              press: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => Messages(
+                                            streamsnapshot.data?.docs[index]
+                                                ['userName'],
+                                            streamsnapshot.data?.docs[index]
+                                                ['imageUrl'])));
+                              },
+                            );
+                          });
                     }),
               )
             ],

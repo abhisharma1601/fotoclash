@@ -8,7 +8,6 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Models/userModel.dart';
 import 'package:fotoclash/Screens/home_screen.dart';
 import 'package:fotoclash/Widgets/image_picker.dart';
-import 'package:fotoclash/main.dart';
 
 class SetProfile extends StatefulWidget {
   const SetProfile({Key? key}) : super(key: key);
@@ -26,7 +25,8 @@ class _SetProfileState extends State<SetProfile> {
   DateTime? _dateTime;
   final _formKey = GlobalKey<FormState>();
   final TextEditingController fullname = TextEditingController();
-  final TextEditingController mobileC = TextEditingController();
+  final TextEditingController bio = TextEditingController();
+  
   final _auth = FirebaseAuth.instance;
   final imagestore =
       FirebaseStorage.instance.ref().child("user_image").child(".jpg");
@@ -45,7 +45,7 @@ class _SetProfileState extends State<SetProfile> {
       String url = await ref.getDownloadURL();
       await firebaseFirestore.collection("Users").doc(user.uid).update({
         'fullname': fullname.text,
-        'phoneNo': mobileC.text,
+        'bio': bio.text,
         'imageUrl': url,
         // 'DOB': _dateTime
       });
@@ -87,38 +87,30 @@ class _SetProfileState extends State<SetProfile> {
             borderRadius: BorderRadius.circular(10),
           ),
         ));
-    final mobileField = TextFormField(
+    final bioField = TextFormField(
       style: const TextStyle(color: Colors.white),
       autofocus: false,
-      controller: mobileC,
+      controller: bio,
       keyboardType: TextInputType.phone,
       validator: (value) {
         if (value!.isEmpty) {
-          return ("Please Enter phone number");
+          return ("Please Enter Bio");
         }
         return null;
       },
       onSaved: (value) {
-        mobileC.text = value!;
+        bio.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
         ),
-        hintText: 'Phone Number',
+        hintText: 'Bio',
         hintStyle: const TextStyle(color: Color.fromRGBO(107, 112, 118, 1)),
         filled: true,
         fillColor: const Color.fromRGBO(34, 38, 51, 1),
-        prefix: const Padding(
-          padding: EdgeInsets.only(left: 4, right: 4),
-          child: Text(
-            '+91',
-            style: TextStyle(color: Colors.white),
-          ),
-        ),
       ),
-      maxLength: 10,
     );
     final DatePick = Container(
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
@@ -224,11 +216,11 @@ class _SetProfileState extends State<SetProfile> {
                                               28 /
                                               865,
                                     ),
-                                    mobileField,
+                                    bioField,
                                     SizedBox(
                                       height:
                                           MediaQuery.of(context).size.height *
-                                              10 /
+                                              30 /
                                               865,
                                     ),
                                     DatePick,

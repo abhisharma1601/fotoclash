@@ -3,7 +3,9 @@ import 'package:fotoclash/Models/chat_messages.dart';
 import 'package:fotoclash/Screens/Chats/new_message.dart';
 
 class Messages extends StatefulWidget {
-  const Messages({Key? key}) : super(key: key);
+  String userName;
+  String image;
+  Messages(this.userName,this.image,{Key? key}) : super(key: key);
 
   @override
   _MessagesState createState() => _MessagesState();
@@ -57,46 +59,55 @@ class _MessagesState extends State<Messages> {
               ),
               const SizedBox(height: 20,),
               Expanded(
-                  child: ListView.builder(
-                      itemCount: 5,
-                      itemBuilder: (context, index) {
-                        return Row(
-                          mainAxisAlignment: demeChatMessages[index].isSender
-                              ? MainAxisAlignment.end
-                              : MainAxisAlignment.start,
-                          children: [
-                            if (!demeChatMessages[index].isSender) ...[
-                              const CircleAvatar(
-                                radius: 18,
-                                backgroundImage: NetworkImage(
-                                    "https://i.insider.com/5e820b04671de06758588fb8?width=700"),
-                              )
-                            ],
-                            Container(
-                              decoration: BoxDecoration(
-                                  color: demeChatMessages[index].isSender
-                                      ? Colors.blueGrey[900]
-                                      : Colors.grey[600],
-                                  borderRadius: demeChatMessages[index].isSender
-                                      ? const BorderRadius.only(
-                                          bottomLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20),
-                                          topLeft: Radius.circular(20))
-                                      : const BorderRadius.only(
-                                          bottomLeft: Radius.circular(20),
-                                          bottomRight: Radius.circular(20),
-                                          topRight: Radius.circular(20))),
-                              margin: const EdgeInsets.only(top: 20),
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 20 * 0.75, vertical: 10),
-                              child: Text(
-                                demeChatMessages[index].text,
-                                style: const TextStyle(color: Colors.white),
+                  child: FutureBuilder(
+                    future:null ,
+                    builder:(ctx, AsyncSnapshot futureSnapshot) {
+                    if (futureSnapshot.connectionState ==
+                        ConnectionState.waiting) {
+                      return const CircularProgressIndicator();
+                    }
+                    return  
+                    ListView.builder(
+                        itemCount: 5,
+                        itemBuilder: (context, index) {
+                          return Row(
+                            mainAxisAlignment: demeChatMessages[index].isSender
+                                ? MainAxisAlignment.end
+                                : MainAxisAlignment.start,
+                            children: [
+                              // if (!demeChatMessages[index].isSender) ...[
+                              //   const CircleAvatar(
+                              //     radius: 18,
+                              //     backgroundImage: NetworkImage(
+                              //         "https://i.insider.com/5e820b04671de06758588fb8?width=700"),
+                              //   )
+                              // ],
+                              Container(
+                                decoration: BoxDecoration(
+                                    color: demeChatMessages[index].isSender
+                                        ? Colors.blueGrey[900]
+                                        : Colors.grey[600],
+                                    borderRadius: demeChatMessages[index].isSender
+                                        ? const BorderRadius.only(
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
+                                            topLeft: Radius.circular(20))
+                                        : const BorderRadius.only(
+                                            bottomLeft: Radius.circular(20),
+                                            bottomRight: Radius.circular(20),
+                                            topRight: Radius.circular(20))),
+                                margin: const EdgeInsets.only(top: 20),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20 * 0.75, vertical: 10),
+                                child: Text(
+                                  demeChatMessages[index].text,
+                                  style: const TextStyle(color: Colors.white),
+                                ),
                               ),
-                            ),
-                          ],
-                        );
-                      })),
+                            ],
+                          );
+                        });
+                     } )),
               const NewMessages()
             ],
           )
