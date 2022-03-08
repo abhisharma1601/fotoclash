@@ -14,67 +14,70 @@ class Contest2v2 extends StatefulWidget {
 }
 
 class _Contest2v2State extends State<Contest2v2> {
-    bool isLiked = false;
-  _isLiked(){
+  bool isLiked = false;
+  _isLiked() {
     setState(() {
-      isLiked=true;
+      isLiked = true;
     });
   }
+
+  Color like1 = Colors.white;
+  Color like2 = Colors.white;
 
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   likebuttom1(BuildContext context, bool liked, int left, int top, int count,
       String id, int index, List likes) {
     return Positioned(
-        left: MediaQuery.of(context).size.width * left / 375,
-        top: MediaQuery.of(context).size.height * top / 812,
-        child: 
-        // GestureDetector(
-        //   onTap: (){
-        //     _isLiked();
-            
-        //   },
-        //   child: Container(
-        //     child: liked
-        //         ? Icon(
-        //             Icons.favorite,
-        //             color: Colors.red,
-        //             size: 25,
-        //           )
-        //         : Icon(
-        //             Icons.favorite,
-        //             color: Colors.white,
-        //             size: 25,
-        //           ),
-        //   ),
-        // )
-        LikeButton(
-          size: 40,
-          isLiked: liked,
-          likeCount: count,
-          likeBuilder: (liked) {
-            final color = liked ? Colors.red : Colors.white;
-            return Icon(
-              Icons.favorite,
-              color: color,
-              size: 36,
-            );
-          },
-          countBuilder: (count, liked, text) {
-            final color = Colors.white;
-            likes[index] = count;
-            FirebaseFirestore.instance
-                .collection("Contests")
-                .doc(id)
-                .set({"Likes": likes}, SetOptions(merge: true));
+      left: MediaQuery.of(context).size.width * left / 375,
+      top: MediaQuery.of(context).size.height * top / 812,
+      child:
+          // GestureDetector(
+          //   onTap: (){
+          //     _isLiked();
 
-            return Text(
-              text,
-              style: TextStyle(
-                  color: color, fontSize: 24, fontWeight: FontWeight.bold),
-            );
-          },
-        ),
-        );
+          //   },
+          //   child: Container(
+          //     child: liked
+          //         ? Icon(
+          //             Icons.favorite,
+          //             color: Colors.red,
+          //             size: 25,
+          //           )
+          //         : Icon(
+          //             Icons.favorite,
+          //             color: Colors.white,
+          //             size: 25,
+          //           ),
+          //   ),
+          // )
+          LikeButton(
+        size: 40,
+        isLiked: liked,
+        likeCount: count,
+        likeBuilder: (liked) {
+          final color = liked ? Colors.red : Colors.white;
+          return Icon(
+            Icons.favorite,
+            color: color,
+            size: 36,
+          );
+        },
+        countBuilder: (count, liked, text) {
+          final color = Colors.white;
+          likes[index] = count;
+          FirebaseFirestore.instance
+              .collection("Contests")
+              .doc(id)
+              .set({"Likes": likes}, SetOptions(merge: true));
+
+          return Text(
+            text,
+            style: TextStyle(
+                color: color, fontSize: 24, fontWeight: FontWeight.bold),
+          );
+        },
+      ),
+    );
   }
 
   likebuttom2(BuildContext context, bool liked, int left, int top, int count,
@@ -181,10 +184,97 @@ class _Contest2v2State extends State<Contest2v2> {
             ),
           ),
         ),
-        likebuttom1(context, isLiked, 60, 560, widget.likes[0],
-            widget.contest_id, 0, widget.likes),
-        likebuttom2(context, isLiked, 250, 560, widget.likes[1],
-            widget.contest_id, 1, widget.likes),
+
+        Positioned(
+          child: GestureDetector(
+            onTap: () {
+              if (like1 == Colors.white) {
+                setState(() {
+                  like1 = Colors.red;
+                });
+                widget.likes[0] += 1;
+                FirebaseFirestore.instance
+                    .collection("Contests")
+                    .doc(widget.contest_id)
+                    .set({"Likes": widget.likes}, SetOptions(merge: true));
+              } else if (like1 == Colors.red) {
+                setState(() {
+                  like1 = Colors.white;
+                });
+                widget.likes[0] -= 1;
+                FirebaseFirestore.instance
+                    .collection("Contests")
+                    .doc(widget.contest_id)
+                    .set({"Likes": widget.likes}, SetOptions(merge: true));
+              }
+            },
+            child: Column(
+              children: [
+                Icon(
+                  Icons.how_to_vote,
+                  color: like1,
+                  size: 35,
+                ),
+                Text(
+                  widget.likes[0].toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                )
+              ],
+            ),
+          ),
+          left: MediaQuery.of(context).size.width * 70 / 375,
+          top: MediaQuery.of(context).size.height * 545 / 812,
+        ),
+        Positioned(
+          child: GestureDetector(
+            onTap: () {
+              if (like2 == Colors.white) {
+                setState(() {
+                  like2 = Colors.red;
+                });
+                widget.likes[1] += 1;
+                FirebaseFirestore.instance
+                    .collection("Contests")
+                    .doc(widget.contest_id)
+                    .set({"Likes": widget.likes}, SetOptions(merge: true));
+              } else if (like2 == Colors.red) {
+                setState(() {
+                  like2 = Colors.white;
+                });
+                widget.likes[1] -= 1;
+                FirebaseFirestore.instance
+                    .collection("Contests")
+                    .doc(widget.contest_id)
+                    .set({"Likes": widget.likes}, SetOptions(merge: true));
+              }
+            },
+            child: Column(
+              children: [
+                Icon(
+                  Icons.how_to_vote,
+                  color: like2,
+                  size: 35,
+                ),
+                Text(
+                  widget.likes[1].toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                )
+              ],
+            ),
+          ),
+          left: MediaQuery.of(context).size.width * 260 / 375,
+          top: MediaQuery.of(context).size.height * 545 / 812,
+        ),
+        // likebuttom1(context, isLiked, 60, 560, widget.likes[0],
+        //     widget.contest_id, 0, widget.likes),
+        // likebuttom2(context, isLiked, 250, 560, widget.likes[1],
+        //     widget.contest_id, 1, widget.likes),
         Positioned(
             left: MediaQuery.of(context).size.width * 330 / 375,
             top: MediaQuery.of(context).size.height * 700 / 812,

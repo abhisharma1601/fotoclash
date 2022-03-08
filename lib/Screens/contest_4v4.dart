@@ -36,7 +36,7 @@ class _Contest4v4State extends State<Contest4v4> {
 
 //  _Comp4v4(images: images, scaffoldkey: _scaffoldkey, isLiked: isLiked),
 
-class _Comp4v4 extends StatelessWidget {
+class _Comp4v4 extends StatefulWidget {
   const _Comp4v4({
     Key? key,
     required this.images,
@@ -53,6 +53,15 @@ class _Comp4v4 extends StatelessWidget {
   final String contest_id;
 
   @override
+  State<_Comp4v4> createState() => _Comp4v4State();
+}
+
+class _Comp4v4State extends State<_Comp4v4> {
+  Color like1 = Colors.white;
+  Color like2 = Colors.white;
+  Color like3 = Colors.white;
+  Color like4 = Colors.white;
+  @override
   Widget build(BuildContext context) {
     return Stack(children: [
       Container(
@@ -65,13 +74,13 @@ class _Comp4v4 extends StatelessWidget {
       Column(children: [
         // SizedBox(height: 50,),
         Row(children: [
-          imageContainer(context, images[0]),
-          imageContainer(context, images[1])
+          imageContainer(context, widget.images[0]),
+          imageContainer(context, widget.images[1])
         ]),
 
         Row(children: [
-          imageContainer(context, images[2]),
-          imageContainer(context, images[3])
+          imageContainer(context, widget.images[2]),
+          imageContainer(context, widget.images[3])
         ])
       ]),
       Positioned(
@@ -100,7 +109,7 @@ class _Comp4v4 extends StatelessWidget {
         padding: const EdgeInsets.all(16.0),
         child: IconButton(
             onPressed: () {
-              _scaffoldkey.currentState!.openDrawer();
+              widget._scaffoldkey.currentState!.openDrawer();
             },
             icon: const Icon(
               Icons.menu,
@@ -120,10 +129,182 @@ class _Comp4v4 extends StatelessWidget {
           ),
         ),
       ),
-      likebuttom(context, isLiked, 60, 350, likes[0], contest_id, 0, likes),
-      likebuttom(context, isLiked, 250, 350, likes[1], contest_id, 1, likes),
-      likebuttom(context, isLiked, 60, 400, likes[2], contest_id, 2, likes),
-      likebuttom(context, isLiked, 250, 400, likes[3], contest_id, 3, likes),
+      Positioned(
+        child: GestureDetector(
+          onTap: () {
+            if (like1 == Colors.white) {
+              setState(() {
+                like1 = Colors.red;
+              });
+              widget.likes[0] += 1;
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({"Likes": widget.likes}, SetOptions(merge: true));
+            } else if (like1 == Colors.red) {
+              setState(() {
+                like1 = Colors.white;
+              });
+              widget.likes[0] -= 1;
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({"Likes": widget.likes}, SetOptions(merge: true));
+            }
+          },
+          child: Column(
+            children: [
+              Icon(
+                Icons.how_to_vote,
+                color: like1,
+                size: 35,
+              ),
+              Text(
+                widget.likes[0].toString(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              )
+            ],
+          ),
+        ),
+        left: MediaQuery.of(context).size.width * 70 / 375,
+        top: MediaQuery.of(context).size.height * 330 / 812,
+      ),
+      Positioned(
+        child: GestureDetector(
+          onTap: () {
+            if (like2 == Colors.white) {
+              setState(() {
+                like2 = Colors.red;
+              });
+              widget.likes[1] += 1;
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({"Likes": widget.likes}, SetOptions(merge: true));
+            } else if (like2 == Colors.red) {
+              setState(() {
+                like2 = Colors.white;
+              });
+              widget.likes[1] -= 1;
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({"Likes": widget.likes}, SetOptions(merge: true));
+            }
+          },
+          child: Column(
+            children: [
+              Icon(
+                Icons.how_to_vote,
+                color: like2,
+                size: 35,
+              ),
+              Text(
+                widget.likes[1].toString(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              )
+            ],
+          ),
+        ),
+        left: MediaQuery.of(context).size.width * 260 / 375,
+        top: MediaQuery.of(context).size.height * 330 / 812,
+      ),
+      Positioned(
+        child: GestureDetector(
+          onTap: () {
+            if (like3 == Colors.white) {
+              setState(() {
+                like3 = Colors.red;
+              });
+              widget.likes[2] += 1;
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({"Likes": widget.likes}, SetOptions(merge: true));
+            } else if (like3 == Colors.red) {
+              setState(() {
+                like3 = Colors.white;
+              });
+              widget.likes[2] -= 1;
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({"Likes": widget.likes}, SetOptions(merge: true));
+            }
+          },
+          child: Column(
+            children: [
+              Icon(
+                Icons.how_to_vote,
+                color: like3,
+                size: 35,
+              ),
+              Text(
+                widget.likes[2].toString(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              )
+            ],
+          ),
+        ),
+        left: MediaQuery.of(context).size.width * 70 / 375,
+        top: MediaQuery.of(context).size.height * 410 / 812,
+      ),
+      Positioned(
+        child: GestureDetector(
+          onTap: () {
+            if (like4 == Colors.white) {
+              setState(() {
+                like4 = Colors.red;
+              });
+              widget.likes[3] += 1;
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({"Likes": widget.likes}, SetOptions(merge: true));
+            } else if (like4 == Colors.red) {
+              setState(() {
+                like4 = Colors.white;
+              });
+              widget.likes[3] -= 1;
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({"Likes": widget.likes}, SetOptions(merge: true));
+            }
+          },
+          child: Column(
+            children: [
+              Icon(
+                Icons.how_to_vote,
+                color: like4,
+                size: 35,
+              ),
+              Text(
+                widget.likes[3].toString(),
+                style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18),
+              )
+            ],
+          ),
+        ),
+        left: MediaQuery.of(context).size.width * 260 / 375,
+        top: MediaQuery.of(context).size.height * 410 / 812,
+      ),
+      // likebuttom(context, isLiked, 60, 350, likes[0], contest_id, 0, likes),
+      // likebuttom(context, isLiked, 250, 350, likes[1], contest_id, 1, likes),
+      // likebuttom(context, isLiked, 60, 400, likes[2], contest_id, 2, likes),
+      // likebuttom(context, isLiked, 250, 400, likes[3], contest_id, 3, likes),
       Positioned(
           left: MediaQuery.of(context).size.width * 330 / 375,
           top: MediaQuery.of(context).size.height * 700 / 812,

@@ -18,7 +18,7 @@ class CreateContest2v2 extends StatefulWidget {
   int balance;
   String? winnerPrize;
   String? ContestName;
-   bool isActive;
+  bool isActive;
   bool winnerisME;
   CreateContest2v2(
       {required this.prize,
@@ -103,42 +103,42 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
         .child('user_image')
         .child(ID!)
         .child(user.uid + '.jpg');
-    ref.putFile(_photo!).whenComplete(() async {
-      String url = await ref.getDownloadURL();
-      await firebaseFirestore
-          .collection("Users")
-          .doc(_auth.currentUser!.uid)
-          .collection("Contests")
-          .doc(ID)
-          .set({
-        'CreatorID': user.uid,
-        'CreatorName': widget.ContestName,
-        'ContestID': ID,
-        'DateTime': DateTime.now().toString(),
-        "images": [url, ""],
-        "Likes": [0, 0],
-        "Participations": [user.uid, ""],
-        "EntryFee": widget.prize,
-        "password": widget.pass ?? "",
-        "Protected": widget.private,
-        "winnerPrize": widget.winnerPrize,
-        "Voters": []
-      });
-            await firebaseFirestore
-        .collection("Users")
-        .doc(user.uid)
-        .collection("Participations")
-        .doc(ID)
-        .set({
-      "ContestId": ID,
-      "Likes": [0, 0, 0, 0],
-      "isActive":widget.isActive,
-      "Winner":widget.winnerisME,
-      "images": [url, "", "", ""],
-    }, SetOptions(merge: true));
-    });
-
-
+    ref.putFile(_photo!).whenComplete(
+      () async {
+        String url = await ref.getDownloadURL();
+        await firebaseFirestore
+            .collection("Users")
+            .doc(_auth.currentUser!.uid)
+            .collection("Contests")
+            .doc(ID)
+            .set({
+          'CreatorID': user.uid,
+          'CreatorName': widget.ContestName,
+          'ContestID': ID,
+          'DateTime': DateTime.now().toString(),
+          "images": [url, ""],
+          "Likes": [0, 0],
+          "Participations": [user.uid, ""],
+          "EntryFee": widget.prize,
+          "password": widget.pass ?? "",
+          "Protected": widget.private,
+          "winnerPrize": widget.winnerPrize,
+          "Voters": []
+        });
+        await firebaseFirestore
+            .collection("Users")
+            .doc(user.uid)
+            .collection("Participations")
+            .doc(ID)
+            .set({
+          "ContestId": ID,
+          "Likes": [0, 0, 0, 0],
+          "isActive": widget.isActive,
+          "Winner": widget.winnerisME,
+          "images": [url, "", "", ""],
+        }, SetOptions(merge: true));
+      },
+    );
   }
 
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();

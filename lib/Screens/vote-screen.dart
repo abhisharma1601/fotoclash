@@ -57,8 +57,6 @@ class _VoteScreenState extends State<VoteScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _scaffoldkey,
-      
-      
       extendBody: true,
       body: _piclist.length != 0
           ? Swiper(
@@ -68,7 +66,7 @@ class _VoteScreenState extends State<VoteScreen> {
                 return _piclist[index];
               },
               itemCount: _piclist.length,
-              pagination: SwiperPagination(builder: SwiperPagination.fraction),
+              pagination: SwiperPagination(builder: SwiperPagination.rect),
               control: SwiperControl(
                 color: Colors.transparent,
                 size: 0,
@@ -76,9 +74,10 @@ class _VoteScreenState extends State<VoteScreen> {
             )
           : Container(
               decoration: BoxDecoration(
-                  image: DecorationImage(
-                      image: AssetImage("assets/background.png"),
-                      fit: BoxFit.fill)),
+                image: DecorationImage(
+                    image: AssetImage("assets/background.png"),
+                    fit: BoxFit.fill),
+              ),
             ),
     );
   }

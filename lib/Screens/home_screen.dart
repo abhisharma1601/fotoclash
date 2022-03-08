@@ -50,6 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
   Future<void> declare_result() async {
     var key = await FirebaseFirestore.instance.collection("Contests").get();
     for (var i in key.docs) {
+      //if contest is over and result not declared
       if (DateTime.parse(i.data()["DateTime"] + "0")
                   .add(Duration(days: 1))
                   .difference(DateTime.now()) <=
@@ -57,7 +58,54 @@ class _HomeScreenState extends State<HomeScreen> {
           !i.data()["Participations"].contains("")) {
         try {
           if (!i.data()["Declared"]) {
-            int max_likes = i.data()["Likes"].max;
+            //if there is a tie
+            if (is_tie(i.data()["Likes"])) {
+            }
+            // if there is no tie
+            else {
+              int max_likes = get_max(i.data()["Likes"]);
+              int index = i.data()["Likes"].indexOf(max_likes);
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(i.data()["ContestID"])
+                  .set({"Declared": true}, SetOptions(merge: true));
+              String winner_id = i.data()["Participations"][index];
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(winner_id)
+                  .set({
+                "Wallet": {
+                  "Balance": FieldValue.increment(
+                      int.parse(i.data()["winnerPrize"].replaceAll("₹", "")))
+                }
+              }, SetOptions(merge: true));
+              FirebaseFirestore.instance
+                  .collection("Winners")
+                  .doc(winner_id)
+                  .set({
+                "Total Winnigs": FieldValue.increment(
+                  int.parse(
+                    i.data()["winnerPrize"].replaceAll("₹", ""),
+                  ),
+                ),
+                "Wins": FieldValue.increment(1)
+              }, SetOptions(merge: true));
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(winner_id)
+                  .collection("Participations")
+                  .doc(i.data()["ContestID"])
+                  .set({"isActive": false, "Winner": true},
+                      SetOptions(merge: true));
+            }
+          }
+        } catch (e) {
+          //if there is a tie
+          if (is_tie(i.data()["Likes"])) {
+          }
+          //if no tie
+          else {
+            int max_likes = get_max(i.data()["Likes"]);
             int index = i.data()["Likes"].indexOf(max_likes);
             FirebaseFirestore.instance
                 .collection("Contests")
@@ -70,23 +118,29 @@ class _HomeScreenState extends State<HomeScreen> {
                     int.parse(i.data()["winnerPrize"].replaceAll("₹", "")))
               }
             }, SetOptions(merge: true));
+            FirebaseFirestore.instance
+                .collection("Winners")
+                .doc(winner_id)
+                .set({
+              "Total Winnigs": FieldValue.increment(
+                int.parse(
+                  i.data()["winnerPrize"].replaceAll("₹", ""),
+                ),
+              ),
+              "Wins": FieldValue.increment(1)
+            }, SetOptions(merge: true));
+            FirebaseFirestore.instance
+                .collection("Users")
+                .doc(winner_id)
+                .collection("Participations")
+                .doc(i.data()["ContestID"])
+                .set({"isActive": false, "Winner": true},
+                    SetOptions(merge: true));
           }
-        } catch (e) {
-          int max_likes = get_max(i.data()["Likes"]);
-          int index = i.data()["Likes"].indexOf(max_likes);
-          FirebaseFirestore.instance
-              .collection("Contests")
-              .doc(i.data()["ContestID"])
-              .set({"Declared": true}, SetOptions(merge: true));
-          String winner_id = i.data()["Participations"][index];
-          FirebaseFirestore.instance.collection("Users").doc(winner_id).set({
-            "Wallet": {
-              "Balance": FieldValue.increment(
-                  int.parse(i.data()["winnerPrize"].replaceAll("₹", "")))
-            }
-          }, SetOptions(merge: true));
         }
-      } else if (DateTime.parse(i.data()["DateTime"] + "0")
+      }
+      //if contest is over and no participation is there
+      else if (DateTime.parse(i.data()["DateTime"] + "0")
                   .add(Duration(days: 1))
                   .difference(DateTime.now()) <=
               Duration(seconds: 0) &&
@@ -131,6 +185,17 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     return max;
+  }
+
+  bool is_tie(List Likes) {
+    bool check = true;
+    int base = Likes[0];
+    for (int i in Likes) {
+      if (i != base) {
+        check = false;
+      }
+    }
+    return check;
   }
 
   int index = 0;
