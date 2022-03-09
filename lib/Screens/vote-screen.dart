@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/contest_2v2.dart';
 import 'package:fotoclash/Screens/contest_4v4.dart';
+import 'package:fotoclash/Screens/search_contest/searchcontest.dart';
 
 import 'drawer_details.dart';
 
@@ -92,7 +93,7 @@ class _VoteScreenState extends State<VoteScreen> {
                   style: TextStyle(color: Colors.white),
                 )),
                 Padding(
-                  padding: const EdgeInsets.all(20.0),
+                  padding: const EdgeInsets.fromLTRB(20, 32, 20, 20),
                   child: IconButton(
                       onPressed: () {
                         _scaffoldkey.currentState!.openDrawer();
@@ -105,9 +106,14 @@ class _VoteScreenState extends State<VoteScreen> {
                 ),
                 Positioned(
                   left: MediaQuery.of(context).size.width * 310 / 375,
-                  top: 24,
+                  top: 40,
                   child: GestureDetector(
-                    onTap: () {},
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => SearchContest()));
+                    },
                     child: const Icon(
                       Icons.search,
                       color: Colors.white,

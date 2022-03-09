@@ -5,13 +5,14 @@ import 'package:fotoclash/Screens/home_screen.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+
 import 'Controllers/user_class.dart';
 import 'homeBinding.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 user_class app_user = user_class(
@@ -27,7 +28,7 @@ user_class app_user = user_class(
     balance: 0);
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
@@ -37,7 +38,11 @@ class MyApp extends StatelessWidget {
       initialBinding: HomeBinding(),
       title: 'Flutter Demo',
       theme: ThemeData(
-          primarySwatch: Colors.blue, unselectedWidgetColor: Colors.white),
+          textTheme: Theme.of(context).textTheme.apply(
+                fontFamily: 'Mulish',
+              ),
+          primarySwatch: Colors.blue,
+          unselectedWidgetColor: Colors.white),
       home: StreamBuilder(
         stream: FirebaseAuth.instance.authStateChanges(),
         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {

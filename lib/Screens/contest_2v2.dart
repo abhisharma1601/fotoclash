@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/drawer_details.dart';
+import 'package:fotoclash/Screens/search_contest/searchcontest.dart';
 import 'package:like_button/like_button.dart';
 
 class Contest2v2 extends StatefulWidget {
@@ -176,7 +177,10 @@ class _Contest2v2State extends State<Contest2v2> {
           left: MediaQuery.of(context).size.width * 310 / 375,
           top: 24,
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => SearchContest()));
+            },
             child: const Icon(
               Icons.search,
               color: Colors.white,
