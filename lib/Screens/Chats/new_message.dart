@@ -1,29 +1,33 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+
 import 'package:flutter/material.dart';
+import 'package:fotoclash/Models/databse.dart';
+import 'package:fotoclash/main.dart';
 
 class NewMessages extends StatefulWidget {
-  const NewMessages({Key? key}) : super(key: key);
+   String chatRoomId;
+   NewMessages(this.chatRoomId,{Key? key}) : super(key: key);
 
   @override
   State<NewMessages> createState() => _NewMessagesState();
 }
 
 class _NewMessagesState extends State<NewMessages> {
+
   final _controller = TextEditingController();
   var _enteredMessage = '';
-  void _sendMessage() async {
-    FocusScope.of(context).unfocus();
-    final user = FirebaseAuth.instance.currentUser;
-    final userData =
-        await FirebaseFirestore.instance.collection('Uid').doc(user!.uid).get();
-    FirebaseFirestore.instance.collection("Chats").doc(user.uid).set({
-      'text': _enteredMessage,
-      'createdAt': Timestamp.now(),
-      'userId': user.uid,
-      'userImage': userData['imageUrl']
-    });
-    _controller.clear();
+    addMessage() async {
+    if (_controller.text.isNotEmpty) {
+      Map<String, dynamic> chatMessageMap = {
+        'userName': app_user.username,
+        "message": _enteredMessage,
+        'time': DateTime.now().millisecondsSinceEpoch,
+      };
+      setState(() {
+        _controller.text = "";
+        DataBase().addMessage(widget.chatRoomId, chatMessageMap);
+      });
+      print(MediaQuery.of(context).viewInsets.bottom);
+    }
   }
 
   @override
@@ -43,6 +47,7 @@ class _NewMessagesState extends State<NewMessages> {
                   color: Colors.grey.withOpacity(.1)),
             ]),
             child: TextField(
+              style: TextStyle(color: Colors.white),
               controller: _controller,
               onChanged: (value) {
                 _enteredMessage = value;
@@ -52,8 +57,7 @@ class _NewMessagesState extends State<NewMessages> {
                   Icons.add,
                   color: Colors.grey[500]!,
                 ),
-                suffixIcon:
-                    const Icon(Icons.attach_file_rounded, color: Colors.grey),
+                
                 filled: true,
                 fillColor: const Color(0xFF263238),
                 hintText: "Type Message",
@@ -77,7 +81,9 @@ class _NewMessagesState extends State<NewMessages> {
           )),
           IconButton(
               color: Colors.grey,
-              onPressed: () {},
+              onPressed: () {
+                addMessage();
+              },
               icon: const Icon(Icons.send))
         ],
       ),
