@@ -19,8 +19,8 @@ bool _private = false;
 int _amount = 50;
 int _balance_amount = 0;
 int _con_size = 2;
-bool winnerisME=false;
-bool isActive=false;
+bool winnerisME = false;
+bool isActive = true;
 final _auth = FirebaseAuth.instance;
 final TextEditingController PasswordC = TextEditingController();
 final TextEditingController ContestNameC = TextEditingController();
@@ -377,10 +377,6 @@ class _CreateConSState extends State<CreateConS> {
                           value: 2,
                         ),
                         DropdownMenuItem(
-                          child: Text("3"),
-                          value: 3,
-                        ),
-                        DropdownMenuItem(
                           child: Text("4"),
                           value: 4,
                         ),
@@ -476,24 +472,25 @@ class _CreateConSState extends State<CreateConS> {
           GestureDetector(
             onTap: () {
               if (_con_size == 4) {
-                Navigator.of(context).push(MaterialPageRoute(
+                Navigator.of(context).push(
+                  MaterialPageRoute(
                     builder: (_) => CreateContest(
                       isActive: isActive,
-                      winnerisME:winnerisME ,
+                      winnerisME: winnerisME,
                       balance: _balance_amount,
-                          prize: _amount.toString(),
-                          pass: PasswordC.text,
-                          private: _private.toString(),
-                          winnerPrize:
-                              "₹${((_con_size * _amount) / 1.25).ceil()}",
-                          ContestName: ContestNameC.text,
-                          
-                        ),),);
+                      prize: _amount.toString(),
+                      pass: PasswordC.text,
+                      private: _private.toString(),
+                      winnerPrize: "₹${((_con_size * _amount) / 1.25).ceil()}",
+                      ContestName: ContestNameC.text,
+                    ),
+                  ),
+                );
               }
               if (_con_size == 3) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => CreateContest3v3(
-                      balance: _balance_amount,
+                          balance: _balance_amount,
                           prize: _amount.toString(),
                           pass: PasswordC.text,
                           private: _private.toString(),
@@ -505,9 +502,9 @@ class _CreateConSState extends State<CreateConS> {
               if (_con_size == 2) {
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (_) => CreateContest2v2(
-                       isActive: isActive,
-                      winnerisME:winnerisME ,
-                      balance: _balance_amount,
+                          isActive: isActive,
+                          winnerisME: winnerisME,
+                          balance: _balance_amount,
                           prize: _amount.toString(),
                           pass: PasswordC.text,
                           private: _private.toString(),
@@ -550,10 +547,125 @@ class _CreateConSState extends State<CreateConS> {
   }
 }
 
-class JOinConS extends StatelessWidget {
-  const JOinConS({
+class JOinConS extends StatefulWidget {
+  JOinConS({
     Key? key,
   }) : super(key: key);
+
+  @override
+  State<JOinConS> createState() => _JOinConSState();
+}
+
+class _JOinConSState extends State<JOinConS> {
+  String cid = "";
+
+  Widget contests = Container(
+    child: FutureBuilder(
+        future: FirebaseFirestore.instance.collection("Contests").get(),
+        builder: (context, AsyncSnapshot futureSnapshot) {
+          if (futureSnapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator(),
+            );
+          } else {
+            return futureSnapshot.hasData
+                ? Container(
+                    color: Colors.transparent,
+                    height: MediaQuery.of(context).size.height * 0.8,
+                    child: ListView.builder(
+                        physics: const BouncingScrollPhysics(),
+                        shrinkWrap: true,
+                        itemCount: futureSnapshot.requireData.size,
+                        itemBuilder: (context, index) {
+                          if (futureSnapshot.requireData.docs[index]
+                                      ["CreatorID"] !=
+                                  app_user.uid &&
+                              !futureSnapshot
+                                  .requireData.docs[index]["Participations"]
+                                  .contains(app_user.uid) &&
+                              DateTime.parse(futureSnapshot.requireData
+                                              .docs[index]["DateTime"] +
+                                          "0")
+                                      .add(Duration(days: 1))
+                                      .difference(DateTime.now()) >
+                                  Duration(seconds: 0)) {
+                            // isActive =true;
+                            int join = 0;
+                            print(DateTime.parse(futureSnapshot
+                                        .requireData.docs[index]["DateTime"] +
+                                    "0")
+                                .add(Duration(days: 1))
+                                .difference(DateTime.now()));
+                            for (var i in futureSnapshot.requireData.docs[index]
+                                ["Participations"]) {
+                              if (i != "") {
+                                join += 1;
+                              }
+                            }
+                            return _joinBlock(
+                                contestID: futureSnapshot
+                                    .requireData.docs[index]["ContestID"],
+                                participants: join,
+                                players: futureSnapshot.requireData
+                                    .docs[index]["Participations"].length,
+                                EntryFee: futureSnapshot.requireData.docs[index]
+                                    ["EntryFee"],
+                                winningPrize: futureSnapshot
+                                    .requireData.docs[index]["winnerPrize"],
+                                isVisible: true,
+                                CreatorID: futureSnapshot
+                                    .requireData.docs[index]["CreatorID"]);
+                          } else
+                            return Container(
+                              color: Colors.transparent,
+                            );
+                        }),
+                  )
+                : Container(
+                    color: Colors.transparent,
+                  );
+          }
+        }),
+  );
+
+  Future<void> get_searched_contest(String id) async {
+    print(id);
+    var key =
+        await FirebaseFirestore.instance.collection("Contests").doc(id).get();
+    int join = 0;
+    for (var i in (key.data() as dynamic)["Participations"]) {
+      if (i != "") {
+        join += 1;
+      }
+    }
+    contests = Container(
+      height: MediaQuery.of(context).size.height,
+      color: Colors.transparent,
+      child: Column(
+        children: [
+          SizedBox(
+            height: 15,
+          ),
+          _joinBlock(
+              contestID: (key.data() as dynamic)["ContestID"],
+              participants: join,
+              players: (key.data() as dynamic)["Participations"].length,
+              EntryFee: (key.data() as dynamic)["EntryFee"],
+              winningPrize: (key.data() as dynamic)["winnerPrize"],
+              isVisible:
+                  DateTime.parse((key.data() as dynamic)["DateTime"] + "0")
+                              .add(Duration(days: 1))
+                              .difference(DateTime.now()) >
+                          Duration(seconds: 0) &&
+                      (key.data() as dynamic)["CreatorID"] != app_user.uid &&
+                      !(key.data() as dynamic)["Participations"]
+                          .contains(app_user.uid),
+              CreatorID: (key.data() as dynamic)["CreatorID"])
+        ],
+      ),
+    );
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -574,6 +686,9 @@ class JOinConS extends StatelessWidget {
               ),
               Expanded(
                   child: TextField(
+                onChanged: (val) {
+                  cid = val;
+                },
                 cursorColor: Colors.white,
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
@@ -582,9 +697,12 @@ class JOinConS extends StatelessWidget {
                     hintStyle: TextStyle(color: Colors.white)),
               )),
               Spacer(),
-              Icon(
-                Icons.search,
-                color: Colors.white,
+              GestureDetector(
+                onTap: () => {get_searched_contest(cid)},
+                child: Icon(
+                  Icons.search,
+                  color: Colors.white,
+                ),
               ),
               SizedBox(
                 width: 10,
@@ -595,75 +713,7 @@ class JOinConS extends StatelessWidget {
         SizedBox(
           height: 15,
         ),
-        Container(
-          child: FutureBuilder(
-              future: FirebaseFirestore.instance.collection("Contests").get(),
-              builder: (context, AsyncSnapshot futureSnapshot) {
-                if (futureSnapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                } else {
-                  return futureSnapshot.hasData
-                      ? Container(
-                          color: Colors.transparent,
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: futureSnapshot.requireData.size,
-                              itemBuilder: (context, index) {
-                                if (futureSnapshot.requireData.docs[index]
-                                            ["CreatorID"] !=
-                                        app_user.uid &&
-                                    !futureSnapshot.requireData
-                                        .docs[index]["Participations"]
-                                        .contains(app_user.uid) &&
-                                    DateTime.parse(futureSnapshot.requireData
-                                                    .docs[index]["DateTime"] +
-                                                "0")
-                                            .add(Duration(days: 1))
-                                            .difference(DateTime.now()) >
-                                        Duration(seconds: 0)) {
-                                          isActive =true;
-                                  int join = 0;
-                                  print(DateTime.parse(futureSnapshot
-                                              .requireData
-                                              .docs[index]["DateTime"] +
-                                          "0")
-                                      .add(Duration(days: 1))
-                                      .difference(DateTime.now()));
-                                  for (var i in futureSnapshot.requireData
-                                      .docs[index]["Participations"]) {
-                                    if (i != "") {
-                                      join += 1;
-                                    }
-                                  }
-                                  return _joinBlock(
-                                      contestID: futureSnapshot
-                                          .requireData.docs[index]["ContestID"],
-                                      participants: join,
-                                      players: futureSnapshot.requireData
-                                          .docs[index]["Participations"].length,
-                                      EntryFee: futureSnapshot
-                                          .requireData.docs[index]["EntryFee"],
-                                      winningPrize: futureSnapshot.requireData
-                                          .docs[index]["winnerPrize"],
-                                      isVisible: true,
-                                      CreatorID: futureSnapshot.requireData
-                                          .docs[index]["CreatorID"]);
-                                } else
-                                  return Container(
-                                    color: Colors.transparent,
-                                  );
-                              }),
-                        )
-                      : Container(
-                          color: Colors.transparent,
-                        );
-                }
-              }),
-        )
+        contests
       ],
     );
   }
@@ -802,64 +852,64 @@ class _joinBlock extends StatelessWidget {
             padding: EdgeInsets.only(left: 16),
             child: SizedBox(
               width: MediaQuery.of(context).size.width,
-              child: Row(
-                children: [
-                  Padding(
-                    padding: EdgeInsets.only(top: 10, bottom: 5),
-                    child: Row(
-                      children: [
-                        Text(
-                          "Contest ID :",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        ),
-                        Text(contestID!,
-                            overflow: TextOverflow.ellipsis,
-                            maxLines: 2,
-                            softWrap: true,
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w400)),
-                        SizedBox(
-                          width: MediaQuery.of(context).size.width * 0.25,
-                        ),
-                        Visibility(
-                          visible: isVisible && participants != players,
-                          child: Container(
-                            padding: EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                              color: Color(0xff323C43),
-                              borderRadius: BorderRadius.only(
-                                bottomLeft: Radius.circular(10),
-                                topRight: Radius.circular(10),
-                              ),
-                            ),
-                            child: InkWell(
-                              onTap: () {
-                                Navigator.of(context)
-                                    .push(MaterialPageRoute(builder: (_) {
-                                  return JoinContest( 
-                                    isActive: isActive,
-                                    winnerisME:winnerisME ,
-                                    balance: _balance_amount,
-                                    ContestID: contestID,
-                                    contestSize: players,
-                                    CreatorID: CreatorID,
-                                    EntryFee: EntryFee,
-                                  );
-                                }));
-                              },
-                              child: Text(
-                                "Join",
-                                style: TextStyle(color: Colors.green),
-                              ),
-                            ),
-                          ),
-                        )
-                      ],
+              child: Padding(
+                padding: EdgeInsets.only(top: 0, bottom: 5),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        "Contest ID : ",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
                     ),
-                  ),
-                ],
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(contestID!,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          softWrap: true,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                    Spacer(),
+                    Visibility(
+                      visible: isVisible && participants != players,
+                      child: Container(
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Color(0xff323C43),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(builder: (_) {
+                              return JoinContest(
+                                isActive: isActive,
+                                winnerisME: winnerisME,
+                                balance: _balance_amount,
+                                ContestID: contestID,
+                                contestSize: players,
+                                CreatorID: CreatorID,
+                                EntryFee: EntryFee,
+                              );
+                            }));
+                          },
+                          child: Text(
+                            "Join",
+                            style: TextStyle(color: Colors.green),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
               ),
             ),
           ),

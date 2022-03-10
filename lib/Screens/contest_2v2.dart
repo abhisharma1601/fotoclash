@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/drawer_details.dart';
 import 'package:fotoclash/Screens/search_contest/searchcontest.dart';
+import 'package:fotoclash/main.dart';
 import 'package:like_button/like_button.dart';
 
 class Contest2v2 extends StatefulWidget {
@@ -26,95 +28,6 @@ class _Contest2v2State extends State<Contest2v2> {
   Color like2 = Colors.white;
 
   final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
-  likebuttom1(BuildContext context, bool liked, int left, int top, int count,
-      String id, int index, List likes) {
-    return Positioned(
-      left: MediaQuery.of(context).size.width * left / 375,
-      top: MediaQuery.of(context).size.height * top / 812,
-      child:
-          // GestureDetector(
-          //   onTap: (){
-          //     _isLiked();
-
-          //   },
-          //   child: Container(
-          //     child: liked
-          //         ? Icon(
-          //             Icons.favorite,
-          //             color: Colors.red,
-          //             size: 25,
-          //           )
-          //         : Icon(
-          //             Icons.favorite,
-          //             color: Colors.white,
-          //             size: 25,
-          //           ),
-          //   ),
-          // )
-          LikeButton(
-        size: 40,
-        isLiked: liked,
-        likeCount: count,
-        likeBuilder: (liked) {
-          final color = liked ? Colors.red : Colors.white;
-          return Icon(
-            Icons.favorite,
-            color: color,
-            size: 36,
-          );
-        },
-        countBuilder: (count, liked, text) {
-          final color = Colors.white;
-          likes[index] = count;
-          FirebaseFirestore.instance
-              .collection("Contests")
-              .doc(id)
-              .set({"Likes": likes}, SetOptions(merge: true));
-
-          return Text(
-            text,
-            style: TextStyle(
-                color: color, fontSize: 24, fontWeight: FontWeight.bold),
-          );
-        },
-      ),
-    );
-  }
-
-  likebuttom2(BuildContext context, bool liked, int left, int top, int count,
-      String id, int index, List likes) {
-    return Positioned(
-      left: MediaQuery.of(context).size.width * left / 375,
-      top: MediaQuery.of(context).size.height * top / 812,
-      child: LikeButton(
-        size: 40,
-        isLiked: liked,
-        likeCount: count,
-        likeBuilder: (liked) {
-          final color = liked ? Colors.red : Colors.white;
-          return Icon(
-            Icons.favorite,
-            color: color,
-            size: 36,
-          );
-        },
-        countBuilder: (count, liked, text) {
-          final color = Colors.white;
-          likes[index] = count;
-          FirebaseFirestore.instance
-              .collection("Contests")
-              .doc(id)
-              .set({"Likes": likes}, SetOptions(merge: true));
-
-          return Text(
-            text,
-            style: TextStyle(
-                color: color, fontSize: 24, fontWeight: FontWeight.bold),
-          );
-        },
-      ),
-    );
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -192,6 +105,12 @@ class _Contest2v2State extends State<Contest2v2> {
         Positioned(
           child: GestureDetector(
             onTap: () {
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({
+                "Voters": FieldValue.arrayUnion([app_user.uid])
+              }, SetOptions(merge: true));
               if (like1 == Colors.white) {
                 setState(() {
                   like1 = Colors.red;
@@ -201,6 +120,17 @@ class _Contest2v2State extends State<Contest2v2> {
                     .collection("Contests")
                     .doc(widget.contest_id)
                     .set({"Likes": widget.likes}, SetOptions(merge: true));
+
+                if (like2 == Colors.red) {
+                  setState(() {
+                    like2 = Colors.white;
+                    widget.likes[1] -= 1;
+                    FirebaseFirestore.instance
+                        .collection("Contests")
+                        .doc(widget.contest_id)
+                        .set({"Likes": widget.likes}, SetOptions(merge: true));
+                  });
+                }
               } else if (like1 == Colors.red) {
                 setState(() {
                   like1 = Colors.white;
@@ -215,7 +145,7 @@ class _Contest2v2State extends State<Contest2v2> {
             child: Column(
               children: [
                 Icon(
-                  Icons.how_to_vote,
+                  CupertinoIcons.heart_fill,
                   color: like1,
                   size: 35,
                 ),
@@ -235,6 +165,12 @@ class _Contest2v2State extends State<Contest2v2> {
         Positioned(
           child: GestureDetector(
             onTap: () {
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(widget.contest_id)
+                  .set({
+                "Voters": FieldValue.arrayUnion([app_user.uid])
+              }, SetOptions(merge: true));
               if (like2 == Colors.white) {
                 setState(() {
                   like2 = Colors.red;
@@ -244,6 +180,16 @@ class _Contest2v2State extends State<Contest2v2> {
                     .collection("Contests")
                     .doc(widget.contest_id)
                     .set({"Likes": widget.likes}, SetOptions(merge: true));
+                if (like1 == Colors.red) {
+                  setState(() {
+                    like1 = Colors.white;
+                    widget.likes[0] -= 1;
+                    FirebaseFirestore.instance
+                        .collection("Contests")
+                        .doc(widget.contest_id)
+                        .set({"Likes": widget.likes}, SetOptions(merge: true));
+                  });
+                }
               } else if (like2 == Colors.red) {
                 setState(() {
                   like2 = Colors.white;
@@ -258,7 +204,7 @@ class _Contest2v2State extends State<Contest2v2> {
             child: Column(
               children: [
                 Icon(
-                  Icons.how_to_vote,
+                  CupertinoIcons.heart_fill,
                   color: like2,
                   size: 35,
                 ),
@@ -287,14 +233,6 @@ class _Contest2v2State extends State<Contest2v2> {
               color: Colors.red,
               size: 28,
             )),
-        Positioned(
-            left: MediaQuery.of(context).size.width * 30 / 375,
-            top: MediaQuery.of(context).size.height * 700 / 812,
-            child: const Icon(
-              Icons.comment,
-              color: Colors.red,
-              size: 28,
-            ))
       ]),
     );
   }

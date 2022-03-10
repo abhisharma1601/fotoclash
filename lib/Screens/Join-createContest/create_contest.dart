@@ -35,7 +35,7 @@ class CreateContest extends StatefulWidget {
 class _CreateContestState extends State<CreateContest> {
   File? _photo;
   String? ID;
-  int likes=0;
+  int likes = 0;
 
   Future getImage(bool gallery) async {
     ImagePicker picker = ImagePicker();
@@ -94,6 +94,8 @@ class _CreateContestState extends State<CreateContest> {
   }
 
   postDataToFirestoreUser() async {
+    print("Started Posting");
+    String url;
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
     userModel UserModel = userModel();
@@ -105,7 +107,7 @@ class _CreateContestState extends State<CreateContest> {
         .child(ID!)
         .child(user.uid + '.jpg');
     ref.putFile(_photo!).whenComplete(() async {
-      String url = await ref.getDownloadURL();
+      url = await ref.getDownloadURL();
       await firebaseFirestore
           .collection("Users")
           .doc(_auth.currentUser!.uid)
@@ -125,21 +127,21 @@ class _CreateContestState extends State<CreateContest> {
         "winnerPrize": widget.winnerPrize,
         "Voters": []
       });
-    });
-    String url = await ref.getDownloadURL();
       await firebaseFirestore
-        .collection("Users")
-        .doc(user.uid)
-        .collection("Participations")
-        .doc(ID)
-        .set({
-      "ContestId": ID,
-      "Likes": [0, 0, 0, 0],
-      "isActive":widget.isActive,
-      "Winner":widget.winnerisME,
-      "images": [url, "", "", ""],
-    }, SetOptions(merge: true));
+          .collection("Users")
+          .doc(user.uid)
+          .collection("Participations")
+          .doc(ID)
+          .set({
+        "ContestId": ID,
+        "Likes": [0, 0, 0, 0],
+        "isActive": widget.isActive,
+        "Winner": widget.winnerisME,
+        "images": [url, "", "", ""],
+      }, SetOptions(merge: true));
+    });
   }
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;

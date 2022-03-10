@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/contest_2v2.dart';
 import 'package:fotoclash/Screens/contest_4v4.dart';
 import 'package:fotoclash/Screens/search_contest/searchcontest.dart';
+import 'package:fotoclash/main.dart';
+import 'package:swipable_stack/swipable_stack.dart';
 
 import 'drawer_details.dart';
 
@@ -31,25 +33,28 @@ class _VoteScreenState extends State<VoteScreen> {
               .add(Duration(days: 1))
               .difference(DateTime.now()) >
           Duration(seconds: 0)) {
-        if (i.data()["Participations"].length == 2 &&
-            !i.data()["images"].contains("")) {
-          print(i.data()["ContestID"]);
-          _piclist.add(Contest2v2(
-            images: i.data()["images"],
-            likes: i.data()["Likes"],
-            contest_id: i.data()["ContestID"],
-          ));
-        } else if (i.data()["Participations"].length == 4 &&
-            !i.data()["images"].contains("")) {
-          print(i.data()["ContestID"]);
-          _piclist.add(Contest4v4(
-            images: i.data()["images"],
-            likes: i.data()["Likes"],
-            contest_id: i.data()["ContestID"],
-          ));
+        if (!i.data()["Voters"].contains(app_user.uid)) {
+          if (i.data()["Participations"].length == 2 &&
+              !i.data()["images"].contains("")) {
+            print(i.data()["ContestID"]);
+            _piclist.add(Contest2v2(
+              images: i.data()["images"],
+              likes: i.data()["Likes"],
+              contest_id: i.data()["ContestID"],
+            ));
+          } else if (i.data()["Participations"].length == 4 &&
+              !i.data()["images"].contains("")) {
+            print(i.data()["ContestID"]);
+            _piclist.add(Contest4v4(
+              images: i.data()["images"],
+              likes: i.data()["Likes"],
+              contest_id: i.data()["ContestID"],
+            ));
+          }
         }
       }
     }
+
     setState(() {});
   }
 
@@ -64,18 +69,18 @@ class _VoteScreenState extends State<VoteScreen> {
       ),
       extendBody: true,
       body: _piclist.length != 0
-          ? Swiper(
-              loop: false,
-              scrollDirection: Axis.vertical,
-              itemBuilder: (BuildContext context, int index) {
-                return _piclist[index];
-              },
+          ? SwipableStack(
               itemCount: _piclist.length,
-              pagination: SwiperPagination(builder: SwiperPagination.rect),
-              control: SwiperControl(
-                color: Colors.transparent,
-                size: 0,
-              ),
+              onSwipeCompleted: (index, direction) {
+                if (index == _piclist.length - 1) {
+                  setState(() {
+                    _piclist = [];
+                  });
+                }
+              },
+              builder: (context, properties) {
+                return _piclist[properties.index];
+              },
             )
           : Container(
               child: Stack(children: [
@@ -126,3 +131,24 @@ class _VoteScreenState extends State<VoteScreen> {
     );
   }
 }
+
+// Swiper(
+//               loop: false,
+//               onIndexChanged: (val) {
+//                 print(val);
+//                 _piclist = _piclist.sublist(val - 1, _piclist.length);
+//                 setState(() {});
+//                 print(_piclist);
+//               },
+//               scrollDirection: Axis.vertical,
+//               itemBuilder: (BuildContext context, int index) {
+//                 return WillPopScope(
+//                     onWillPop: () async => true, child: _piclist[index]);
+//               },
+//               itemCount: _piclist.length,
+//               pagination: SwiperPagination(builder: SwiperPagination.rect),
+//               control: SwiperControl(
+//                 color: Colors.transparent,
+//                 size: 0,
+//               ),
+//             )

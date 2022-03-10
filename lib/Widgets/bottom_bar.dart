@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/Chats/chat_home.dart';
 import 'package:fotoclash/Screens/Join-createContest/screen1.dart';
@@ -63,31 +64,31 @@ class _BottomNavBar extends State<BottomNavBar> {
                 buildTabItem(
                     index: 0,
                     icon: const Icon(
-                      Icons.home_outlined,
+                      CupertinoIcons.home,
                       size: 30,
                     )),
                 buildTabItem(
                     index: 1,
                     icon: const Icon(
-                      Icons.wine_bar_rounded,
+                      CupertinoIcons.compass,
                       size: 30,
                     )),
                 InkWell(
-                  onTap: () {
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (_) => ContestS()));
-            },
-                  child: placeholder),
+                    onTap: () {
+                      Navigator.of(context)
+                          .push(MaterialPageRoute(builder: (_) => ContestS()));
+                    },
+                    child: placeholder),
                 buildTabItem(
                     index: 2,
                     icon: const Icon(
-                      Icons.chat,
+                      CupertinoIcons.chat_bubble,
                       size: 30,
                     )),
                 buildTabItem(
                     index: 3,
                     icon: const Icon(
-                      Icons.person_outline_outlined,
+                      CupertinoIcons.person_fill,
                       size: 30,
                     )),
               ],

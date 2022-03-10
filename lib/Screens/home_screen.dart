@@ -3,7 +3,9 @@ import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/src/iterable_extensions.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Controllers/user_class.dart';
 import 'package:fotoclash/Screens/Chats/chat_home.dart';
 import 'package:fotoclash/Screens/leader_board.dart';
@@ -12,6 +14,7 @@ import 'package:fotoclash/Screens/contest_4v4.dart';
 import 'package:fotoclash/Screens/vote-screen.dart';
 import 'package:fotoclash/Widgets/bottom_bar.dart';
 import 'package:fotoclash/main.dart';
+import 'package:get/get.dart';
 
 import 'drawer_details.dart';
 
@@ -27,7 +30,56 @@ class _HomeScreenState extends State<HomeScreen> {
   void initState() {
     fetch_data();
     declare_result();
+    set_fcm();
+    notify();
     super.initState();
+  }
+
+  void notify() {
+    //when app is terminated
+    FirebaseMessaging.instance.getInitialMessage().then((message) async {
+      if (message!.notification != null &&
+          message.notification!.title == "Order Updated") {
+        if (message.data["Type"] == "Question") {
+        } else if (message.data["Type"] == "Report") {}
+      }
+
+      if (message.notification != null &&
+          message.notification!.title == "Consult Astrologer") {}
+
+      if (message.notification != null &&
+          message.notification!.title == "Daily Horoscope") {}
+    });
+
+    //foreground message
+    FirebaseMessaging.onMessage.listen((message) async {
+      if (message.notification != null) {
+        print(message.notification!.body);
+        Fluttertoast.showToast(msg: message.notification!.body as String);
+      }
+    });
+
+    //background taps
+    FirebaseMessaging.onMessageOpenedApp.listen((message) async {
+      if (message.notification!.title == "Order Updated") {
+        if (message.data["Type"] == "Question") {
+        } else if (message.data["Type"] == "Report") {}
+      }
+
+      if (message.notification != null &&
+          message.notification!.title == "Consult Astrologer") {}
+
+      if (message.notification != null &&
+          message.notification!.title == "Daily Horoscope") {}
+    });
+  }
+
+  Future<void> set_fcm() async {
+    String? token = await FirebaseMessaging.instance.getToken();
+    FirebaseFirestore.instance
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set({"Token": token}, SetOptions(merge: true));
   }
 
   Future<void> fetch_data() async {
@@ -61,6 +113,24 @@ class _HomeScreenState extends State<HomeScreen> {
           if (!i.data()["Declared"]) {
             //if there is a tie
             if (is_tie(i.data()["Likes"])) {
+              for (var j in i.data()["Participations"]) {
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(j)
+                    .collection("Participations")
+                    .doc(i.data()["ContestID"])
+                    .set({"isActive": false, "Winner": true},
+                        SetOptions(merge: true));
+                FirebaseFirestore.instance.collection("Users").doc(j).set({
+                  "Wallet": {
+                    "Balance": FieldValue.increment(i.data()['EntryFee'])
+                  }
+                }, SetOptions(merge: true));
+              }
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(i.data()["ContestID"])
+                  .set({"Declared": true}, SetOptions(merge: true));
             }
             // if there is no tie
             else {
@@ -110,6 +180,24 @@ class _HomeScreenState extends State<HomeScreen> {
         } catch (e) {
           //if there is a tie
           if (is_tie(i.data()["Likes"])) {
+            for (var j in i.data()["Participations"]) {
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(j)
+                  .collection("Participations")
+                  .doc(i.data()["ContestID"])
+                  .set({"isActive": false, "Winner": true},
+                      SetOptions(merge: true));
+              FirebaseFirestore.instance.collection("Users").doc(j).set({
+                "Wallet": {
+                  "Balance": FieldValue.increment(i.data()['EntryFee'])
+                }
+              }, SetOptions(merge: true));
+            }
+            FirebaseFirestore.instance
+                .collection("Contests")
+                .doc(i.data()["ContestID"])
+                .set({"Declared": true}, SetOptions(merge: true));
           }
           //if no tie
           else {

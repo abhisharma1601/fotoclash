@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Screens/contest_2v2.dart';
 import 'package:fotoclash/Screens/contest_4v4.dart';
+import 'package:fotoclash/main.dart';
 
 class SearchContest extends StatefulWidget {
   const SearchContest({Key? key}) : super(key: key);
@@ -30,6 +31,7 @@ class _SearchContestState extends State<SearchContest> {
       _ContestBlock(
           images: (key.data() as dynamic)["images"],
           likes: (key.data() as dynamic)["Likes"],
+          voted: (key.data() as dynamic)["Voters"].contains(app_user.uid),
           contestID: (key.data() as dynamic)["ContestID"],
           winningPrize: (key.data() as dynamic)["winnerPrize"],
           EntryFee: (key.data() as dynamic)["EntryFee"],
@@ -120,9 +122,11 @@ class _ContestBlock extends StatelessWidget {
   bool isVisible;
   List images, likes;
   String? CreatorID;
+  bool voted;
   _ContestBlock(
       {Key? key,
       required this.contestID,
+      required this.voted,
       required this.winningPrize,
       required this.EntryFee,
       required this.players,
@@ -191,6 +195,8 @@ class _ContestBlock extends StatelessWidget {
                           if (players != participants) {
                             Fluttertoast.showToast(
                                 msg: "Can't vote! Contest is not full!");
+                          } else if (voted) {
+                            Fluttertoast.showToast(msg: "You already voted!");
                           } else {
                             if (participants == 2) {
                               Navigator.push(

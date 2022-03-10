@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/single_image.dart';
 import 'package:like_button/like_button.dart';
@@ -141,6 +142,36 @@ class _Comp4v4State extends State<_Comp4v4> {
                   .collection("Contests")
                   .doc(widget.contest_id)
                   .set({"Likes": widget.likes}, SetOptions(merge: true));
+              if (like2 == Colors.red) {
+                setState(() {
+                  like2 = Colors.white;
+                  widget.likes[1] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
+              if (like3 == Colors.red) {
+                setState(() {
+                  like3 = Colors.white;
+                  widget.likes[2] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
+              if (like4 == Colors.red) {
+                setState(() {
+                  like4 = Colors.white;
+                  widget.likes[3] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
             } else if (like1 == Colors.red) {
               setState(() {
                 like1 = Colors.white;
@@ -155,7 +186,7 @@ class _Comp4v4State extends State<_Comp4v4> {
           child: Column(
             children: [
               Icon(
-                Icons.how_to_vote,
+                CupertinoIcons.heart_fill,
                 color: like1,
                 size: 35,
               ),
@@ -184,6 +215,36 @@ class _Comp4v4State extends State<_Comp4v4> {
                   .collection("Contests")
                   .doc(widget.contest_id)
                   .set({"Likes": widget.likes}, SetOptions(merge: true));
+              if (like1 == Colors.red) {
+                setState(() {
+                  like1 = Colors.white;
+                  widget.likes[0] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
+              if (like3 == Colors.red) {
+                setState(() {
+                  like3 = Colors.white;
+                  widget.likes[2] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
+              if (like4 == Colors.red) {
+                setState(() {
+                  like4 = Colors.white;
+                  widget.likes[3] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
             } else if (like2 == Colors.red) {
               setState(() {
                 like2 = Colors.white;
@@ -198,7 +259,7 @@ class _Comp4v4State extends State<_Comp4v4> {
           child: Column(
             children: [
               Icon(
-                Icons.how_to_vote,
+                CupertinoIcons.heart_fill,
                 color: like2,
                 size: 35,
               ),
@@ -221,12 +282,43 @@ class _Comp4v4State extends State<_Comp4v4> {
             if (like3 == Colors.white) {
               setState(() {
                 like3 = Colors.red;
+                widget.likes[2] += 1;
+                FirebaseFirestore.instance
+                    .collection("Contests")
+                    .doc(widget.contest_id)
+                    .set({"Likes": widget.likes}, SetOptions(merge: true));
               });
-              widget.likes[2] += 1;
-              FirebaseFirestore.instance
-                  .collection("Contests")
-                  .doc(widget.contest_id)
-                  .set({"Likes": widget.likes}, SetOptions(merge: true));
+
+              if (like1 == Colors.red) {
+                setState(() {
+                  like1 = Colors.white;
+                  widget.likes[0] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
+              if (like2 == Colors.red) {
+                setState(() {
+                  like3 = Colors.white;
+                  widget.likes[2] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
+              if (like4 == Colors.red) {
+                setState(() {
+                  like4 = Colors.white;
+                  widget.likes[3] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
             } else if (like3 == Colors.red) {
               setState(() {
                 like3 = Colors.white;
@@ -241,7 +333,7 @@ class _Comp4v4State extends State<_Comp4v4> {
           child: Column(
             children: [
               Icon(
-                Icons.how_to_vote,
+                CupertinoIcons.heart_fill,
                 color: like3,
                 size: 35,
               ),
@@ -270,6 +362,37 @@ class _Comp4v4State extends State<_Comp4v4> {
                   .collection("Contests")
                   .doc(widget.contest_id)
                   .set({"Likes": widget.likes}, SetOptions(merge: true));
+              if (like1 == Colors.red) {
+                setState(() {
+                  like1 = Colors.white;
+                  widget.likes[0] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
+              if (like2 == Colors.red) {
+                setState(() {
+                  like2 = Colors.white;
+                  widget.likes[1] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
+              if (like3 == Colors.red) {
+                setState(() {
+                  like3 = Colors.white;
+
+                  widget.likes[2] -= 1;
+                  FirebaseFirestore.instance
+                      .collection("Contests")
+                      .doc(widget.contest_id)
+                      .set({"Likes": widget.likes}, SetOptions(merge: true));
+                });
+              }
             } else if (like4 == Colors.red) {
               setState(() {
                 like4 = Colors.white;
@@ -284,7 +407,7 @@ class _Comp4v4State extends State<_Comp4v4> {
           child: Column(
             children: [
               Icon(
-                Icons.how_to_vote,
+                CupertinoIcons.heart_fill,
                 color: like4,
                 size: 35,
               ),
@@ -301,10 +424,6 @@ class _Comp4v4State extends State<_Comp4v4> {
         left: MediaQuery.of(context).size.width * 260 / 375,
         top: MediaQuery.of(context).size.height * 410 / 812,
       ),
-      // likebuttom(context, isLiked, 60, 350, likes[0], contest_id, 0, likes),
-      // likebuttom(context, isLiked, 250, 350, likes[1], contest_id, 1, likes),
-      // likebuttom(context, isLiked, 60, 400, likes[2], contest_id, 2, likes),
-      // likebuttom(context, isLiked, 250, 400, likes[3], contest_id, 3, likes),
       Positioned(
           left: MediaQuery.of(context).size.width * 330 / 375,
           top: MediaQuery.of(context).size.height * 700 / 812,
@@ -439,14 +558,6 @@ class _Comp4v4State extends State<_Comp4v4> {
               size: 28,
             ),
           )),
-      Positioned(
-          left: MediaQuery.of(context).size.width * 30 / 375,
-          top: MediaQuery.of(context).size.height * 700 / 812,
-          child: const Icon(
-            Icons.comment,
-            color: Colors.red,
-            size: 28,
-          ))
     ]);
   }
 }
