@@ -49,16 +49,24 @@ class _SignUpState extends State<SignUp> {
       );
   void signUp(String email, String password) async {
     if (_formKey.currentState!.validate()) {
-      await _auth
+          QuerySnapshot existingUsers = await FirebaseFirestore.instance
+        .collection("AppData")
+        .where("users", arrayContains: username.text)
+        .get();
+        print(existingUsers.docs.isEmpty);
+        existingUsers.docs.isEmpty
+        ?
+       await _auth
           .createUserWithEmailAndPassword(email: email, password: password)
           .then((value) => {
                 postDataToFirestore(),
               })
           .catchError((e) {
         Fluttertoast.showToast(msg: e!.message);
-      });
+      }):Fluttertoast.showToast(msg: "UserName Already exists");
     }
   }
+
   postDataToFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     User? user = _auth.currentUser;
@@ -66,28 +74,32 @@ class _SignUpState extends State<SignUp> {
     UserModel.uid = user!.uid;
     UserModel.email = user.email;
     UserModel.name = username.text;
+ await firebaseFirestore.collection("Users").doc(user.uid).set({
+            'uid': user.uid,
+            'email': user.email,
+            'userName': username.text,
+            'fullname': fullname.text,
+            'phoneNo': mobileC.text,
+            'State': value,
+            "Data": [0, 0, 0],
+            "Wallet": {"Balance": 0, "Added": 0, "Withdrawn": 0, "Pending": 0},
+            "WinningData": {"Won": 0, "Lost": 0, "Contest Tie": 0},
+          }, SetOptions(merge: true)).then((value) =>     Navigator.of(context)
+            .pushReplacement(
+                MaterialPageRoute(builder: (context) => SetProfile())));
 
-    await firebaseFirestore.collection("Users").doc(user.uid).set({
-      'uid': user.uid,
-      'email': user.email,
-      'userName': username.text,
-      'fullname': fullname.text,
-      'phoneNo': mobileC.text,
-      'State': value,
-      "Data": [0, 0, 0],
-      "Wallet": {"Balance": 0, "Added": 0, "Withdrawn": 0, "Pending": 0},
-      "WinningData":{"Won":0,"Lost":0,"Contest Tie":0},
+    FirebaseFirestore.instance.collection("AppData").doc("existingUsers").set({
+      "users": FieldValue.arrayUnion([username.text])
     }, SetOptions(merge: true));
 
-    Fluttertoast.showToast(msg: "Account created successfully !!");
-    Navigator.of(context).pushReplacement(
-         MaterialPageRoute(builder: (context) => SetProfile()));
   }
+
   @override
   void dispose() {
     fullname.dispose();
     super.dispose();
   }
+
   @override
   Widget build(BuildContext context) {
     final usernameField = TextFormField(

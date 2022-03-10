@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Models/userModel.dart';
 import 'package:fotoclash/Screens/home_screen.dart';
+import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:fotoclash/Widgets/image_picker.dart';
 
 class SetProfile extends StatefulWidget {
@@ -50,10 +51,10 @@ class _SetProfileState extends State<SetProfile> {
         // 'DOB': _dateTime
       });
     });
-    Fluttertoast.showToast(msg: "Data updated sucessfully!!");
+    Fluttertoast.showToast(msg: "Data updated sucessfully.Please Login");
     Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => HomeScreen()),
+        MaterialPageRoute(builder: (context) => Login()),
         (route) => false);
   }
 
