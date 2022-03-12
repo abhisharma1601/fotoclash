@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/Chats/chat_home.dart';
 import 'package:fotoclash/Screens/Join-createContest/screen1.dart';
-import 'package:fotoclash/Screens/profile.dart';
+import 'package:fotoclash/Screens/Profile/profile.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int index;

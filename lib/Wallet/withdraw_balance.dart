@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 import '../main.dart';
 
@@ -12,19 +13,25 @@ class WithdrawBalance extends StatefulWidget {
   State<WithdrawBalance> createState() => _WithdrawBalanceState();
 }
 
-class _WithdrawBalanceState extends State<WithdrawBalance> {
-  late String accnumber;
-  late String accholdername;
-  late String ifsc;
-  late String contact;
-  late String amount;
+late String _accnumber;
+late String _accholdername;
+late String _ifsc;
+late String _contact;
+late String _amount;
+late String _upi;
+Widget payment_gatway = Container();
+List<String> gates = ["Bank Transfer", "UPI Transfer"];
+String gate = "Select Payout Method";
 
+class _WithdrawBalanceState extends State<WithdrawBalance> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
+    List<Widget> payment_methods = [BankTranfer(size: size), UPI(size: size)];
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      backgroundColor: Colors.transparent,
       body: Container(
+        height: MediaQuery.of(context).size.height,
         decoration: const BoxDecoration(
             image: DecorationImage(
                 image: AssetImage("background.png"), fit: BoxFit.cover)),
@@ -33,10 +40,11 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
           child: Column(
             children: [
               const SizedBox(
-                height: 40,
+                height: 45,
               ),
               Row(
                 children: [
+                  SizedBox(width: 15),
                   InkWell(
                     onTap: () {
                       Navigator.pop(context);
@@ -60,7 +68,7 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                   ),
                 ],
               ),
-              const SizedBox(height: 23),
+              const SizedBox(height: 44),
               Container(
                 height: 170,
                 width: 230,
@@ -99,8 +107,10 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                 padding: EdgeInsets.symmetric(horizontal: 18),
                 child: TextField(
                     onChanged: (value) {
-                      amount = value;
+                      _amount = value;
                     },
+                    keyboardType: TextInputType.number,
+                    style: TextStyle(color: Colors.white),
                     decoration: const InputDecoration(
                         enabledBorder: OutlineInputBorder(
                             borderRadius:
@@ -114,8 +124,26 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                         hintStyle: TextStyle(color: Colors.white))),
               ),
               SizedBox(height: 10),
+              // Container(
+              //   padding: EdgeInsets.symmetric(horizontal: 18),
+              //   height: size.height * 55 / 812,
+              //   width: size.width * 339 / 375,
+              //   decoration: BoxDecoration(
+              //       color: Color(0xFF4E5460),
+              //       borderRadius: BorderRadius.circular(10)),
+              //   child: Row(
+              //     children: [
+              //       Text(
+              //         "Select Payment method",
+              //         style: TextStyle(fontSize: 16, color: Colors.white),
+              //       ),
+              //       Spacer(),
+              //       Icon(Icons.arrow_drop_down_outlined)
+              //     ],
+              //   ),
+              // ),
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 18),
+                padding: EdgeInsets.only(left: 10),
                 height: size.height * 55 / 812,
                 width: size.width * 339 / 375,
                 decoration: BoxDecoration(
@@ -124,117 +152,65 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                 child: Row(
                   children: [
                     Text(
-                      "Select Payment method",
-                      style: TextStyle(fontSize: 16, color: Colors.white),
+                      gate,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
                     ),
                     Spacer(),
-                    Icon(Icons.arrow_drop_down_outlined)
+                    DropdownButtonHideUnderline(
+                      child: Stack(
+                        children: [
+                          DropdownButton(
+                              value: 0,
+                              iconEnabledColor: Colors.white,
+                              style: TextStyle(color: Colors.transparent),
+                              dropdownColor: Color(0xff020C12),
+                              items: [
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "Bank Transfer",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  value: 0,
+                                ),
+                                DropdownMenuItem(
+                                  child: Text(
+                                    "UPI Transfer",
+                                    style: TextStyle(color: Colors.white),
+                                  ),
+                                  value: 1,
+                                ),
+                              ],
+                              onChanged: (val) {
+                                setState(() {
+                                  gate = gates[int.parse(val.toString())];
+                                  payment_gatway = payment_methods[
+                                      int.parse(val.toString())];
+                                });
+                              }),
+                          Positioned(
+                            top: 8,
+                            child: Container(
+                              height: 30,
+                              width: 88,
+                              color: Color(0xFF4E5460),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      width: 10,
+                    )
                   ],
                 ),
               ),
               SizedBox(
                 height: size.height * 23 / 812,
               ),
+              payment_gatway,
+              SizedBox(height: size.height * 75 / 812),
               Container(
-                height: size.height * 46 / 812,
-                width: size.width * 200 / 375,
-                padding: EdgeInsets.symmetric(horizontal: 18),
-                child: TextField(
-                    onChanged: (value) {
-                      accholdername = value;
-                    },
-                    textAlignVertical: TextAlignVertical.center,
-                    style: TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(top: 8, left: 8),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        fillColor: Color(0xFF222633),
-                        filled: true,
-                        hintText: "Account holder name",
-                        hintStyle: TextStyle(color: Color(0xFF6B7076)))),
-              ),
-              SizedBox(
-                height: size.height * 17 / 812,
-              ),
-              Container(
-                height: size.height * 46 / 812,
-                width: size.width * 200 / 375,
-                padding: EdgeInsets.symmetric(horizontal: 18),
-                child: TextField(
-                    onChanged: (value) {
-                      accnumber = value;
-                    },
-                    textAlignVertical: TextAlignVertical.center,
-                    style: TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(top: 8, left: 8),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        fillColor: Color(0xFF222633),
-                        filled: true,
-                        hintText: "Bank Acc No",
-                        hintStyle: TextStyle(color: Color(0xFF6B7076)))),
-              ),
-              SizedBox(height: 17),
-              Container(
-                height: size.height * 46 / 812,
-                width: size.width * 200 / 375,
-                padding: EdgeInsets.symmetric(horizontal: 18),
-                child: TextField(
-                    onChanged: (value) {
-                      ifsc = value;
-                    },
-                    textAlignVertical: TextAlignVertical.center,
-                    style: TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(top: 8, left: 8),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        fillColor: Color(0xFF222633),
-                        filled: true,
-                        hintText: "IFSC code",
-                        hintStyle: TextStyle(color: Color(0xFF6B7076)))),
-              ),
-              SizedBox(height: 17),
-              Container(
-                height: size.height * 46 / 812,
-                width: size.width * 200 / 375,
-                padding: EdgeInsets.symmetric(horizontal: 18),
-                child: TextField(
-                    onChanged: (value) {
-                      contact = value;
-                    },
-                    textAlignVertical: TextAlignVertical.center,
-                    style: TextStyle(color: Colors.white),
-                    decoration: const InputDecoration(
-                        contentPadding: EdgeInsets.only(top: 8, left: 8),
-                        enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.all(Radius.circular(10))),
-                        fillColor: Color(0xFF222633),
-                        filled: true,
-                        hintText: "Contact no",
-                        hintStyle: TextStyle(color: Color(0xFF6B7076)))),
-              ),
-              SizedBox(height: size.height * 55 / 812),
-              Container(
-                  width: MediaQuery.of(context).size.width * 339 / 360,
+                  width: MediaQuery.of(context).size.width * 249 / 360,
                   decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(16),
                       gradient: const LinearGradient(
@@ -245,7 +221,7 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                           alignment: Alignment.center,
                           padding: MaterialStateProperty.all(
                               const EdgeInsets.only(
-                                  right: 75, left: 75, top: 15, bottom: 15)),
+                                  right: 5, left: 5, top: 15, bottom: 15)),
                           backgroundColor:
                               MaterialStateProperty.all(Colors.transparent),
                           shape: MaterialStateProperty.all(
@@ -253,15 +229,16 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                                 borderRadius: BorderRadius.circular(16)),
                           )),
                       onPressed: () {
-                        if (int.parse(amount) <= widget.balance) {
+                        if (int.parse(_amount) <= widget.balance) {
                           FirebaseFirestore.instance
                               .collection("Users")
                               .doc(app_user.uid)
                               .set({
                             "Wallet": {
-                              "Balance": widget.balance - int.parse(amount),
-                              "Withdrawn": widget.withdrawn + int.parse(amount),
-                              "Pending": widget.pending + int.parse(amount),
+                              "Balance": widget.balance - int.parse(_amount),
+                              "Withdrawn":
+                                  widget.withdrawn + int.parse(_amount),
+                              "Pending": widget.pending + int.parse(_amount),
                             }
                           }, SetOptions(merge: true));
                           FirebaseFirestore.instance
@@ -275,8 +252,15 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                                 "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
                             "Time":
                                 "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
-                            "Amount": int.parse(amount)
+                            "Amount": int.parse(_amount)
                           });
+                          Navigator.pop(context);
+                          Navigator.pop(context);
+                          Fluttertoast.showToast(
+                              msg:
+                                  "Withdrawl initiated with amount \u{20B9}$_amount!");
+                        } else {
+                          Fluttertoast.showToast(msg: "Low Balance!");
                         }
                       },
                       child: const Text(
@@ -290,6 +274,148 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
           ),
         ),
       ),
+    );
+  }
+}
+
+class BankTranfer extends StatelessWidget {
+  const BankTranfer({
+    Key? key,
+    required this.size,
+  }) : super(key: key);
+
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: size.height * 46 / 812,
+          width: size.width * 375 / 375,
+          padding: EdgeInsets.symmetric(horizontal: 18),
+          child: TextField(
+              onChanged: (value) {
+                _accholdername = value;
+              },
+              textAlignVertical: TextAlignVertical.center,
+              style: TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 8, left: 8),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  fillColor: Color(0xFF222633),
+                  filled: true,
+                  hintText: "Account holder name",
+                  hintStyle: TextStyle(color: Color(0xFF6B7076)))),
+        ),
+        SizedBox(
+          height: size.height * 17 / 812,
+        ),
+        Container(
+          height: size.height * 46 / 812,
+          width: size.width * 375 / 375,
+          padding: EdgeInsets.symmetric(horizontal: 18),
+          child: TextField(
+              onChanged: (value) {
+                _accnumber = value;
+              },
+              textAlignVertical: TextAlignVertical.center,
+              style: TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 8, left: 8),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  fillColor: Color(0xFF222633),
+                  filled: true,
+                  hintText: "Bank Acc No",
+                  hintStyle: TextStyle(color: Color(0xFF6B7076)))),
+        ),
+        SizedBox(height: 17),
+        Container(
+          height: size.height * 46 / 812,
+          width: size.width * 375 / 375,
+          padding: EdgeInsets.symmetric(horizontal: 18),
+          child: TextField(
+              onChanged: (value) {
+                _ifsc = value;
+              },
+              textAlignVertical: TextAlignVertical.center,
+              style: TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 8, left: 8),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  fillColor: Color(0xFF222633),
+                  filled: true,
+                  hintText: "IFSC code",
+                  hintStyle: TextStyle(color: Color(0xFF6B7076)))),
+        ),
+      ],
+    );
+  }
+}
+
+class UPI extends StatelessWidget {
+  UPI({Key? key, required this.size}) : super(key: key);
+  final Size size;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        Container(
+          height: size.height * 46 / 812,
+          width: size.width * 375 / 375,
+          padding: EdgeInsets.symmetric(horizontal: 18),
+          child: TextField(
+              onChanged: (value) {
+                _accholdername = value;
+              },
+              textAlignVertical: TextAlignVertical.center,
+              style: TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 8, left: 8),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  fillColor: Color(0xFF222633),
+                  filled: true,
+                  hintText: "Account holder name",
+                  hintStyle: TextStyle(color: Color(0xFF6B7076)))),
+        ),
+        SizedBox(
+          height: size.height * 17 / 812,
+        ),
+        Container(
+          height: size.height * 46 / 812,
+          width: size.width * 375 / 375,
+          padding: EdgeInsets.symmetric(horizontal: 18),
+          child: TextField(
+              onChanged: (value) {
+                _upi = value;
+              },
+              textAlignVertical: TextAlignVertical.center,
+              style: TextStyle(color: Colors.white),
+              decoration: const InputDecoration(
+                  contentPadding: EdgeInsets.only(top: 8, left: 8),
+                  enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10))),
+                  fillColor: Color(0xFF222633),
+                  filled: true,
+                  hintText: "UPI ID",
+                  hintStyle: TextStyle(color: Color(0xFF6B7076)))),
+        ),
+      ],
     );
   }
 }

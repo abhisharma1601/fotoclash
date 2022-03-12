@@ -148,24 +148,3 @@ class _VoteScreenState extends State<VoteScreen> {
     );
   }
 }
-
-// Swiper(
-//               loop: false,
-//               onIndexChanged: (val) {
-//                 print(val);
-//                 _piclist = _piclist.sublist(val - 1, _piclist.length);
-//                 setState(() {});
-//                 print(_piclist);
-//               },
-//               scrollDirection: Axis.vertical,
-//               itemBuilder: (BuildContext context, int index) {
-//                 return WillPopScope(
-//                     onWillPop: () async => true, child: _piclist[index]);
-//               },
-//               itemCount: _piclist.length,
-//               pagination: SwiperPagination(builder: SwiperPagination.rect),
-//               control: SwiperControl(
-//                 color: Colors.transparent,
-//                 size: 0,
-//               ),
-//             )

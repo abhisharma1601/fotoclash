@@ -4,7 +4,7 @@ import 'package:fotoclash/Models/databse.dart';
 import 'package:fotoclash/Screens/Chats/new_message.dart';
 import 'package:fotoclash/main.dart';
 import 'package:uuid/uuid.dart';
-import '../profile.dart';
+import '../Profile/profile.dart';
 
 class Messages extends StatefulWidget {
   String chatRoomId;

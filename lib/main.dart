@@ -2,7 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/home_screen.dart';
-import 'package:fotoclash/Screens/set_profile.dart';
+import 'package:fotoclash/Screens/Profile/set_profile.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -16,8 +16,8 @@ Future<void> main() async {
   runApp(MyApp());
 }
 
-var store = FirebaseFirestore.instance;
-var auth_check = FirebaseAuth.instance;
+FirebaseFirestore store = FirebaseFirestore.instance;
+FirebaseAuth auth_check = FirebaseAuth.instance;
 
 user_class app_user = user_class(
     name: "",

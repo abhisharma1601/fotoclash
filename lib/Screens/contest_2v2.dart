@@ -143,24 +143,28 @@ class _Contest2v2State extends State<Contest2v2> {
                     .set({"Likes": widget.likes}, SetOptions(merge: true));
               }
             },
-            child: Column(
-              children: [
-                Icon(
-                  CupertinoIcons.heart_fill,
-                  color: like1,
-                  size: 35,
-                ),
-                Text(
-                  widget.likes[0].toString(),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                )
-              ],
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.5,
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+              child: Column(
+                children: [
+                  Icon(
+                    CupertinoIcons.heart_fill,
+                    color: like1,
+                    size: 35,
+                  ),
+                  Text(
+                    widget.likes[0].toString(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  )
+                ],
+              ),
             ),
           ),
-          left: MediaQuery.of(context).size.width * 70 / 375,
+          // left: MediaQuery.of(context).size.width * 70 / 375,
           top: MediaQuery.of(context).size.height * 545 / 812,
         ),
         Positioned(
@@ -202,24 +206,28 @@ class _Contest2v2State extends State<Contest2v2> {
                     .set({"Likes": widget.likes}, SetOptions(merge: true));
               }
             },
-            child: Column(
-              children: [
-                Icon(
-                  CupertinoIcons.heart_fill,
-                  color: like2,
-                  size: 35,
-                ),
-                Text(
-                  widget.likes[1].toString(),
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 18),
-                )
-              ],
+            child: Container(
+              width: MediaQuery.of(context).size.width * 0.5,
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+              child: Column(
+                children: [
+                  Icon(
+                    CupertinoIcons.heart_fill,
+                    color: like2,
+                    size: 35,
+                  ),
+                  Text(
+                    widget.likes[1].toString(),
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18),
+                  )
+                ],
+              ),
             ),
           ),
-          left: MediaQuery.of(context).size.width * 260 / 375,
+          left: MediaQuery.of(context).size.width * 186 / 375,
           top: MediaQuery.of(context).size.height * 545 / 812,
         ),
         // likebuttom1(context, isLiked, 60, 560, widget.likes[0],

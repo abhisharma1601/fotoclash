@@ -10,7 +10,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Controllers/user_class.dart';
 import 'package:fotoclash/Screens/Chats/chat_home.dart';
 import 'package:fotoclash/Screens/leader_board.dart';
-import 'package:fotoclash/Screens/profile.dart';
+import 'package:fotoclash/Screens/Profile/profile.dart';
 import 'package:fotoclash/Screens/contest_4v4.dart';
 import 'package:fotoclash/Screens/vote-screen.dart';
 import 'package:fotoclash/Widgets/bottom_bar.dart';
@@ -137,6 +137,9 @@ class _HomeScreenState extends State<HomeScreen> {
             //if there is a tie
             if (is_tie(i.data()["Likes"])) {
               for (var j in i.data()["Participations"]) {
+                store.collection("Users").doc(j).set({
+                  "WinningData": {"Contest Tie": FieldValue.increment(1)}
+                }, SetOptions(merge: true));
                 FirebaseFirestore.instance
                     .collection("Users")
                     .doc(j)
@@ -175,7 +178,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   .doc(i.data()["ContestID"])
                   .set({"Declared": true}, SetOptions(merge: true));
               String winner_id = i.data()["Participations"][index];
-
+              store.collection("Users").doc(winner_id).set({
+                "WinningData": {"Won": FieldValue.increment(1)}
+              }, SetOptions(merge: true));
               var key = await FirebaseFirestore.instance
                   .collection("Users")
                   .doc(winner_id)
@@ -231,6 +236,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 String token = (token_key.data() as dynamic)["Token"];
 
                 if (j != winner_id) {
+                  store.collection("Users").doc(j).set({
+                    "WinningData": {"Lost": FieldValue.increment(1)}
+                  }, SetOptions(merge: true));
                   send_noti(
                       token,
                       int.parse(
@@ -254,6 +262,9 @@ class _HomeScreenState extends State<HomeScreen> {
           if (is_tie(i.data()["Likes"])) {
             print(i.data()["ContestID"]);
             for (var j in i.data()["Participations"]) {
+              store.collection("Users").doc(j).set({
+                "WinningData": {"Contest Tie": FieldValue.increment(1)}
+              }, SetOptions(merge: true));
               FirebaseFirestore.instance
                   .collection("Users")
                   .doc(j)
@@ -293,6 +304,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 .doc(i.data()["ContestID"])
                 .set({"Declared": true}, SetOptions(merge: true));
             String winner_id = i.data()["Participations"][index];
+            store.collection("Users").doc(winner_id).set({
+              "WinningData": {"Won": FieldValue.increment(1)}
+            }, SetOptions(merge: true));
             var key = await FirebaseFirestore.instance
                 .collection("Users")
                 .doc(winner_id)
@@ -345,6 +359,9 @@ class _HomeScreenState extends State<HomeScreen> {
               String token = (token_key.data() as dynamic)["Token"];
 
               if (j != winner_id) {
+                store.collection("Users").doc(j).set({
+                  "WinningData": {"Lost": FieldValue.increment(1)}
+                }, SetOptions(merge: true));
                 send_noti(
                     token,
                     int.parse(

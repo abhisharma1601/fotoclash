@@ -1,7 +1,10 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Pages/instructions.dart';
+import 'package:fotoclash/Screens/Profile/edit_profile.dart';
 import 'package:fotoclash/Screens/leader_board.dart';
+import 'package:fotoclash/Screens/Profile/set_profile.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:fotoclash/Wallet/wallet.dart';
 import 'package:fotoclash/main.dart';
@@ -74,6 +77,12 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
                 ico: Icons.integration_instructions_outlined,
                 body: "Instruction"),
           ),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => EditProfile()));
+              },
+              child: _RowBox(ico: Icons.edit_rounded, body: "Edit Profile")),
           GestureDetector(
               onTap: () {
                 Share.share(

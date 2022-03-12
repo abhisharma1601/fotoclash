@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Controllers/auth_controller.dart';
 import 'package:fotoclash/Models/userModel.dart';
-import 'package:fotoclash/Screens/set_profile.dart';
+
 import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:get/get.dart';
+
+import 'Profile/set_profile.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({Key? key}) : super(key: key);

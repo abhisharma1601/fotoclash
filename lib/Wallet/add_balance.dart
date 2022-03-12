@@ -147,6 +147,7 @@ class _AddBalanceState extends State<AddBalance> {
                   onChanged: (value) {},
                   cursorColor: Colors.white,
                   style: TextStyle(color: Colors.white),
+                  keyboardType: TextInputType.number,
                   decoration: const InputDecoration(
                       enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.all(Radius.circular(10))),

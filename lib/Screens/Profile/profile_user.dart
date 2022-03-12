@@ -164,7 +164,7 @@ class _UserProfileState extends State<UserProfile> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    _winDetails(head: "Won", body: "60", color: Colors.green),
+                    _winDetails(head: "Won", body: "10", color: Colors.green),
                     _winDetails(head: "Lost", body: "60", color: Colors.red),
                     _winDetails(
                         head: "Contest Tie", body: "60", color: Colors.yellow)

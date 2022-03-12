@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:fotoclash/Screens/profile_user.dart';
+
+import 'Profile/profile_user.dart';
 
 class SingleImage extends StatefulWidget {
   String? image;
