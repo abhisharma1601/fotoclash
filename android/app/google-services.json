@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "823688478103",
-    "project_id": "fotoclash-b6968",
-    "storage_bucket": "fotoclash-b6968.appspot.com"
+    "project_number": "443503833702",
+    "project_id": "fotoclashnew-e4b5a",
+    "storage_bucket": "fotoclashnew-e4b5a.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:823688478103:android:a7a6559b2fdd8100e0d8d2",
+        "mobilesdk_app_id": "1:443503833702:android:74525f25c7f5376668f3a7",
         "android_client_info": {
-          "package_name": "com.example.fotoclash"
+          "package_name": "com.fotoclash.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "823688478103-dgle5pbpbslckkqlenj00g1puh0bomdl.apps.googleusercontent.com",
+          "client_id": "443503833702-0o6cn8mvkmgbmam4i2bn365gkrenm6q1.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyByBdQK_qxRyjkWCMZdGom5eWBC5ca5QY0"
+          "current_key": "AIzaSyA4LxghTNRRj4NPrAsVDbEFbuOVj9SMO0Q"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "823688478103-dgle5pbpbslckkqlenj00g1puh0bomdl.apps.googleusercontent.com",
+              "client_id": "443503833702-0o6cn8mvkmgbmam4i2bn365gkrenm6q1.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

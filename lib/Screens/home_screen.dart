@@ -38,7 +38,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String _server_token =
-      "AAAAv8eovZc:APA91bHeMkNdBqyfQapty_3DS3fgVLVivKEA0yXJWl8qDp1vCoZWVkUuNPUiUqLO2uumRvVaaUq5c9FTTUaOpogfL9S30JRqgaN5BEc7KgCaFrpvSVzzoqyn6exKjv97zRmePNwl8fTa";
+      "AAAAFGB1Eqk:APA91bFfvQWohi407TFIUNopmXOVE4gDpoM3Vedr6VJZJzc0KbC8YzRfU7noKXbvvNJybIdeLVBtjRzZ0motVhzOfU41gM9VhdMFVL-I848IgpnXfCrq8UgIsFRNyMcZzEEhWrFeSzca";
 
   Future<void> send_noti(String token, int Amount, String Status,
       String ContestID, String body_text) async {

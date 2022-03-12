@@ -38,11 +38,11 @@ class _SignUpState extends State<SignUp> {
   final _formKey = GlobalKey<FormState>();
   AuthMethods authMethods = Get.find();
   final _auth = FirebaseAuth.instance;
-  final TextEditingController username = TextEditingController();
-  final TextEditingController fullname = TextEditingController();
-  final TextEditingController emailC = TextEditingController();
-  final TextEditingController passC = TextEditingController();
-  final TextEditingController mobileC = TextEditingController();
+  String username = "";
+  String emailC = "";
+  String fullname = "";
+  String passC = "";
+  String mobileC = "";
   DropdownMenuItem<String> buildMenuItem(String item) => DropdownMenuItem(
         child: Text(item),
         value: item,
@@ -51,7 +51,7 @@ class _SignUpState extends State<SignUp> {
     if (_formKey.currentState!.validate()) {
       QuerySnapshot existingUsers = await FirebaseFirestore.instance
           .collection("AppData")
-          .where("users", arrayContains: username.text)
+          .where("users", arrayContains: username)
           .get();
       print(existingUsers.docs.isEmpty);
       existingUsers.docs.isEmpty
@@ -69,20 +69,23 @@ class _SignUpState extends State<SignUp> {
   }
 
   postDataToFirestore() async {
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SetProfile()));
+
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
     userModel UserModel = userModel();
     UserModel.uid = FirebaseAuth.instance.currentUser!.uid;
     UserModel.email = FirebaseAuth.instance.currentUser!.email;
-    UserModel.name = username.text;
+    UserModel.name = username;
     await firebaseFirestore
         .collection("Users")
         .doc(FirebaseAuth.instance.currentUser!.uid)
         .set({
       'uid': FirebaseAuth.instance.currentUser!.uid,
       'email': FirebaseAuth.instance.currentUser!.email,
-      'userName': username.text,
-      'fullname': fullname.text,
-      'phoneNo': mobileC.text,
+      'userName': username,
+      'fullname': fullname,
+      'phoneNo': mobileC,
       'State': value,
       "Data": [0, 0, 0],
       "Wallet": {"Balance": 0, "Added": 0, "Withdrawn": 0, "Pending": 0},
@@ -90,19 +93,24 @@ class _SignUpState extends State<SignUp> {
     }, SetOptions(merge: true));
 
     FirebaseFirestore.instance.collection("AppData").doc("existingUsers").set({
-      "users": FieldValue.arrayUnion([username.text])
+      "users": FieldValue.arrayUnion([username])
     }, SetOptions(merge: true));
-
-    Navigator.push(
-        context, MaterialPageRoute(builder: (context) => SetProfile()));
   }
+
+  // @override
+  // void dispose() {
+  //   username.dispose();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
     final usernameField = TextFormField(
         style: const TextStyle(color: Colors.white),
         autofocus: false,
-        controller: username,
+        onChanged: (val) {
+          username = val;
+        },
         keyboardType: TextInputType.name,
         validator: (value) {
           RegExp regex = new RegExp(r'^.{6,}$');
@@ -112,9 +120,6 @@ class _SignUpState extends State<SignUp> {
           if (!regex.hasMatch(value)) {
             return ("Enter Valid Name");
           }
-        },
-        onSaved: (value) {
-          username.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -133,7 +138,9 @@ class _SignUpState extends State<SignUp> {
     final fullnameField = TextFormField(
         style: const TextStyle(color: Colors.white),
         autofocus: false,
-        controller: fullname,
+        onChanged: (val) {
+          fullname = val;
+        },
         keyboardType: TextInputType.name,
         validator: (value) {
           RegExp regex = new RegExp(r'^.{6,}$');
@@ -143,9 +150,6 @@ class _SignUpState extends State<SignUp> {
           if (!regex.hasMatch(value)) {
             return ("Enter Valid Name");
           }
-        },
-        onSaved: (value) {
-          fullname.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -161,16 +165,15 @@ class _SignUpState extends State<SignUp> {
     final mobileField = TextFormField(
       style: const TextStyle(color: Colors.white),
       autofocus: false,
-      controller: mobileC,
+      onChanged: (val) {
+        mobileC = val;
+      },
       keyboardType: TextInputType.phone,
       validator: (value) {
         if (value!.isEmpty) {
           return ("Please Enter phone number");
         }
         return null;
-      },
-      onSaved: (value) {
-        mobileC.text = value!;
       },
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
@@ -216,7 +219,9 @@ class _SignUpState extends State<SignUp> {
     final mailField = TextFormField(
         style: const TextStyle(color: Colors.white),
         autofocus: false,
-        controller: emailC,
+        onChanged: (val) {
+          emailC = val;
+        },
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
           if (value!.isEmpty) {
@@ -227,9 +232,6 @@ class _SignUpState extends State<SignUp> {
             return ("Please Enter a valid email");
           }
           return null;
-        },
-        onSaved: (value) {
-          emailC.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -246,7 +248,9 @@ class _SignUpState extends State<SignUp> {
         style: const TextStyle(color: Colors.white),
         obscureText: _isObscure,
         autofocus: false,
-        controller: passC,
+        onChanged: (val) {
+          passC = val;
+        },
         keyboardType: TextInputType.emailAddress,
         validator: (value) {
           RegExp regex = new RegExp(r'^.{6,}$');
@@ -256,9 +260,6 @@ class _SignUpState extends State<SignUp> {
           if (!regex.hasMatch(value)) {
             return ("Enter Valid Name");
           }
-        },
-        onSaved: (value) {
-          passC.text = value!;
         },
         textInputAction: TextInputAction.next,
         decoration: InputDecoration(
@@ -291,180 +292,166 @@ class _SignUpState extends State<SignUp> {
         height: MediaQuery.of(context).size.height,
         child: Center(
           child: SingleChildScrollView(
-              child: Container(
-                  alignment: Alignment.bottomCenter,
-                  color: Colors.transparent,
-                  child: Padding(
-                      padding:
-                          const EdgeInsets.only(top: 50, left: 18, right: 18),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text(
-                              "Signup",
+            child: Container(
+              alignment: Alignment.bottomCenter,
+              color: Colors.transparent,
+              child: Padding(
+                padding: const EdgeInsets.only(top: 50, left: 18, right: 18),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      "Signup",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 10 / 865,
+                    ),
+                    const Text(
+                      "Please Sign up to continue",
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.w300,
+                      ),
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 20 / 865,
+                    ),
+                    Form(
+                        key: _formKey,
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height *
+                                    15 /
+                                    865,
+                              ),
+                              usernameField,
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height *
+                                    20 /
+                                    865,
+                              ),
+                              fullnameField,
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height *
+                                    15 /
+                                    865,
+                              ),
+                              mobileField,
+                              selectState,
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height *
+                                    15 /
+                                    865,
+                              ),
+                              mailField,
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height *
+                                    20 /
+                                    865,
+                              ),
+                              passField,
+                              SizedBox(
+                                height: MediaQuery.of(context).size.height *
+                                    20 /
+                                    865,
+                              ),
+                              Container(
+                                  width: MediaQuery.of(context).size.width *
+                                      339 /
+                                      360,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(16),
+                                      gradient: const LinearGradient(colors: [
+                                        Color(0xFFE65100),
+                                        Color(0xFFFFE0B2)
+                                      ])),
+                                  child: ElevatedButton(
+                                      style: ButtonStyle(
+                                          elevation:
+                                              MaterialStateProperty.all(0),
+                                          alignment: Alignment.center,
+                                          padding: MaterialStateProperty.all(
+                                              const EdgeInsets.only(
+                                                  right: 75,
+                                                  left: 75,
+                                                  top: 15,
+                                                  bottom: 15)),
+                                          backgroundColor:
+                                              MaterialStateProperty.all(
+                                                  Colors.transparent),
+                                          shape: MaterialStateProperty.all(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(16)),
+                                          )),
+                                      onPressed: () {
+                                        signUp(emailC, passC);
+                                      },
+                                      child: const Text(
+                                        "SignUp",
+                                        style: TextStyle(
+                                            fontSize: 20, color: Colors.white),
+                                      ))),
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            ])),
+                    Row(
+                      children: [
+                        Checkbox(
+                          checkColor: Colors.black,
+                          activeColor: Colors.white,
+                          value: isChecked,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isChecked = value!;
+                            });
+                          },
+                        ),
+                        const Expanded(
+                          child: Text(
+                              "I agree with Terms and Privacy policy Weld.com",
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 24,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 10 / 865,
-                            ),
-                            const Text(
-                              "Please Sign up to continue",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.w300,
-                              ),
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 20 / 865,
-                            ),
-                            Form(
-                                key: _formKey,
-                                child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.center,
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                15 /
-                                                865,
-                                      ),
-                                      usernameField,
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                20 /
-                                                865,
-                                      ),
-                                      fullnameField,
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                15 /
-                                                865,
-                                      ),
-                                      mobileField,
-                                      selectState,
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                15 /
-                                                865,
-                                      ),
-                                      mailField,
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                20 /
-                                                865,
-                                      ),
-                                      passField,
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                20 /
-                                                865,
-                                      ),
-                                      Container(
-                                          width: MediaQuery.of(context).size.width *
-                                              339 /
-                                              360,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(16),
-                                              gradient: const LinearGradient(
-                                                  colors: [
-                                                    Color(0xFFE65100),
-                                                    Color(0xFFFFE0B2)
-                                                  ])),
-                                          child: ElevatedButton(
-                                              style: ButtonStyle(
-                                                  elevation:
-                                                      MaterialStateProperty.all(
-                                                          0),
-                                                  alignment: Alignment.center,
-                                                  padding:
-                                                      MaterialStateProperty.all(
-                                                          const EdgeInsets.only(
-                                                              right: 75,
-                                                              left: 75,
-                                                              top: 15,
-                                                              bottom: 15)),
-                                                  backgroundColor:
-                                                      MaterialStateProperty.all(
-                                                          Colors.transparent),
-                                                  shape: MaterialStateProperty.all(
-                                                    RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(16)),
-                                                  )),
-                                              onPressed: () {
-                                                signUp(emailC.text, passC.text);
-                                              },
-                                              child: const Text(
-                                                "SignUp",
-                                                style: TextStyle(
-                                                    fontSize: 20,
-                                                    color: Colors.white),
-                                              ))),
-                                      const SizedBox(
-                                        height: 10,
-                                      ),
-                                    ])),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.black,
-                                  activeColor: Colors.white,
-                                  value: isChecked,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      isChecked = value!;
-                                    });
-                                  },
-                                ),
-                                const Expanded(
-                                  child: Text(
-                                      "I agree with Terms and Privacy policy Weld.com",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color:
-                                              Color.fromRGBO(107, 112, 118, 1),
-                                          fontSize: 16)),
-                                )
-                              ],
-                            ),
-                            SizedBox(
-                              height:
-                                  MediaQuery.of(context).size.height * 20 / 865,
-                            ),
-                            Center(
-                              child: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                          builder: (context) => const Login()));
-                                },
-                                child: const Text(
-                                  "Sign In to my account",
-                                  style: TextStyle(
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white,
-                                      fontSize: 16),
-                                ),
-                              ),
-                            )
-                          ])))),
+                                  fontWeight: FontWeight.w400,
+                                  color: Color.fromRGBO(107, 112, 118, 1),
+                                  fontSize: 16)),
+                        )
+                      ],
+                    ),
+                    SizedBox(
+                      height: MediaQuery.of(context).size.height * 20 / 865,
+                    ),
+                    Center(
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => const Login()));
+                        },
+                        child: const Text(
+                          "Sign In to my account",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 16),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ),
     );
