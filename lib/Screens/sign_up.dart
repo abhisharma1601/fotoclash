@@ -49,55 +49,52 @@ class _SignUpState extends State<SignUp> {
       );
   void signUp(String email, String password) async {
     if (_formKey.currentState!.validate()) {
-          QuerySnapshot existingUsers = await FirebaseFirestore.instance
-        .collection("AppData")
-        .where("users", arrayContains: username.text)
-        .get();
-        print(existingUsers.docs.isEmpty);
-        existingUsers.docs.isEmpty
-        ?
-       await _auth
-          .createUserWithEmailAndPassword(email: email, password: password)
-          .then((value) => {
-                postDataToFirestore(),
-              })
-          .catchError((e) {
-        Fluttertoast.showToast(msg: e!.message);
-      }):Fluttertoast.showToast(msg: "UserName Already exists");
+      QuerySnapshot existingUsers = await FirebaseFirestore.instance
+          .collection("AppData")
+          .where("users", arrayContains: username.text)
+          .get();
+      print(existingUsers.docs.isEmpty);
+      existingUsers.docs.isEmpty
+          ? await _auth
+              .createUserWithEmailAndPassword(
+                  email: email.replaceAll(" ", ""), password: password)
+              .then((value) => {
+                    postDataToFirestore(),
+                  })
+              .catchError((e) {
+              Fluttertoast.showToast(msg: e!.message);
+            })
+          : Fluttertoast.showToast(msg: "UserName Already exists");
     }
   }
 
   postDataToFirestore() async {
     FirebaseFirestore firebaseFirestore = FirebaseFirestore.instance;
-    User? user = _auth.currentUser;
     userModel UserModel = userModel();
-    UserModel.uid = user!.uid;
-    UserModel.email = user.email;
+    UserModel.uid = FirebaseAuth.instance.currentUser!.uid;
+    UserModel.email = FirebaseAuth.instance.currentUser!.email;
     UserModel.name = username.text;
- await firebaseFirestore.collection("Users").doc(user.uid).set({
-            'uid': user.uid,
-            'email': user.email,
-            'userName': username.text,
-            'fullname': fullname.text,
-            'phoneNo': mobileC.text,
-            'State': value,
-            "Data": [0, 0, 0],
-            "Wallet": {"Balance": 0, "Added": 0, "Withdrawn": 0, "Pending": 0},
-            "WinningData": {"Won": 0, "Lost": 0, "Contest Tie": 0},
-          }, SetOptions(merge: true)).then((value) =>     Navigator.of(context)
-            .pushReplacement(
-                MaterialPageRoute(builder: (context) => SetProfile())));
+    await firebaseFirestore
+        .collection("Users")
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .set({
+      'uid': FirebaseAuth.instance.currentUser!.uid,
+      'email': FirebaseAuth.instance.currentUser!.email,
+      'userName': username.text,
+      'fullname': fullname.text,
+      'phoneNo': mobileC.text,
+      'State': value,
+      "Data": [0, 0, 0],
+      "Wallet": {"Balance": 0, "Added": 0, "Withdrawn": 0, "Pending": 0},
+      "WinningData": {"Won": 0, "Lost": 0, "Contest Tie": 0},
+    }, SetOptions(merge: true));
 
     FirebaseFirestore.instance.collection("AppData").doc("existingUsers").set({
       "users": FieldValue.arrayUnion([username.text])
     }, SetOptions(merge: true));
 
-  }
-
-  @override
-  void dispose() {
-    fullname.dispose();
-    super.dispose();
+    Navigator.push(
+        context, MaterialPageRoute(builder: (context) => SetProfile()));
   }
 
   @override

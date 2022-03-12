@@ -50,10 +50,14 @@ class _BottomNavBar extends State<BottomNavBar> {
                       Color.fromRGBO(175, 47, 32, 1),
                       Color.fromRGBO(244, 157, 99, 1),
                     ])),
-                child: const Icon(
-                  Icons.add,
-                  color: Colors.white,
-                  size: 50,
+                child: CircleAvatar(
+                  radius: 26,
+                  backgroundColor: Colors.transparent,
+                  child: const Icon(
+                    Icons.add,
+                    color: Colors.white,
+                    size: 32,
+                  ),
                 )),
           ),
           SizedBox(
@@ -70,7 +74,7 @@ class _BottomNavBar extends State<BottomNavBar> {
                 buildTabItem(
                     index: 1,
                     icon: const Icon(
-                      CupertinoIcons.compass,
+                      CupertinoIcons.flame_fill,
                       size: 30,
                     )),
                 InkWell(

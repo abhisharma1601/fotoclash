@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Wallet/add_balance.dart';
 import 'package:fotoclash/Wallet/withdraw_balance.dart';
@@ -28,7 +29,7 @@ class _WalletState extends State<Wallet> {
   Future<void> get_data() async {
     var key = await FirebaseFirestore.instance
         .collection("Users")
-        .doc(app_user.uid)
+        .doc(FirebaseAuth.instance.currentUser!.uid)
         .get();
     balance = (key.data() as dynamic)["Wallet"]["Balance"];
     withdrawn = (key.data() as dynamic)["Wallet"]["Withdrawn"];
@@ -69,7 +70,7 @@ class _WalletState extends State<Wallet> {
               Column(
                 children: [
                   Text(
-                    "${app_user.name} - Wallet",
+                    "Personal Wallet",
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,

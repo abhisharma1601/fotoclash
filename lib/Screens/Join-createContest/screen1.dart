@@ -7,6 +7,7 @@ import 'package:fotoclash/Screens/Join-createContest/create_contest3v3.dart';
 import 'package:fotoclash/Screens/Join-createContest/join_contest.dart';
 import 'package:fotoclash/Wallet/wallet.dart';
 import 'package:fotoclash/main.dart';
+import 'package:share_plus/share_plus.dart';
 
 class ContestS extends StatefulWidget {
   const ContestS({Key? key}) : super(key: key);
@@ -793,7 +794,7 @@ class MyConS extends StatelessWidget {
                                     join += 1;
                                   }
                                 }
-                                return _joinBlock(
+                                return _joinBlockMy(
                                   contestID: futureSnapshot
                                       .requireData.docs[index]["ContestID"],
                                   participants: join,
@@ -803,7 +804,7 @@ class MyConS extends StatelessWidget {
                                       .requireData.docs[index]["EntryFee"],
                                   winningPrize: futureSnapshot
                                       .requireData.docs[index]["winnerPrize"],
-                                  isVisible: false,
+                                  isVisible: true,
                                 );
                               }),
                         )
@@ -903,6 +904,194 @@ class _joinBlock extends StatelessWidget {
                           },
                           child: Text(
                             "Join",
+                            style: TextStyle(color: Colors.green),
+                          ),
+                        ),
+                      ),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 21, top: 6),
+            child: Row(
+              children: [
+                RichText(
+                  text: TextSpan(
+                    text: "",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 33),
+                    children: [
+                      TextSpan(
+                        text: winningPrize,
+                        style: TextStyle(color: Colors.blue, fontSize: 18),
+                      )
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: EdgeInsets.only(left: 21, top: 2),
+            child: RichText(
+              text: TextSpan(
+                text: "PRIZE",
+                style: TextStyle(
+                    color: Colors.grey,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 14),
+              ),
+            ),
+          ),
+          Padding(
+              padding: EdgeInsets.only(left: 21, right: 21, top: 10, bottom: 4),
+              child: Stack(
+                children: [
+                  Container(
+                    width: MediaQuery.of(context).size.width * 293 / 375,
+                    height: 5,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        color: Color.fromRGBO(150, 156, 163, 1)),
+                  ),
+                  Container(
+                    width: MediaQuery.of(context).size.width *
+                        ((participants! / players!) * 310) /
+                        375,
+                    height: 5,
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: LinearGradient(colors: [
+                          Color.fromRGBO(255, 15, 0, 1),
+                          Color.fromRGBO(255, 106, 106, 1)
+                        ])),
+                  )
+                ],
+              )),
+          Row(
+            children: [
+              Spacer(),
+              Text(
+                "$players Players",
+                style: TextStyle(
+                  color: Color(0xff969CA3),
+                ),
+              ),
+              SizedBox(
+                width: 21,
+              )
+            ],
+          ),
+          Padding(
+            padding: const EdgeInsets.only(left: 21, right: 21, top: 6),
+            child: Row(
+              children: [
+                Text(
+                  "Entery Fee: ₹" + EntryFee!,
+                  style: TextStyle(
+                    color: Color(0xff969CA3),
+                  ),
+                ),
+                Spacer(),
+                Visibility(
+                  visible: participants == players,
+                  child: Text(
+                    "Full",
+                    style: TextStyle(color: Colors.green),
+                  ),
+                ),
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+
+class _joinBlockMy extends StatelessWidget {
+  String? contestID;
+  String? winningPrize;
+  String? EntryFee;
+  int? players, participants;
+  bool isVisible;
+  String? CreatorID;
+  _joinBlockMy(
+      {Key? key,
+      this.contestID,
+      this.winningPrize,
+      this.EntryFee,
+      required this.players,
+      required this.participants,
+      required this.isVisible,
+      this.CreatorID})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 18, right: 18, bottom: 12),
+      height: MediaQuery.of(context).size.height * 163 / 812,
+      decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          gradient: LinearGradient(colors: [
+            Color.fromRGBO(20, 30, 49, 1),
+            Color.fromRGBO(1, 1, 1, 0.4)
+          ])),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Padding(
+            padding: EdgeInsets.only(left: 16),
+            child: SizedBox(
+              width: MediaQuery.of(context).size.width,
+              child: Padding(
+                padding: EdgeInsets.only(top: 0, bottom: 5),
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(
+                        "Contest ID : ",
+                        style: TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 5),
+                      child: Text(contestID!,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          softWrap: true,
+                          style: TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.w400)),
+                    ),
+                    Spacer(),
+                    Visibility(
+                      visible: isVisible,
+                      child: Container(
+                        padding: EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          color: Color(0xff323C43),
+                          borderRadius: BorderRadius.only(
+                            bottomLeft: Radius.circular(10),
+                            topRight: Radius.circular(10),
+                          ),
+                        ),
+                        child: InkWell(
+                          onTap: () {
+                            Share.share(
+                                "Hey, look at the contest I'm participating in vote me and you can also win upto Rs. 2000 by competing in the contest with id: $contestID",
+                                subject: "Fotoclash Contest Invitation!");
+                          },
+                          child: Text(
+                            "Share",
                             style: TextStyle(color: Colors.green),
                           ),
                         ),

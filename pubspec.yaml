@@ -49,6 +49,9 @@ dependencies:
   firebase_storage: ^10.2.7
   card_swiper: ^2.0.1
   uuid: ^3.0.6
+  share_plus: ^3.1.0
+  http: ^0.13.4
+  steps: ^1.0.1
 
 dev_dependencies:
   flutter_test:

@@ -27,7 +27,7 @@ class _SetProfileState extends State<SetProfile> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController fullname = TextEditingController();
   final TextEditingController bio = TextEditingController();
-  
+
   final _auth = FirebaseAuth.instance;
   final imagestore =
       FirebaseStorage.instance.ref().child("user_image").child(".jpg");
@@ -48,14 +48,11 @@ class _SetProfileState extends State<SetProfile> {
         'fullname': fullname.text,
         'bio': bio.text,
         'imageUrl': url,
-        // 'DOB': _dateTime
       });
     });
-    Fluttertoast.showToast(msg: "Data updated sucessfully.Please Login");
-    Navigator.pushAndRemoveUntil(
-        context,
-        MaterialPageRoute(builder: (context) => Login()),
-        (route) => false);
+    Fluttertoast.showToast(msg: "Data updated sucessfully. Please Login");
+    Navigator.pushAndRemoveUntil(context,
+        MaterialPageRoute(builder: (context) => Login()), (route) => false);
   }
 
   @override
@@ -92,7 +89,7 @@ class _SetProfileState extends State<SetProfile> {
       style: const TextStyle(color: Colors.white),
       autofocus: false,
       controller: bio,
-      keyboardType: TextInputType.phone,
+      keyboardType: TextInputType.text,
       validator: (value) {
         if (value!.isEmpty) {
           return ("Please Enter Bio");
@@ -105,8 +102,10 @@ class _SetProfileState extends State<SetProfile> {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         border: OutlineInputBorder(
+          
           borderRadius: BorderRadius.circular(10),
         ),
+        
         hintText: 'Bio',
         hintStyle: const TextStyle(color: Color.fromRGBO(107, 112, 118, 1)),
         filled: true,
@@ -122,26 +121,37 @@ class _SetProfileState extends State<SetProfile> {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 35.0),
-              child: GestureDetector(
-                onTap: () {
-                  showDatePicker(
-                          context: context,
-                          initialDate: DateTime.now(),
-                          firstDate: DateTime(2001),
-                          lastDate: DateTime(2222))
-                      .then((value) {
-                    setState(() {
-                      _dateTime = value!;
-                    });
+            GestureDetector(
+              onTap: () {
+                showDatePicker(
+                        context: context,
+                        initialDate: DateTime.now(),
+                        firstDate: DateTime(2001),
+                        lastDate: DateTime(2222))
+                    .then((value) {
+                  setState(() {
+                    _dateTime = value!;
                   });
-                },
-                child: Text(
-                  _dateTime == null ? "Date of Birth " : _dateTime.toString(),
-                  style: const TextStyle(
-                      fontSize: 17, color: Color.fromRGBO(107, 112, 118, 1)),
-                ),
+                });
+              },
+              child: Row(
+                children: [
+                  Text(
+                    "DOB: ",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Text(
+                    _dateTime == null
+                        ? "Date of Birth "
+                        : "${_dateTime!.day}-${_dateTime!.month}-${_dateTime!.year}",
+                    style: const TextStyle(
+                        fontSize: 17, color: Color.fromRGBO(107, 112, 118, 1)),
+                  ),
+                ],
               ),
             ),
             IconButton(
@@ -267,7 +277,15 @@ class _SetProfileState extends State<SetProfile> {
                                                                 .circular(16)),
                                                   )),
                                               onPressed: () {
-                                                postDataToFirestore();
+                                                if (DateTime.now().year -
+                                                        _dateTime!.year >=
+                                                    18) {
+                                                  postDataToFirestore();
+                                                } else {
+                                                  Fluttertoast.showToast(
+                                                      msg:
+                                                          "You are not above 18!");
+                                                }
                                               },
                                               child: const Text(
                                                 "Done",

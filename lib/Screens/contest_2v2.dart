@@ -5,6 +5,7 @@ import 'package:fotoclash/Screens/drawer_details.dart';
 import 'package:fotoclash/Screens/search_contest/searchcontest.dart';
 import 'package:fotoclash/main.dart';
 import 'package:like_button/like_button.dart';
+import 'package:share_plus/share_plus.dart';
 
 class Contest2v2 extends StatefulWidget {
   Contest2v2(
@@ -75,7 +76,7 @@ class _Contest2v2State extends State<Contest2v2> {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.all(20.0),
+          padding: const EdgeInsets.only(top: 30, left: 20),
           child: IconButton(
               onPressed: () {
                 _scaffoldkey.currentState!.openDrawer();
@@ -88,7 +89,7 @@ class _Contest2v2State extends State<Contest2v2> {
         ),
         Positioned(
           left: MediaQuery.of(context).size.width * 310 / 375,
-          top: 24,
+          top: 35,
           child: GestureDetector(
             onTap: () {
               Navigator.push(context,
@@ -228,10 +229,17 @@ class _Contest2v2State extends State<Contest2v2> {
         Positioned(
             left: MediaQuery.of(context).size.width * 330 / 375,
             top: MediaQuery.of(context).size.height * 700 / 812,
-            child: const Icon(
-              Icons.share_outlined,
-              color: Colors.red,
-              size: 28,
+            child: GestureDetector(
+              onTap: () {
+                Share.share(
+                    "Hey, look at the contest I'm participating in vote me and you can also win upto Rs. 2000 by competing in the contest with id: ${widget.contest_id}",
+                    subject: "Fotoclash Contest Invitation!");
+              },
+              child: const Icon(
+                Icons.share_outlined,
+                color: Colors.red,
+                size: 28,
+              ),
             )),
       ]),
     );

@@ -1,5 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/contest_2v2.dart';
@@ -27,13 +28,19 @@ class _VoteScreenState extends State<VoteScreen> {
   }
 
   Future<void> get_contest() async {
-    var key = await FirebaseFirestore.instance.collection("Contests").get();
+    print("Getting Contest!");
+    var key = await FirebaseFirestore.instance
+        .collection("Contests")
+        .orderBy("winnerPrize")
+        .get();
     for (var i in key.docs) {
       if (DateTime.parse(i.data()["DateTime"] + "0")
               .add(Duration(days: 1))
               .difference(DateTime.now()) >
           Duration(seconds: 0)) {
-        if (!i.data()["Voters"].contains(app_user.uid)) {
+        if (!i
+            .data()["Voters"]
+            .contains(FirebaseAuth.instance.currentUser!.uid)) {
           if (i.data()["Participations"].length == 2 &&
               !i.data()["images"].contains("")) {
             print(i.data()["ContestID"]);
@@ -69,18 +76,28 @@ class _VoteScreenState extends State<VoteScreen> {
       ),
       extendBody: true,
       body: _piclist.length != 0
-          ? SwipableStack(
-              itemCount: _piclist.length,
-              onSwipeCompleted: (index, direction) {
-                if (index == _piclist.length - 1) {
-                  setState(() {
-                    _piclist = [];
-                  });
-                }
-              },
-              builder: (context, properties) {
-                return _piclist[properties.index];
-              },
+          ? Stack(
+              children: [
+                Container(
+                  decoration: BoxDecoration(
+                      image: DecorationImage(
+                          image: AssetImage("assets/background.png"),
+                          fit: BoxFit.cover)),
+                ),
+                SwipableStack(
+                  itemCount: _piclist.length,
+                  onSwipeCompleted: (index, direction) {
+                    if (index == _piclist.length - 1) {
+                      setState(() {
+                        _piclist = [];
+                      });
+                    }
+                  },
+                  builder: (context, properties) {
+                    return _piclist[properties.index];
+                  },
+                ),
+              ],
             )
           : Container(
               child: Stack(children: [

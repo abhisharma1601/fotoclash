@@ -169,7 +169,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                                     shrinkWrap: true,
                                     itemCount: futureSnapshot.requireData.size,
                                     itemBuilder: (context, index) {
-                                      if (index < 10) {
+                                      if (index < 15) {
                                         return LeaderWinner(
                                           id: futureSnapshot
                                               .requireData.docs[index]

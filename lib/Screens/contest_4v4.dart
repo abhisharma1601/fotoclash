@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:fotoclash/Screens/search_contest/searchcontest.dart';
 import 'package:fotoclash/Screens/single_image.dart';
 import 'package:like_button/like_button.dart';
+import 'package:share_plus/share_plus.dart';
+import '../main.dart';
 import 'contest_2v2.dart';
 import 'drawer_details.dart';
 
@@ -62,6 +65,8 @@ class _Comp4v4State extends State<_Comp4v4> {
   Color like2 = Colors.white;
   Color like3 = Colors.white;
   Color like4 = Colors.white;
+
+  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -107,10 +112,10 @@ class _Comp4v4State extends State<_Comp4v4> {
         ),
       ),
       Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 20, top: 30),
         child: IconButton(
             onPressed: () {
-              widget._scaffoldkey.currentState!.openDrawer();
+              _scaffoldkey.currentState!.openDrawer();
             },
             icon: const Icon(
               Icons.menu,
@@ -120,9 +125,12 @@ class _Comp4v4State extends State<_Comp4v4> {
       ),
       Positioned(
         left: MediaQuery.of(context).size.width * 310 / 375,
-        top: 18,
+        top: 35,
         child: GestureDetector(
-          onTap: () {},
+          onTap: () {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => SearchContest()));
+          },
           child: const Icon(
             Icons.search,
             color: Colors.white,
@@ -133,6 +141,12 @@ class _Comp4v4State extends State<_Comp4v4> {
       Positioned(
         child: GestureDetector(
           onTap: () {
+            FirebaseFirestore.instance
+                .collection("Contests")
+                .doc(widget.contest_id)
+                .set({
+              "Voters": FieldValue.arrayUnion([app_user.uid])
+            }, SetOptions(merge: true));
             if (like1 == Colors.white) {
               setState(() {
                 like1 = Colors.red;
@@ -206,6 +220,12 @@ class _Comp4v4State extends State<_Comp4v4> {
       Positioned(
         child: GestureDetector(
           onTap: () {
+            FirebaseFirestore.instance
+                .collection("Contests")
+                .doc(widget.contest_id)
+                .set({
+              "Voters": FieldValue.arrayUnion([app_user.uid])
+            }, SetOptions(merge: true));
             if (like2 == Colors.white) {
               setState(() {
                 like2 = Colors.red;
@@ -279,6 +299,12 @@ class _Comp4v4State extends State<_Comp4v4> {
       Positioned(
         child: GestureDetector(
           onTap: () {
+            FirebaseFirestore.instance
+                .collection("Contests")
+                .doc(widget.contest_id)
+                .set({
+              "Voters": FieldValue.arrayUnion([app_user.uid])
+            }, SetOptions(merge: true));
             if (like3 == Colors.white) {
               setState(() {
                 like3 = Colors.red;
@@ -353,6 +379,12 @@ class _Comp4v4State extends State<_Comp4v4> {
       Positioned(
         child: GestureDetector(
           onTap: () {
+            FirebaseFirestore.instance
+                .collection("Contests")
+                .doc(widget.contest_id)
+                .set({
+              "Voters": FieldValue.arrayUnion([app_user.uid])
+            }, SetOptions(merge: true));
             if (like4 == Colors.white) {
               setState(() {
                 like4 = Colors.red;
@@ -429,128 +461,131 @@ class _Comp4v4State extends State<_Comp4v4> {
           top: MediaQuery.of(context).size.height * 700 / 812,
           child: InkWell(
             onTap: () {
-              showModalBottomSheet(
-                  shape: const RoundedRectangleBorder(
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(24),
-                      topRight: Radius.circular(24),
-                    ),
-                  ),
-                  context: context,
-                  builder: (context) {
-                    return SingleChildScrollView(
-                      child: Container(
-                        decoration: const BoxDecoration(
-                          color: Color.fromRGBO(5, 16, 32, 1),
-                          borderRadius: BorderRadius.only(
-                            topLeft: Radius.circular(24),
-                            topRight: Radius.circular(24),
-                          ),
-                        ),
-                        child: Column(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.all(16.0),
-                              child: Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Icon(
-                                    Icons.share,
-                                    color: Colors.red,
-                                  ),
-                                  const SizedBox(
-                                    width: 5,
-                                  ),
-                                  Text(
-                                    "Share this contest to",
-                                    style: TextStyle(
-                                        color: Colors.orange[400],
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 16),
-                                  )
-                                ],
-                              ),
-                            ),
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height *
-                                  400 /
-                                  812,
-                              child: ListView.builder(
-                                  itemCount: 10,
-                                  itemBuilder: (context, index) {
-                                    return ListTile(
-                                        leading: const CircleAvatar(
-                                          backgroundImage: NetworkImage(
-                                              "https://i.insider.com/5e820b04671de06758588fb8?width=700"),
-                                        ),
-                                        title: const Text(
-                                          "Olivia Samantha",
-                                          style: TextStyle(
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w700,
-                                              fontSize: 16),
-                                        ),
-                                        trailing: Container(
-                                          height: MediaQuery.of(context)
-                                                  .size
-                                                  .height *
-                                              35 /
-                                              812,
-                                          width: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              70 /
-                                              375,
-                                          decoration: BoxDecoration(
-                                              borderRadius:
-                                                  BorderRadius.circular(6),
-                                              gradient:
-                                                  const LinearGradient(colors: [
-                                                Color.fromRGBO(175, 47, 32, 1),
-                                                Color.fromRGBO(218, 62, 45, 1),
-                                                Color.fromRGBO(244, 157, 99, 1),
-                                                Color.fromRGBO(
-                                                    195, 188, 138, 1),
-                                              ])),
-                                          child: ElevatedButton(
-                                            style: ButtonStyle(
-                                                elevation:
-                                                    MaterialStateProperty.all(
-                                                        0),
-                                                alignment: Alignment.center,
-                                                padding:
-                                                    MaterialStateProperty.all(
-                                                        const EdgeInsets.only(
-                                                            right: 15,
-                                                            left: 15,
-                                                            top: 8,
-                                                            bottom: 8)),
-                                                backgroundColor:
-                                                    MaterialStateProperty.all(
-                                                        Colors.transparent),
-                                                shape:
-                                                    MaterialStateProperty.all(
-                                                  RoundedRectangleBorder(
-                                                      borderRadius:
-                                                          BorderRadius.circular(
-                                                              15)),
-                                                )),
-                                            onPressed: () {},
-                                            child: const Text(
-                                              "Send",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 16),
-                                            ),
-                                          ),
-                                        ));
-                                  }),
-                            )
-                          ],
-                        ),
-                      ),
-                    );
-                  });
+              Share.share(
+                  "Hey, look at the contest I'm participating in vote me and you can also win upto Rs. 2000 by competing in the contest with id: ${widget.contest_id}",
+                  subject: "Fotoclash Contest Invitation!");
+              // showModalBottomSheet(
+              //     shape: const RoundedRectangleBorder(
+              //       borderRadius: BorderRadius.only(
+              //         topLeft: Radius.circular(24),
+              //         topRight: Radius.circular(24),
+              //       ),
+              //     ),
+              //     context: context,
+              //     builder: (context) {
+              //       return SingleChildScrollView(
+              //         child: Container(
+              //           decoration: const BoxDecoration(
+              //             color: Color.fromRGBO(5, 16, 32, 1),
+              //             borderRadius: BorderRadius.only(
+              //               topLeft: Radius.circular(24),
+              //               topRight: Radius.circular(24),
+              //             ),
+              //           ),
+              //           child: Column(
+              //             children: [
+              //               Padding(
+              //                 padding: const EdgeInsets.all(16.0),
+              //                 child: Row(
+              //                   mainAxisAlignment: MainAxisAlignment.center,
+              //                   children: [
+              //                     const Icon(
+              //                       Icons.share,
+              //                       color: Colors.red,
+              //                     ),
+              //                     const SizedBox(
+              //                       width: 5,
+              //                     ),
+              //                     Text(
+              //                       "Share this contest to",
+              //                       style: TextStyle(
+              //                           color: Colors.orange[400],
+              //                           fontWeight: FontWeight.w700,
+              //                           fontSize: 16),
+              //                     )
+              //                   ],
+              //                 ),
+              //               ),
+              //               SizedBox(
+              //                 height: MediaQuery.of(context).size.height *
+              //                     400 /
+              //                     812,
+              //                 child: ListView.builder(
+              //                     itemCount: 10,
+              //                     itemBuilder: (context, index) {
+              //                       return ListTile(
+              //                           leading: const CircleAvatar(
+              //                             backgroundImage: NetworkImage(
+              //                                 "https://i.insider.com/5e820b04671de06758588fb8?width=700"),
+              //                           ),
+              //                           title: const Text(
+              //                             "Olivia Samantha",
+              //                             style: TextStyle(
+              //                                 color: Colors.white,
+              //                                 fontWeight: FontWeight.w700,
+              //                                 fontSize: 16),
+              //                           ),
+              //                           trailing: Container(
+              //                             height: MediaQuery.of(context)
+              //                                     .size
+              //                                     .height *
+              //                                 35 /
+              //                                 812,
+              //                             width: MediaQuery.of(context)
+              //                                     .size
+              //                                     .width *
+              //                                 70 /
+              //                                 375,
+              //                             decoration: BoxDecoration(
+              //                                 borderRadius:
+              //                                     BorderRadius.circular(6),
+              //                                 gradient:
+              //                                     const LinearGradient(colors: [
+              //                                   Color.fromRGBO(175, 47, 32, 1),
+              //                                   Color.fromRGBO(218, 62, 45, 1),
+              //                                   Color.fromRGBO(244, 157, 99, 1),
+              //                                   Color.fromRGBO(
+              //                                       195, 188, 138, 1),
+              //                                 ])),
+              //                             child: ElevatedButton(
+              //                               style: ButtonStyle(
+              //                                   elevation:
+              //                                       MaterialStateProperty.all(
+              //                                           0),
+              //                                   alignment: Alignment.center,
+              //                                   padding:
+              //                                       MaterialStateProperty.all(
+              //                                           const EdgeInsets.only(
+              //                                               right: 15,
+              //                                               left: 15,
+              //                                               top: 8,
+              //                                               bottom: 8)),
+              //                                   backgroundColor:
+              //                                       MaterialStateProperty.all(
+              //                                           Colors.transparent),
+              //                                   shape:
+              //                                       MaterialStateProperty.all(
+              //                                     RoundedRectangleBorder(
+              //                                         borderRadius:
+              //                                             BorderRadius.circular(
+              //                                                 15)),
+              //                                   )),
+              //                               onPressed: () {},
+              //                               child: const Text(
+              //                                 "Send",
+              //                                 style: TextStyle(
+              //                                     color: Colors.white,
+              //                                     fontSize: 16),
+              //                               ),
+              //                             ),
+              //                           ));
+              //                     }),
+              //               )
+              //             ],
+              //           ),
+              //         ),
+              //       );
+              //     });
             },
             child: const Icon(
               Icons.share_outlined,

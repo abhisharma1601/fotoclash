@@ -22,9 +22,7 @@ class _LoginState extends State<Login> {
   AuthMethods authMethods = Get.find();
   Future<void> signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
-      authMethods.signIn(email: email, password: password).then((value) async {
-        // SharedPreferences prefs = await SharedPreferences.getInstance();
-        // prefs.setBool("isAuth", true);
+      authMethods.signIn(email: email, password: password).then((value) async {       
         Fluttertoast.showToast(msg: "Login Successful");
         
         Navigator.of(context).pushReplacement(MaterialPageRoute(
