@@ -15,7 +15,6 @@ class UserProfile extends StatefulWidget {
 }
 
 class _UserProfileState extends State<UserProfile> {
-
   Stream? chatRoomsStream;
   DataBase dataBase = DataBase();
   @override
@@ -39,12 +38,12 @@ class _UserProfileState extends State<UserProfile> {
         .where("userName", isEqualTo: widget.username)
         .get();
     var uid = key.docs[0]["uid"];
-    List data =key.docs[0]["Data"];
-    data[0]=data[0]+1;
+    List data = key.docs[0]["Data"];
+    data[0] = data[0] + 1;
     FirebaseFirestore.instance
         .collection("Users")
         .doc(uid)
-        .update({"Data":data});
+        .update({"Data": data});
   }
 
   @override
@@ -103,21 +102,12 @@ class _UserProfileState extends State<UserProfile> {
                                         fontSize: 22,
                                         fontWeight: FontWeight.bold),
                                   ),
-                                  Row(
-                                    children: [
-                                      Icon(Icons.location_on,
-                                          color: Colors.white),
-                                      SizedBox(
-                                        width: 6,
-                                      ),
-                                      Text(
-                                        snapshot.requireData.docs[0]["State"],
-                                        style: TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w300),
-                                      ),
-                                    ],
+                                  Text(
+                                    snapshot.requireData.docs[0]["State"],
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w300),
                                   )
                                 ],
                               ),
@@ -133,10 +123,16 @@ class _UserProfileState extends State<UserProfile> {
                                 MediaQuery.of(context).size.width * 15 / 375,
                             children: [
                               const SizedBox(),
-                              _shocase(head: snapshot.requireData.docs[0]["Data"][0], body: "Followers"),
-                              SizedBox(width: 40,),
+                              _shocase(
+                                  head: snapshot.requireData.docs[0]["Data"][0],
+                                  body: "Followers"),
+                              SizedBox(
+                                width: 40,
+                              ),
                               // _shocase(head: snapshot.requireData.docs[0]["Data"][1], body: "Following"),
-                              _shocase(head: snapshot.requireData.docs[0]["Data"][2], body: "Contests")
+                              _shocase(
+                                  head: snapshot.requireData.docs[0]["Data"][2],
+                                  body: "Contests")
                             ],
                           ),
                         ),
@@ -182,9 +178,8 @@ class _UserProfileState extends State<UserProfile> {
                                           .doc(snapshot.requireData.docs[0]
                                               ["uid"])
                                           .update({"Data": app_user.data});
-                                          postFollowers();
+                                      postFollowers();
                                     });
-                                    
                                   },
                                   child: const Text(
                                     "Follow",

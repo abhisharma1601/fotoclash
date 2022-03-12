@@ -43,7 +43,10 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   @override
   void initState() {
-    get_screen(auth_check.currentUser!.uid);
+    try {
+      get_screen(auth_check.currentUser!.uid);
+    } catch (e) {}
+
     super.initState();
   }
 
@@ -70,6 +73,15 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  bool check_user() {
+    try {
+      print(auth_check.currentUser!.uid);
+      return false;
+    } catch (e) {
+      return true;
+    }
+  }
+
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -83,6 +95,6 @@ class _MyAppState extends State<MyApp> {
                 ),
             primarySwatch: Colors.blue,
             unselectedWidgetColor: Colors.white),
-        home: auth_check.currentUser!.uid.isEmpty ? SignUp() : screen);
+        home: check_user() ? SignUp() : screen);
   }
 }
