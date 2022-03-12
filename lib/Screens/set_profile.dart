@@ -102,10 +102,8 @@ class _SetProfileState extends State<SetProfile> {
       textInputAction: TextInputAction.next,
       decoration: InputDecoration(
         border: OutlineInputBorder(
-          
           borderRadius: BorderRadius.circular(10),
         ),
-        
         hintText: 'Bio',
         hintStyle: const TextStyle(color: Color.fromRGBO(107, 112, 118, 1)),
         filled: true,
