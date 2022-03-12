@@ -210,9 +210,6 @@ class ChatTile extends StatelessWidget {
             ));
       },
       child: Container(
-        decoration: BoxDecoration(
-            border: Border.all(
-                width: 0, style: BorderStyle.solid, color: Colors.white)),
         padding: EdgeInsets.symmetric(horizontal: 24, vertical: 16),
         child: Row(
           children: [

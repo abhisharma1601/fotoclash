@@ -4,7 +4,7 @@ import 'package:fotoclash/Models/databse.dart';
 import 'package:fotoclash/Screens/Chats/new_message.dart';
 import 'package:fotoclash/main.dart';
 import 'package:uuid/uuid.dart';
-import '../Profile/profile.dart';
+import '../Profile/profile_user.dart';
 
 class Messages extends StatefulWidget {
   String chatRoomId;
@@ -81,7 +81,7 @@ class _MessagesState extends State<Messages> {
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => Profile()));
+                              MaterialPageRoute(builder: (_) => UserProfile(widget.userName)));
                         },
                         child: CircleAvatar(
                           radius: 24,
@@ -120,36 +120,49 @@ class _MessagesState extends State<Messages> {
                                         ? MainAxisAlignment.end
                                         : MainAxisAlignment.start,
                                     children: [
-                                      Container(
-                                        decoration: BoxDecoration(
-                                            color: app_user.username ==
-                                                    snapshot.requireData
-                                                        .docs[index]["userName"]
-                                                ? Colors.blueGrey[900]
-                                                : Colors.grey[600],
-                                            borderRadius: app_user.username ==
-                                                    snapshot.requireData
-                                                        .docs[index]["userName"]
-                                                ? const BorderRadius.only(
-                                                    bottomLeft:
-                                                        Radius.circular(20),
-                                                    bottomRight:
-                                                        Radius.circular(20),
-                                                    topLeft:
-                                                        Radius.circular(20))
-                                                : const BorderRadius.only(
-                                                    bottomLeft: Radius.circular(20),
-                                                    bottomRight: Radius.circular(20),
-                                                    topRight: Radius.circular(20))),
-                                        margin: const EdgeInsets.only(top: 20),
+                                      Padding(
                                         padding: const EdgeInsets.symmetric(
-                                            horizontal: 20 * 0.75,
-                                            vertical: 10),
-                                        child: Text(
-                                          snapshot.requireData.docs[index]
-                                              .get("message"),
-                                          style: const TextStyle(
-                                              color: Colors.white),
+                                            horizontal: 10),
+                                        child: Container(
+                                          decoration: BoxDecoration(
+                                              color: app_user.username ==
+                                                      snapshot.requireData.docs[index]
+                                                          ["userName"]
+                                                  ? Colors.blueGrey[900]
+                                                  : Colors.grey[600],
+                                              borderRadius: app_user.username ==
+                                                      snapshot.requireData.docs[index]
+                                                          ["userName"]
+                                                  ? const BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(20),
+                                                      bottomRight:
+                                                          Radius.circular(20),
+                                                      topLeft:
+                                                          Radius.circular(20))
+                                                  : const BorderRadius.only(
+                                                      bottomLeft:
+                                                          Radius.circular(20),
+                                                      bottomRight:
+                                                          Radius.circular(20),
+                                                      topRight: Radius.circular(20))),
+                                          margin:
+                                              const EdgeInsets.only(top: 20),
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 20 * 0.85,
+                                              vertical: 10),
+                                          child: LimitedBox(
+                                            maxHeight: 1000,
+                                            maxWidth: 300,
+                                            child: Text(
+                                              snapshot.requireData.docs[index]
+                                                  .get("message"),
+                                              maxLines: 1000,
+                                              textAlign: TextAlign.end,
+                                              style: const TextStyle(
+                                                  color: Colors.white),
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ],
