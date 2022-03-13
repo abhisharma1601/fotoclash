@@ -153,12 +153,15 @@ class _MessagesState extends State<Messages> {
                                               vertical: 10),
                                           child: LimitedBox(
                                             maxHeight: 1000,
-                                            maxWidth: 300,
+                                            maxWidth: 250,
                                             child: Text(
                                               snapshot.requireData.docs[index]
                                                   .get("message"),
                                               maxLines: 1000,
-                                              textAlign: TextAlign.end,
+                                              textAlign: app_user.username ==
+                                                      snapshot.requireData.docs[index]
+                                                          ["userName"]
+                                                  ? TextAlign.end:TextAlign.start,
                                               style: const TextStyle(
                                                   color: Colors.white),
                                             ),
