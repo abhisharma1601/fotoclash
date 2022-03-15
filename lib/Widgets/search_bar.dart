@@ -36,6 +36,7 @@ class _SearchInputState extends State<SearchInput> {
                         .get("chatRoomId")
                         .toString(),
                     snapshot.requireData.docs[index]["image"],
+                    index
                   );
                 },
               )
@@ -119,7 +120,7 @@ class _SearchInputState extends State<SearchInput> {
           context,
           MaterialPageRoute(
             builder: (context) => Messages(chatRoomId, search.text,
-                app_user.photo == image[0] ? image[1] : image[0]),
+                app_user.photo == image[0] ? image[1] : image[0],0),
           ));
     } else {
       SnackBar(
@@ -197,7 +198,8 @@ class ChatTile extends StatelessWidget {
   final String userName;
   final String chatRoom;
   final List image;
-  ChatTile(this.userName, this.chatRoom, this.image);
+  int index;
+  ChatTile(this.userName, this.chatRoom, this.image,this.index);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -206,7 +208,7 @@ class ChatTile extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => Messages(chatRoom, userName,
-                  app_user.photo == image[0] ? image[1] : image[0]),
+                  app_user.photo == image[0] ? image[1] : image[0],index),
             ));
       },
       child: Container(

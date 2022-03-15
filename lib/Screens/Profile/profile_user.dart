@@ -8,8 +8,8 @@ import '../Chats/messages.dart';
 
 class UserProfile extends StatefulWidget {
   String username;
-
-  UserProfile(this.username, {Key? key}) : super(key: key);
+  int index;
+  UserProfile(this.username,this.index, {Key? key}) : super(key: key);
 
   @override
   _UserProfileState createState() => _UserProfileState();
@@ -261,11 +261,11 @@ class _UserProfileState extends State<UserProfile> {
                                                     builder: (context) =>
                                                         Messages(
                                                       snapshot
-                                                          .requireData.docs[0]
+                                                          .requireData.docs[widget.index]
                                                           .get("chatRoomId")
                                                           .toString(),
                                                       snapshot
-                                                          .requireData.docs[0]
+                                                          .requireData.docs[widget.index]
                                                           .get("chatRoomId")
                                                           .toString()
                                                           .replaceAll("_", "")
@@ -274,14 +274,15 @@ class _UserProfileState extends State<UserProfile> {
                                                               ""),
                                                       app_user.photo ==
                                                               snapshot.requireData
-                                                                      .docs[0]
+                                                                      .docs[widget.index]
                                                                   ["image"][0]
                                                           ? snapshot.requireData
-                                                                  .docs[0]
+                                                                  .docs[widget.index]
                                                               ["image"][1]
                                                           : snapshot.requireData
-                                                                  .docs[0]
+                                                                  .docs[widget.index]
                                                               ["image"][0],
+                                                              2
                                                     ),
                                                   ));
                                             },

@@ -10,10 +10,13 @@ class Messages extends StatefulWidget {
   String chatRoomId;
   String userName;
   String image;
+  int index;
   Messages(
     this.chatRoomId,
     this.userName,
-    this.image, {
+    this.image, 
+    this.index,
+    {
     Key? key,
   }) : super(key: key);
 
@@ -81,7 +84,7 @@ class _MessagesState extends State<Messages> {
                       GestureDetector(
                         onTap: () {
                           Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => UserProfile(widget.userName)));
+                              MaterialPageRoute(builder: (_) => UserProfile(widget.userName,widget.index)));
                         },
                         child: CircleAvatar(
                           radius: 24,

@@ -35,6 +35,7 @@ class _JoinContestState extends State<JoinContest> {
   File? _photo1;
   File? _photo2;
   File? _photo3;
+  bool imagePicked = false;
   int likes = 0;
   int index = 0;
   Future getImage(bool gallery) async {
@@ -63,11 +64,13 @@ class _JoinContestState extends State<JoinContest> {
     ImagePicker picker = ImagePicker();
     XFile? pickedFile;
     if (gallery) {
-      pickedFile = await picker.pickImage(
+      pickedFile = await picker
+          .pickImage(
         source: ImageSource.gallery,
       );
     } else {
-      pickedFile = await picker.pickImage(
+      pickedFile = await picker
+          .pickImage(
         source: ImageSource.camera,
       );
     }
@@ -75,6 +78,7 @@ class _JoinContestState extends State<JoinContest> {
     setState(() {
       if (pickedFile != null) {
         _photo1 = File(pickedFile.path);
+        imagePicked=true;
       } else {
         print('No image selected.');
       }
@@ -97,6 +101,7 @@ class _JoinContestState extends State<JoinContest> {
     setState(() {
       if (pickedFile != null) {
         _photo2 = File(pickedFile.path);
+        imagePicked=true;
       } else {
         print('No image selected.');
       }
@@ -119,6 +124,7 @@ class _JoinContestState extends State<JoinContest> {
     setState(() {
       if (pickedFile != null) {
         _photo3 = File(pickedFile.path);
+        imagePicked=true;
       } else {
         print('No image selected.');
       }
@@ -468,7 +474,7 @@ class _JoinContestState extends State<JoinContest> {
                   futureSnapshot.requireData.docs[0]["images"][1] == ""
                       ? GestureDetector(
                           onTap: () {
-                            if (_photo1 == null) {
+                            if (_photo1 == null && imagePicked==false ) {
                               index = 1;
                               getImage1(true);
                             }
@@ -514,7 +520,7 @@ class _JoinContestState extends State<JoinContest> {
                   futureSnapshot.requireData.docs[0]["images"][2] == ""
                       ? GestureDetector(
                           onTap: () {
-                            if (_photo2 == null) {
+                            if (_photo2 == null && imagePicked ==false) {
                               index = 2;
                               getImage2(true);
                             }
@@ -560,7 +566,7 @@ class _JoinContestState extends State<JoinContest> {
                   futureSnapshot.requireData.docs[0]["images"][3] == ""
                       ? GestureDetector(
                           onTap: () {
-                            if (_photo3 == null) {
+                            if (_photo3 == null && imagePicked ==false) {
                               index = 3;
                               getImage3(true);
                             }

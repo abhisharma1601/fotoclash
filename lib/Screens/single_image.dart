@@ -71,7 +71,7 @@ class _SingleImageState extends State<SingleImage> {
                 InkWell(
                   onTap: () {
                     Navigator.of(context)
-                        .push(MaterialPageRoute(builder: (_) => UserProfile("")));
+                        .push(MaterialPageRoute(builder: (_) => UserProfile("",0)));
                   },
                   child: Container(
                     padding: EdgeInsets.symmetric(vertical: 4, horizontal: 20),
