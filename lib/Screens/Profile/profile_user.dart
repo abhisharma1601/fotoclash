@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/main.dart';
 
 import '../../Models/databse.dart';
@@ -20,7 +21,6 @@ class _UserProfileState extends State<UserProfile> {
   @override
   void initState() {
     getUserInfo();
-    postFollowers();
     super.initState();
   }
 
@@ -39,11 +39,11 @@ class _UserProfileState extends State<UserProfile> {
         .get();
     var uid = key.docs[0]["uid"];
     List data = key.docs[0]["Data"];
-    data[0] = data[0] + 1;
-    FirebaseFirestore.instance
-        .collection("Users")
-        .doc(uid)
-        .update({"Data": data});
+    int a = data[0] + 1;
+    FirebaseFirestore.instance.collection("Users").doc(uid).set({
+      "Data": [a, 0, 0],
+      "Followers": FieldValue.arrayUnion([app_user.username])
+    }, SetOptions(merge: true));
   }
 
   @override
@@ -147,46 +147,79 @@ class _UserProfileState extends State<UserProfile> {
                                     borderRadius: BorderRadius.circular(15),
                                     gradient: const LinearGradient(colors: [
                                       Color.fromRGBO(166, 203, 255, 1),
-                                      Color.fromRGBO(77, 123, 218, 1),
+                                      Color.fromARGB(255, 121, 139, 175),
                                       Color.fromRGBO(175, 47, 32, 1),
                                       Color.fromRGBO(244, 157, 99, 1),
                                     ])),
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                      elevation: MaterialStateProperty.all(0),
-                                      alignment: Alignment.center,
-                                      padding: MaterialStateProperty.all(
-                                          const EdgeInsets.only(
-                                              right: 55,
-                                              left: 55,
-                                              top: 15,
-                                              bottom: 15)),
-                                      backgroundColor:
-                                          MaterialStateProperty.all(
-                                              Colors.transparent),
-                                      shape: MaterialStateProperty.all(
-                                        RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(15)),
-                                      )),
-                                  onPressed: () {
-                                    setState(() {
-                                      // following++;
-                                      app_user.data[0]++;
-                                      FirebaseFirestore.instance
-                                          .collection("Users")
-                                          .doc(snapshot.requireData.docs[0]
-                                              ["uid"])
-                                          .update({"Data": app_user.data});
-                                      postFollowers();
-                                    });
-                                  },
-                                  child: const Text(
-                                    "Follow",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 16),
-                                  ),
-                                )),
+                                child: StreamBuilder(
+                                    stream: FirebaseFirestore.instance
+                                        .collection("Users")
+                                        .where("userName",
+                                            isEqualTo: widget.username)
+                                        .snapshots(),
+                                    builder: (context,
+                                        AsyncSnapshot Streamsnapshot) {
+                                      if (Streamsnapshot.connectionState ==
+                                          ConnectionState.waiting) {
+                                        return const Center(
+                                          child: CircularProgressIndicator(),
+                                        );
+                                      }
+
+                                      return ElevatedButton(
+                                        style: ButtonStyle(
+                                            elevation:
+                                                MaterialStateProperty.all(0),
+                                            alignment: Alignment.center,
+                                            padding: MaterialStateProperty.all(
+                                                const EdgeInsets.only(
+                                                    right: 55,
+                                                    left: 55,
+                                                    top: 15,
+                                                    bottom: 15)),
+                                            backgroundColor:
+                                                MaterialStateProperty.all(
+                                                    Colors.transparent),
+                                            shape: MaterialStateProperty.all(
+                                              RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(
+                                                          15)),
+                                            )),
+                                        onPressed: () {
+                                          setState(() {
+                                            if (Streamsnapshot.requireData
+                                                .docs[0]["Followers"]
+                                                .contains(app_user.username)) {
+                                              print("Exists");
+                                              Fluttertoast.showToast(
+                                                  msg: "You already Followed");
+                                            } else {
+                                              setState(() {
+                                                postFollowers();
+                                              });
+
+                                              print("Not");
+                                            }
+                                          });
+                                        },
+                                        child: Streamsnapshot.requireData
+                                                .docs[0]["Followers"]
+                                                .contains(app_user.username)
+                                            ? const Text(
+                                                "Following",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16),
+                                              )
+                                            : Text(
+                                                "Follow",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 16),
+                                              ),
+                                      );
+                                    })),
                             StreamBuilder(
                                 stream: chatRoomsStream,
                                 builder: (context, AsyncSnapshot snapshot) {
