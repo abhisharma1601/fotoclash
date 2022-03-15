@@ -157,8 +157,8 @@ class _SetProfileState extends State<SetProfile> {
                   showDatePicker(
                           context: context,
                           initialDate: DateTime.now(),
-                          firstDate: DateTime(2001),
-                          lastDate: DateTime(2222))
+                          firstDate: DateTime(1970),
+                          lastDate: DateTime(2200))
                       .then((value) {
                     setState(() {
                       _dateTime = value!;

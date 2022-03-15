@@ -17,7 +17,7 @@ class JoinContest extends StatefulWidget {
   String? CreatorID;
   String? EntryFee;
   bool isActive;
-  bool winnerisME; 
+  bool winnerisME;
   JoinContest(
       {this.ContestID,
       this.contestSize,
@@ -217,8 +217,8 @@ class _JoinContestState extends State<JoinContest> {
         .set({
       "ContestId": widget.ContestID,
       "Likes": likes,
-      "isActive":widget.isActive,
-      "Winner":widget.winnerisME,
+      "isActive": widget.isActive,
+      "Winner": widget.winnerisME,
       "images": prevImages,
     }, SetOptions(merge: true));
   }

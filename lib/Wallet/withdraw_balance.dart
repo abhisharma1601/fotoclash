@@ -13,12 +13,12 @@ class WithdrawBalance extends StatefulWidget {
   State<WithdrawBalance> createState() => _WithdrawBalanceState();
 }
 
-late String _accnumber;
-late String _accholdername;
-late String _ifsc;
-late String _contact;
-late String _amount;
-late String _upi;
+late String _accnumber = "";
+late String _accholdername = "";
+late String _ifsc = "";
+late String _contact = "";
+late String _amount = "";
+late String _upi = "";
 Widget payment_gatway = Container();
 List<String> gates = ["Bank Transfer", "UPI Transfer"];
 String gate = "Select Payout Method";
@@ -252,8 +252,13 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                                 "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
                             "Time":
                                 "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
-                            "Amount": int.parse(_amount)
-                          });
+                            "Amount": int.parse(_amount),
+                            "Method": gate,
+                            "UPI": _upi,
+                            "Account_No.": _accnumber,
+                            "IFSC": _ifsc,
+                            "Account_Holder": _accholdername
+                          }, SetOptions(merge: true));
                           Navigator.pop(context);
                           Navigator.pop(context);
                           Fluttertoast.showToast(

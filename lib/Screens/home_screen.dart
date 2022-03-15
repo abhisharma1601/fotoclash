@@ -68,21 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   void notify() {
-    //when app is terminated
-    FirebaseMessaging.instance.getInitialMessage().then((message) async {
-      if (message!.notification != null &&
-          message.notification!.title == "Order Updated") {
-        if (message.data["Type"] == "Question") {
-        } else if (message.data["Type"] == "Report") {}
-      }
-
-      if (message.notification != null &&
-          message.notification!.title == "Consult Astrologer") {}
-
-      if (message.notification != null &&
-          message.notification!.title == "Daily Horoscope") {}
-    });
-
     //foreground message
     FirebaseMessaging.onMessage.listen((message) async {
       if (message.notification != null) {

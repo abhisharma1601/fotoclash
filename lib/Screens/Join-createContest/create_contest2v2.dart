@@ -123,6 +123,7 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
           "password": widget.pass ?? "",
           "Protected": widget.private,
           "winnerPrize": widget.winnerPrize,
+          "Prize": int.parse(widget.winnerPrize?.replaceAll("₹", "") as String),
           "Voters": []
         });
         await firebaseFirestore
@@ -132,10 +133,11 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
             .doc(ID)
             .set({
           "ContestId": ID,
-          "Likes": [0, 0, 0, 0],
+          "Likes": [0, 0],
           "isActive": widget.isActive,
           "Winner": widget.winnerisME,
-          "images": [url, "", "", ""],
+          "images": [url, ""],
+          "Prize": int.parse(widget.winnerPrize?.replaceAll("₹", "") as String),
         }, SetOptions(merge: true));
       },
     );

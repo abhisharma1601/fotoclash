@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Pages/instructions.dart';
+import 'package:fotoclash/Screens/Notification/notification.dart';
 import 'package:fotoclash/Screens/Profile/edit_profile.dart';
 import 'package:fotoclash/Screens/leader_board.dart';
 import 'package:fotoclash/Screens/Profile/set_profile.dart';
@@ -67,7 +68,15 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
               },
               child: _RowBox(
                   ico: Icons.account_balance_wallet_rounded, body: "Wallet")),
-          _RowBox(ico: Icons.notifications_none, body: "Notification"),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => NotificationsPage()));
+              },
+              child:
+                  _RowBox(ico: Icons.notifications_none, body: "Notification")),
           GestureDetector(
             onTap: () {
               Navigator.push(context,
