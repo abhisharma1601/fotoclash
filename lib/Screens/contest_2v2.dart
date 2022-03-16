@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/drawer_details.dart';
 import 'package:fotoclash/Screens/search_contest/searchcontest.dart';
+import 'package:fotoclash/Screens/single_image.dart';
 import 'package:fotoclash/main.dart';
 import 'package:like_button/like_button.dart';
 import 'package:share_plus/share_plus.dart';
@@ -255,10 +256,19 @@ class _Contest2v2State extends State<Contest2v2> {
 }
 
 imageContainer(BuildContext context, String image) {
-  return Container(
-    decoration: BoxDecoration(
-        image: DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
-    width: MediaQuery.of(context).size.width * 187 / 375,
-    height: MediaQuery.of(context).size.height * 420 / 865,
+  return InkWell(
+    onTap: () {
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) => SingleImage(
+                image: image,
+              )));
+    },
+    child: Container(
+      decoration: BoxDecoration(
+          image:
+              DecorationImage(image: NetworkImage(image), fit: BoxFit.cover)),
+      width: MediaQuery.of(context).size.width * 187 / 375,
+      height: MediaQuery.of(context).size.height * 420 / 865,
+    ),
   );
 }
