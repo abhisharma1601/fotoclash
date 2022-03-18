@@ -11,6 +11,8 @@ class NotificationsPage extends StatefulWidget {
 }
 
 class _NotificationsPageState extends State<NotificationsPage> {
+  List<Widget> notifs = [];
+
   @override
   void initState() {
     get_notification();
@@ -18,9 +20,24 @@ class _NotificationsPageState extends State<NotificationsPage> {
   }
 
   void get_notification() {
+    notifs = [];
+
     FirebaseMessaging.instance.getInitialMessage().then((message) async {
-      Fluttertoast.showToast(msg: message!.notification!.title.toString());
-      Fluttertoast.showToast(msg: message.notification!.body.toString());
+      notifs.add(Notification(
+        head: message!.notification!.title.toString(),
+        body: message.notification!.body.toString(),
+      ));
+      setState(() {});
+    });
+
+    FirebaseMessaging.onMessage.listen((message) async {
+      if (message.notification != null) {
+        notifs.add(Notification(
+          head: message.notification!.title.toString(),
+          body: message.notification!.body.toString(),
+        ));
+        setState(() {});
+      }
     });
   }
 
@@ -67,54 +84,59 @@ class _NotificationsPageState extends State<NotificationsPage> {
             SizedBox(
               height: 25,
             ),
-            Column(
-              children: [
-                Container(
-                  margin: EdgeInsets.only(left: 15, right: 15, bottom: 20),
-                  padding: EdgeInsets.all(10),
-                  decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xffF49D63)),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Head",
-                            style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold),
-                          ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Container(
-                            width: 265,
-                            child: Text(
-                              "Congratulation you won 300Rs in contest with id 0d298100-a22b-1. Hope you will be playing again next time",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.normal),
-                            ),
-                          ),
-                        ],
-                      ),
-                      Spacer(),
-                      Icon(
-                        Icons.notification_add,
-                        color: Colors.red,
-                        size: 35,
-                      )
-                    ],
-                  ),
-                )
-              ],
-            )
+            Column(children: notifs)
           ],
         ),
+      ),
+    );
+  }
+}
+
+class Notification extends StatelessWidget {
+  Notification({required this.head, required this.body});
+  String body, head;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: EdgeInsets.only(left: 15, right: 15, bottom: 20),
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Color(0xffF49D63)),
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Row(
+        children: [
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                head,
+                style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+              Container(
+                width: 265,
+                child: Text(
+                  body,
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.normal),
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          Icon(
+            Icons.notification_add,
+            color: Colors.red,
+            size: 35,
+          )
+        ],
       ),
     );
   }

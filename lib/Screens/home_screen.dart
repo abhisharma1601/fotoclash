@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:fotoclash/Screens/Notification/notification.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:collection/src/iterable_extensions.dart';
@@ -38,7 +39,7 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   String _server_token =
-      "AAAAFGB1Eqk:APA91bFfvQWohi407TFIUNopmXOVE4gDpoM3Vedr6VJZJzc0KbC8YzRfU7noKXbvvNJybIdeLVBtjRzZ0motVhzOfU41gM9VhdMFVL-I848IgpnXfCrq8UgIsFRNyMcZzEEhWrFeSzca";
+      "AAAAZ0LjcmY:APA91bHd2nHGR0kt1grTkoXIMgWrJNMAXTchK9i089bwmaEV738RD1zA1rebS5-TwrHGWTwrqQfgVgkr3V_kpuGufH8gOItQ7WyvQj98gaQwA4rxWSRgvzLsKEUQy867wFm7Nj7c1ojJ";
 
   Future<void> send_noti(String token, int Amount, String Status,
       String ContestID, String body_text) async {
@@ -72,13 +73,14 @@ class _HomeScreenState extends State<HomeScreen> {
     FirebaseMessaging.onMessage.listen((message) async {
       if (message.notification != null) {
         print(message.notification!.body);
-        Fluttertoast.showToast(msg: message.notification!.body as String);
+        Fluttertoast.showToast(msg: "New Notifications!");
       }
     });
 
     //background taps
     FirebaseMessaging.onMessageOpenedApp.listen((message) async {
-      Fluttertoast.showToast(msg: message.data.toString());
+      Navigator.push(context,
+          MaterialPageRoute(builder: (context) => NotificationsPage()));
     });
   }
 
@@ -379,67 +381,85 @@ class _HomeScreenState extends State<HomeScreen> {
                 .doc(i.data()["ContestID"])
                 .set({"Declared": true}, SetOptions(merge: true));
             String creator_id = i.data()["CreatorID"];
-            FirebaseFirestore.instance.collection("Users").doc(creator_id).set({
-              "Wallet": {
-                "Balance": FieldValue.increment(
-                    int.parse(i.data()["EntryFee"].replaceAll("₹", "")))
-              }
-            }, SetOptions(merge: true));
-            FirebaseFirestore.instance
-                .collection("Users")
-                .doc(creator_id)
-                .collection("Participations")
-                .doc(i.data()["ContestID"])
-                .set({"isActive": false}, SetOptions(merge: true));
-            var token_key = await FirebaseFirestore.instance
-                .collection("Users")
-                .doc(creator_id)
-                .get();
-            String token = (token_key.data() as dynamic)["Token"];
+            List participants = i.data()["Participations"];
+            for (var person in participants) {
+              print(i);
+              if (person != "") {
+                FirebaseFirestore.instance.collection("Users").doc(person).set({
+                  "Wallet": {
+                    "Balance": FieldValue.increment(
+                        int.parse(i.data()["EntryFee"].replaceAll("₹", "")))
+                  }
+                }, SetOptions(merge: true));
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(person)
+                    .collection("Participations")
+                    .doc(i.data()["ContestID"])
+                    .set({"isActive": false}, SetOptions(merge: true));
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(person)
+                    .collection("Participations")
+                    .doc(i.data()["ContestID"])
+                    .set({"isActive": false}, SetOptions(merge: true));
+                var token_key = await FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(person)
+                    .get();
+                String token = (token_key.data() as dynamic)["Token"];
 
-            send_noti(
-                token,
-                int.parse(i.data()["EntryFee"].replaceAll("₹", "")),
-                "No Participation",
-                i.data()["ContestID"],
-                "There was no participation for your contest with id ${i.data()["ContestID"]}. Don't worry, keep sharing your contests! Entry fee will be refunded!");
+                send_noti(
+                    token,
+                    int.parse(i.data()["EntryFee"].replaceAll("₹", "")),
+                    "No Participation",
+                    i.data()["ContestID"],
+                    "There was no participation for your contest with id ${i.data()["ContestID"]}. Don't worry, keep sharing your contests! Entry fee will be refunded!");
+              }
+            }
           }
         } catch (e) {
           FirebaseFirestore.instance
               .collection("Contests")
               .doc(i.data()["ContestID"])
               .set({"Declared": true}, SetOptions(merge: true));
-          String creator_id = i.data()["CreatorID"];
-          FirebaseFirestore.instance.collection("Users").doc(creator_id).set({
-            "Wallet": {
-              "Balance": FieldValue.increment(
-                  int.parse(i.data()["EntryFee"].replaceAll("₹", "")))
-            }
-          }, SetOptions(merge: true));
-          FirebaseFirestore.instance
-              .collection("Users")
-              .doc(creator_id)
-              .collection("Participations")
-              .doc(i.data()["ContestID"])
-              .set({"isActive": false}, SetOptions(merge: true));
-          FirebaseFirestore.instance
-              .collection("Users")
-              .doc(creator_id)
-              .collection("Participations")
-              .doc(i.data()["ContestID"])
-              .set({"isActive": false}, SetOptions(merge: true));
-          var token_key = await FirebaseFirestore.instance
-              .collection("Users")
-              .doc(creator_id)
-              .get();
-          String token = (token_key.data() as dynamic)["Token"];
+          // String creator_id = i.data()["CreatorID"];
+          List participants = i.data()["Participations"];
+          for (var person in participants) {
+            print(i);
+            if (person != "") {
+              FirebaseFirestore.instance.collection("Users").doc(person).set({
+                "Wallet": {
+                  "Balance": FieldValue.increment(
+                      int.parse(i.data()["EntryFee"].replaceAll("₹", "")))
+                }
+              }, SetOptions(merge: true));
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(person)
+                  .collection("Participations")
+                  .doc(i.data()["ContestID"])
+                  .set({"isActive": false}, SetOptions(merge: true));
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(person)
+                  .collection("Participations")
+                  .doc(i.data()["ContestID"])
+                  .set({"isActive": false}, SetOptions(merge: true));
+              var token_key = await FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(person)
+                  .get();
+              String token = (token_key.data() as dynamic)["Token"];
 
-          send_noti(
-              token,
-              int.parse(i.data()["EntryFee"].replaceAll("₹", "")),
-              "No Participation",
-              i.data()["ContestID"],
-              "There was no participation for your contest with id ${i.data()["ContestID"]}. Don't worry, keep sharing your contests! Entry fee will be refunded!");
+              send_noti(
+                  token,
+                  int.parse(i.data()["EntryFee"].replaceAll("₹", "")),
+                  "No Participation",
+                  i.data()["ContestID"],
+                  "There was no participation for your contest with id ${i.data()["ContestID"]}. Don't worry, keep sharing your contests! Entry fee will be refunded!");
+            }
+          }
         }
       }
     }
