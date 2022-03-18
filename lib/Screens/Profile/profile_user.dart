@@ -90,26 +90,31 @@ class _UserProfileState extends State<UserProfile> {
                               top: MediaQuery.of(context).size.height *
                                   340 /
                                   812,
-                              left:
-                                  MediaQuery.of(context).size.width * 12 / 375,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    widget.username,
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 22,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    snapshot.requireData.docs[0]["State"],
-                                    style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w300),
-                                  )
-                                ],
+                              left:0,
+                              right: 0,
+                                                            child: Container(
+                                padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
+                        decoration:
+                            BoxDecoration(color: Colors.black.withOpacity(0.7)),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      widget.username,
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 22,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    Text(
+                                      snapshot.requireData.docs[0]["State"],
+                                      style: TextStyle(
+                                          color: Colors.white,
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w300),
+                                    )
+                                  ],
+                                ),
                               ),
                             ),
                           ],
@@ -131,7 +136,8 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                               // _shocase(head: snapshot.requireData.docs[0]["Data"][1], body: "Following"),
                               _shocase(
-                                  head: snapshot.requireData.docs[0]["Data"][2],
+                                  head: snapshot.requireData.docs[0]["WinningData"]["Contest Tie"]
+                                  + snapshot.requireData.docs[0]["WinningData"]["Lost"]+ snapshot.requireData.docs[0]["WinningData"]["Won"],
                                   body: "Contests")
                             ],
                           ),
@@ -220,6 +226,7 @@ class _UserProfileState extends State<UserProfile> {
                                               ),
                                       );
                                     })),
+                                    SizedBox(width: 5,),
                             StreamBuilder(
                                 stream: chatRoomsStream,
                                 builder: (context, AsyncSnapshot snapshot) {
@@ -304,9 +311,9 @@ class _UserProfileState extends State<UserProfile> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             _winDetails(
-                                head: "Won", body: "60", color: Colors.green),
+                                head: "Won", body: snapshot.requireData.docs[0]["WinningData"]["Won"], color: Colors.green),
                             _winDetails(
-                                head: "Lost", body: "60", color: Colors.red),
+                                head: "Lost", body: snapshot.requireData.docs[0]["WinningData"]["Lost"], color: Colors.red),
                           ],
                         ),
                         Divider(
@@ -373,7 +380,7 @@ class _winDetails extends StatelessWidget {
   _winDetails({required this.head, required this.body, required this.color});
 
   String head;
-  String body;
+  int body;
   Color color;
 
   @override

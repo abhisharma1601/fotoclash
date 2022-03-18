@@ -16,6 +16,7 @@ class JoinContest extends StatefulWidget {
   int balance;
   String? CreatorID;
   String? EntryFee;
+  String? winnerPrize;
   bool isActive;
   bool winnerisME;
   JoinContest(
@@ -24,6 +25,7 @@ class JoinContest extends StatefulWidget {
       required this.balance,
       this.CreatorID,
       this.EntryFee,
+      this.winnerPrize,
       required this.isActive,
       required this.winnerisME});
   @override
@@ -226,6 +228,9 @@ class _JoinContestState extends State<JoinContest> {
       "isActive": widget.isActive,
       "Winner": widget.winnerisME,
       "images": prevImages,
+      "Entry Fee":widget.EntryFee,
+      "DateTime":DateTime.now().toString().substring(0, 18),
+      "Prize":widget.winnerPrize
     }, SetOptions(merge: true));
   }
 

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
@@ -8,6 +9,7 @@ class TabPair {
   final Widget view;
   TabPair({required this.tab, required this.view});
 }
+
 final _auth = FirebaseAuth.instance;
 List<TabPair> TabPairs = [
   TabPair(
@@ -38,52 +40,93 @@ List<TabPair> TabPairs = [
                         itemCount: snapshot.requireData.docs.length,
                         itemBuilder: (_, index) {
                           print(snapshot.requireData.docs[index]['Winner']);
-                          return Card(
-                            
-                              color: Colors.transparent,
-                              margin: EdgeInsets.zero,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(8)),
-                              child: Container(
-                                margin: const EdgeInsets.all(8),
-                                child: ClipRRect(
-                                  borderRadius: BorderRadius.circular(8),
-                                  child: Stack(
-                                    fit: StackFit.expand,
-                                    children: [
-                                      Image(
-                                        image: NetworkImage(snapshot.requireData
-                                            .docs[index]["images"][0]),
-                                        fit: BoxFit.cover,
+                          return InkWell(
+                            onTap: () {
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      backgroundColor: Color(0xFF141E31),
+                                      title: Text(
+                                        "Contest Details",
+                                        style: TextStyle(color: Colors.white),
                                       ),
-                                      Positioned(
-                                        bottom: 0,
-                                        right: 0,
-                                        child: Opacity(
-                                          opacity: 0.8,
-                                          child: Container(
-                                            height: 22,
-                                            width: 50,
-                                            decoration: BoxDecoration(
-                                                color: snapshot.requireData.docs[index]['Winner']==false
-                                                    ? Colors.red[300]
-                                                    : Colors.green[300]),
-                                            child: Center(
-                                                child: Text(
-                                              snapshot.requireData.docs[index]['Winner']==false ? "Lost" : "Won",
-                                              style: TextStyle(
-                                                  color: snapshot.requireData.docs[index]['Winner']==false
-                                                      ? Colors.red
-                                                      : Colors.green,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
+                                      content: Text(
+                                        " Prize : " +
+                                            snapshot.requireData
+                                                .docs[index]['Prize']
+                                                .toString() +
+                                            "\n Entry Fee : " +
+                                            snapshot.requireData
+                                                .docs[index]['Entry Fee']
+                                                .toString() +
+                                            "\n Contest ID : " +
+                                            snapshot.requireData
+                                                .docs[index]['ContestId']
+                                                .toString(),
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    );
+                                  });
+                            },
+                            child: Card(
+                                color: Colors.transparent,
+                                margin: EdgeInsets.zero,
+                                shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(8)),
+                                child: Container(
+                                  margin: const EdgeInsets.all(8),
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(8),
+                                    child: Stack(
+                                      fit: StackFit.expand,
+                                      children: [
+                                        Image(
+                                          image: NetworkImage(snapshot
+                                              .requireData
+                                              .docs[index]["images"][0]),
+                                          fit: BoxFit.cover,
+                                        ),
+                                        Positioned(
+                                          bottom: 0,
+                                          right: 0,
+                                          child: Opacity(
+                                            opacity: 0.8,
+                                            child: Container(
+                                              height: 22,
+                                              width: 50,
+                                              decoration: BoxDecoration(
+                                                  color: snapshot.requireData
+                                                                  .docs[index]
+                                                              ['Winner'] ==
+                                                          false
+                                                      ? Colors.red[300]
+                                                      : Colors.green[300]),
+                                              child: Center(
+                                                  child: Text(
+                                                snapshot.requireData.docs[index]
+                                                            ['Winner'] ==
+                                                        false
+                                                    ? "Lost"
+                                                    : "Won",
+                                                style: TextStyle(
+                                                    color: snapshot.requireData
+                                                                    .docs[index]
+                                                                ['Winner'] ==
+                                                            false
+                                                        ? Colors.red
+                                                        : Colors.green,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              )),
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ],
+                                      ],
+                                    ),
                                   ),
-                                ),
-                              ));
+                                )),
+                          );
                         }),
                   )
                 : CircularProgressIndicator();
@@ -117,47 +160,79 @@ List<TabPair> TabPairs = [
                       mainAxisSpacing: 8,
                       itemCount: snapshot.requireData.docs.length,
                       itemBuilder: (_, index) {
-                        return Card(
-                            color: Colors.transparent,
-                            margin: EdgeInsets.zero,
-                            shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8)),
-                            child: Container(
-                              margin: const EdgeInsets.all(8),
-                              child: ClipRRect(
-                                borderRadius: BorderRadius.circular(8),
-                                child: Stack(
-                                  fit: StackFit.expand,
-                                  children: [
-                                    Image(
-                                      image: NetworkImage(snapshot.requireData
-                                          .docs[index]["images"][0]),
-                                      fit: BoxFit.cover,
-                                    ),
-                                    Positioned(
-                                      bottom: 0,
-                                      right: 0,
-                                      child: Opacity(
-                                        opacity: 0.8,
-                                        child: Container(
-                                          height: 22,
-                                          width: 50,
-                                          decoration: BoxDecoration(
-                                              color: Colors.purple[300]),
-                                          child: const Center(
-                                              child: Text(
-                                            "Live",
-                                            style: TextStyle(
-                                                color: Colors.purple,
-                                                fontWeight: FontWeight.bold),
-                                          )),
+                        return InkWell(
+                          onTap: (){
+                              showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return AlertDialog(
+                                      backgroundColor: Color(0xFF141E31),
+                                      title: Text(
+                                        "Contest Details",
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                      content: Text(
+                                        " Prize : " +
+                                            snapshot.requireData
+                                                .docs[index]['Prize']
+                                                .toString() +
+                                            "\n Entry Fee : " +
+                                            snapshot.requireData
+                                                .docs[index]['Entry Fee']
+                                                .toString() +
+                                            "\n Contest ID : " +
+                                            snapshot.requireData
+                                                .docs[index]['ContestId']
+                                                .toString() +"\n Contest Start time : "+ snapshot.requireData
+                                                .docs[index]['DateTime'] ,
+  
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    );
+                                  });
+                          },
+                          child: Card(
+                              color: Colors.transparent,
+                              margin: EdgeInsets.zero,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8)),
+                              child: Container(
+                                margin: const EdgeInsets.all(8),
+                                child: ClipRRect(
+                                  borderRadius: BorderRadius.circular(8),
+                                  child: Stack(
+                                    fit: StackFit.expand,
+                                    children: [
+                                      Image(
+                                        image: NetworkImage(snapshot.requireData
+                                            .docs[index]["images"][0]),
+                                        fit: BoxFit.cover,
+                                      ),
+                                      Positioned(
+                                        bottom: 0,
+                                        right: 0,
+                                        child: Opacity(
+                                          opacity: 0.8,
+                                          child: Container(
+                                            height: 22,
+                                            width: 50,
+                                            decoration: BoxDecoration(
+                                                color: Colors.purple[300]),
+                                            child: const Center(
+                                                child: Text(
+                                              "Live",
+                                              style: TextStyle(
+                                                  color: Colors.purple,
+                                                  fontWeight: FontWeight.bold),
+                                            )),
+                                          ),
                                         ),
                                       ),
-                                    ),
-                                  ],
+                                    ],
+                                  ),
                                 ),
-                              ),
-                            ));
+                              )),
+                        );
                       },
                     ),
                   )

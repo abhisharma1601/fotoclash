@@ -60,7 +60,7 @@ class _MessagesState extends State<Messages> {
           Column(
             children: [
               const SizedBox(
-                height: 40,
+                height: 50,
               ),
               Row(
                 children: [
@@ -77,7 +77,7 @@ class _MessagesState extends State<Messages> {
                     ),
                   ),
                   SizedBox(
-                    width: MediaQuery.of(context).size.width * 100 / 375,
+                    width: MediaQuery.of(context).size.width * 90 / 375,
                   ),
                   Row(
                     children: [

@@ -197,24 +197,28 @@ class _Comp4v4State extends State<_Comp4v4> {
                   .set({"Likes": widget.likes}, SetOptions(merge: true));
             }
           },
-          child: Column(
-            children: [
-              Icon(
-                CupertinoIcons.heart_fill,
-                color: like1,
-                size: 35,
-              ),
-              Text(
-                widget.likes[0].toString(),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              )
-            ],
+          child: Container(
+            decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+            child: Column(
+              children: [
+                Icon(
+                  CupertinoIcons.heart_fill,
+                  color: like1,
+                  size: 35,
+                ),
+                Text(
+                  widget.likes[0].toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                )
+              ],
+            ),
           ),
         ),
-        left: MediaQuery.of(context).size.width * 70 / 375,
+        left:  MediaQuery.of(context).size.width * 187 / 375,
+        right: 0,
         top: MediaQuery.of(context).size.height * 330 / 812,
       ),
       Positioned(
@@ -276,24 +280,28 @@ class _Comp4v4State extends State<_Comp4v4> {
                   .set({"Likes": widget.likes}, SetOptions(merge: true));
             }
           },
-          child: Column(
-            children: [
-              Icon(
-                CupertinoIcons.heart_fill,
-                color: like2,
-                size: 35,
-              ),
-              Text(
-                widget.likes[1].toString(),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              )
-            ],
+          child: Container(
+            decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+            child: Column(
+              children: [
+                Icon(
+                  CupertinoIcons.heart_fill,
+                  color: like2,
+                  size: 35,
+                ),
+                Text(
+                  widget.likes[1].toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                )
+              ],
+            ),
           ),
         ),
-        left: MediaQuery.of(context).size.width * 260 / 375,
+        left:0,
+        right:  MediaQuery.of(context).size.width * 185 / 375,
         top: MediaQuery.of(context).size.height * 330 / 812,
       ),
       Positioned(
@@ -356,27 +364,33 @@ class _Comp4v4State extends State<_Comp4v4> {
                   .set({"Likes": widget.likes}, SetOptions(merge: true));
             }
           },
-          child: Column(
-            children: [
-              Icon(
-                CupertinoIcons.heart_fill,
-                color: like3,
-                size: 35,
-              ),
-              Text(
-                widget.likes[2].toString(),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              )
-            ],
+          child: Container(
+            decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+            child: Column(
+              children: [
+                Icon(
+                  CupertinoIcons.heart_fill,
+                  color: like3,
+                  size: 35,
+                ),
+                Text(
+                  widget.likes[2].toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                )
+              ],
+            ),
           ),
         ),
-        left: MediaQuery.of(context).size.width * 70 / 375,
+        left: 0,
+                right: MediaQuery.of(context).size.width * 185 / 375,
+
         top: MediaQuery.of(context).size.height * 410 / 812,
       ),
       Positioned(
+        
         child: GestureDetector(
           onTap: () {
             FirebaseFirestore.instance
@@ -436,24 +450,29 @@ class _Comp4v4State extends State<_Comp4v4> {
                   .set({"Likes": widget.likes}, SetOptions(merge: true));
             }
           },
-          child: Column(
-            children: [
-              Icon(
-                CupertinoIcons.heart_fill,
-                color: like4,
-                size: 35,
-              ),
-              Text(
-                widget.likes[3].toString(),
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 18),
-              )
-            ],
+          child: Container(
+                // width: MediaQuery.of(context).size.width * 0.25,
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+            child: Column(
+              children: [
+                Icon(
+                  CupertinoIcons.heart_fill,
+                  color: like4,
+                  size: 35,
+                ),
+                Text(
+                  widget.likes[3].toString(),
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18),
+                )
+              ],
+            ),
           ),
         ),
-        left: MediaQuery.of(context).size.width * 260 / 375,
+        left: MediaQuery.of(context).size.width * 187 / 375,
+        right: 0,
         top: MediaQuery.of(context).size.height * 410 / 812,
       ),
       Positioned(

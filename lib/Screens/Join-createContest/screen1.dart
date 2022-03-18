@@ -899,6 +899,7 @@ class _joinBlock extends StatelessWidget {
                                 contestSize: players,
                                 CreatorID: CreatorID,
                                 EntryFee: EntryFee,
+                                winnerPrize: winningPrize,
                               );
                             }));
                           },

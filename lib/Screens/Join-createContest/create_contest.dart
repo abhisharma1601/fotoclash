@@ -139,7 +139,9 @@ class _CreateContestState extends State<CreateContest> {
         "isActive": widget.isActive,
         "Winner": widget.winnerisME,
         "images": [url, "", "", ""],
+        "DateTime":DateTime.now().toString().substring(0, 18),
         "Prize": int.parse(widget.winnerPrize?.replaceAll("₹", "") as String),
+        "Entry Fee":widget.prize,
       }, SetOptions(merge: true));
     });
   }

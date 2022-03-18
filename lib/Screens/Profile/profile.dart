@@ -74,6 +74,8 @@ class _ProfileState extends State<Profile> {
                     ),
                     Positioned(
                       top: MediaQuery.of(context).size.height * 226 / 812,
+                      left: 0,
+                      right: 0,
                       child: Container(
                         padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
                         decoration:
@@ -105,7 +107,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 SizedBox(
                                   width: MediaQuery.of(context).size.width *
-                                      170 /
+                                      200 /
                                       375,
                                 ),
                                 IconButton(
