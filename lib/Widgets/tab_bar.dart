@@ -161,35 +161,55 @@ List<TabPair> TabPairs = [
                       itemCount: snapshot.requireData.docs.length,
                       itemBuilder: (_, index) {
                         return InkWell(
-                          onTap: (){
-                              showDialog(
-                                  context: context,
-                                  builder: (context) {
-                                    return AlertDialog(
-                                      backgroundColor: Color(0xFF141E31),
-                                      title: Text(
-                                        "Contest Details",
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                      content: Text(
-                                        " Prize : " +
-                                            snapshot.requireData
-                                                .docs[index]['Prize']
-                                                .toString() +
-                                            "\n Entry Fee : " +
-                                            snapshot.requireData
-                                                .docs[index]['Entry Fee']
-                                                .toString() +
-                                            "\n Contest ID : " +
-                                            snapshot.requireData
-                                                .docs[index]['ContestId']
-                                                .toString() +"\n Contest Start time : "+ snapshot.requireData
-                                                .docs[index]['DateTime'] ,
-  
-                                        style: TextStyle(color: Colors.white),
-                                      ),
-                                    );
-                                  });
+                          onTap: () {
+                            showDialog(
+                                context: context,
+                                builder: (context) {
+                                  return AlertDialog(
+                                    backgroundColor: Color(0xFF141E31),
+                                    title: Text(
+                                      "Contest Details",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                    content: Text(
+                                      " Prize : " +
+                                          snapshot
+                                              .requireData.docs[index]['Prize']
+                                              .toString() +
+                                          "\n Entry Fee : " +
+                                          snapshot.requireData
+                                              .docs[index]['Entry Fee']
+                                              .toString() +
+                                          "\n Contest ID : " +
+                                          snapshot.requireData
+                                              .docs[index]['ContestId']
+                                              .toString() +
+                                          "\n Time Left : " +
+                                          DateTime.parse(snapshot.requireData
+                                                      .docs[index]['DateTime'] +
+                                                  "0")
+                                              .add(Duration(days: 1))
+                                              .difference(DateTime.now())
+                                              .inHours
+                                              .toString() +
+                                          " hrs" +
+                                          " " +
+                                          (int.parse(DateTime.parse(snapshot
+                                                                  .requireData
+                                                                  .docs[index]
+                                                              ['DateTime'] +
+                                                          "0")
+                                                      .add(Duration(days: 1))
+                                                      .difference(DateTime.now())
+                                                      .inMinutes
+                                                      .toString()) %
+                                                  24)
+                                              .toString() +
+                                          " minutes",
+                                      style: TextStyle(color: Colors.white),
+                                    ),
+                                  );
+                                });
                           },
                           child: Card(
                               color: Colors.transparent,

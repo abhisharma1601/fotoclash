@@ -259,6 +259,23 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                             "IFSC": _ifsc,
                             "Account_Holder": _accholdername
                           }, SetOptions(merge: true));
+                          FirebaseFirestore.instance
+                              .collection("Withdrawls")
+                              .doc(DateTime.now().toString())
+                              .set({
+                            "Status": false,
+                            "Date":
+                                "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
+                            "Time":
+                                "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
+                            "Amount": int.parse(_amount),
+                            "Method": gate,
+                            "UPI": _upi,
+                            "Account_No.": _accnumber,
+                            "IFSC": _ifsc,
+                            "UserID": app_user.uid,
+                            "Account_Holder": _accholdername
+                          }, SetOptions(merge: true));
                           Navigator.pop(context);
                           Navigator.pop(context);
                           Fluttertoast.showToast(

@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fotoclash/Wallet/Payment/payment.dart';
+import 'package:fotoclash/Wallet/withdraw_balance.dart';
 import 'package:fotoclash/main.dart';
 
 class AddBalance extends StatefulWidget {
@@ -180,34 +182,22 @@ class _AddBalanceState extends State<AddBalance> {
                           borderRadius: BorderRadius.circular(16)),
                     )),
                 onPressed: () {
-                  FirebaseFirestore.instance
-                      .collection("Users")
-                      .doc(app_user.uid)
-                      .set({
-                    "Wallet": {
-                      "Balance": widget.balance + int.parse(amount.text),
-                      "Added": widget.added + int.parse(amount.text)
-                    }
-                  }, SetOptions(merge: true));
-                  FirebaseFirestore.instance
-                      .collection("Users")
-                      .doc(app_user.uid)
-                      .collection("Transactions")
-                      .doc(DateTime.now().toString())
-                      .set({
-                    "Type": "Added",
-                    "Date":
-                        "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
-                    "Time": "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
-                    "Amount": int.parse(amount.text)
-                  });
-                  Navigator.pop(context);
-                  Navigator.pop(context);
-                  Fluttertoast.showToast(
-                      msg: "₹${int.parse(amount.text)} added!");
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => py_pg(amount: amount.text),
+                    ),
+                  );
                 },
                 child: GestureDetector(
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => py_pg(amount: amount.text),
+                      ),
+                    );
+                  },
                   child: Text(
                     "Add Money",
                     style: TextStyle(fontSize: 14, color: Colors.white),

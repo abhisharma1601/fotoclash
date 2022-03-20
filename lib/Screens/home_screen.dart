@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:math';
+import 'package:double_back_to_close_app/double_back_to_close_app.dart';
 import 'package:fotoclash/Screens/Notification/notification.dart';
 import 'package:http/http.dart' as http;
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -508,6 +509,10 @@ class _HomeScreenState extends State<HomeScreen> {
           index: index,
           onChangedTab: onChangedTab,
         ),
-        body: pages[index]);
+        body: DoubleBackToCloseApp(
+            snackBar: const SnackBar(
+              content: Text('Tap back again to leave'),
+            ),
+            child: pages[index]));
   }
 }

@@ -192,12 +192,12 @@ class _WalletState extends State<Wallet> {
                     height: 24,
                   ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
                     children: [
                       Column(
                         children: [
                           Text(
-                            "Withdrawn",
+                            "Total Withdrawn",
                             style: TextStyle(color: Colors.white),
                           ),
                           SizedBox(height: 6),
@@ -212,7 +212,7 @@ class _WalletState extends State<Wallet> {
                       Column(
                         children: [
                           Text(
-                            "Pending",
+                            "    Pending    ",
                             style: TextStyle(color: Colors.white),
                           ),
                           SizedBox(height: 6),
@@ -227,7 +227,7 @@ class _WalletState extends State<Wallet> {
                       Column(
                         children: [
                           Text(
-                            "Added",
+                            "     Added     ",
                             style: TextStyle(color: Colors.white),
                           ),
                           SizedBox(height: 6),

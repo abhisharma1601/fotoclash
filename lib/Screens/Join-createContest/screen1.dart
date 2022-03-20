@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Screens/Join-createContest/create_contest.dart';
 import 'package:fotoclash/Screens/Join-createContest/create_contest2v2.dart';
 import 'package:fotoclash/Screens/Join-createContest/create_contest3v3.dart';
@@ -53,6 +55,7 @@ class _ContestSState extends State<ContestS> {
   ]);
 
   Widget _show = JOinConS();
+  String _copy = "Copy Me";
 
   @override
   void initState() {
@@ -202,7 +205,7 @@ class _ContestSState extends State<ContestS> {
                             gradient: my_con),
                         child: Center(
                             child: Text(
-                          "My Contests",
+                          "Created",
                           style: TextStyle(
                               color: Colors.white, fontWeight: FontWeight.bold),
                         )),
@@ -867,13 +870,19 @@ class _joinBlock extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
-                      child: Text(contestID!,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          softWrap: true,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400)),
+                      child: GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(new ClipboardData(text: contestID));
+                          Fluttertoast.showToast(msg: "Copied");
+                        },
+                        child: Text(contestID!,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            softWrap: true,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400)),
+                      ),
                     ),
                     Spacer(),
                     Visibility(
@@ -1022,6 +1031,7 @@ class _joinBlockMy extends StatelessWidget {
   int? players, participants;
   bool isVisible;
   String? CreatorID;
+  String _copy = "Copy Me";
   _joinBlockMy(
       {Key? key,
       this.contestID,
@@ -1065,13 +1075,19 @@ class _joinBlockMy extends StatelessWidget {
                     ),
                     Padding(
                       padding: const EdgeInsets.only(top: 5),
-                      child: Text(contestID!,
-                          overflow: TextOverflow.ellipsis,
-                          maxLines: 2,
-                          softWrap: true,
-                          style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.w400)),
+                      child: GestureDetector(
+                        onTap: () {
+                          Clipboard.setData(new ClipboardData(text: contestID));
+                          Fluttertoast.showToast(msg: "Copied");
+                        },
+                        child: Text(contestID!,
+                            overflow: TextOverflow.ellipsis,
+                            maxLines: 2,
+                            softWrap: true,
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.w400)),
+                      ),
                     ),
                     Spacer(),
                     Visibility(

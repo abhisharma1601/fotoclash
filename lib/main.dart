@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/home_screen.dart';
 import 'package:fotoclash/Screens/Profile/set_profile.dart';
+import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
@@ -31,7 +32,19 @@ user_class app_user = user_class(
     bio: "",
     balance: 0);
 
-Widget screen = CircularProgressIndicator();
+Widget screen = Scaffold(
+  backgroundColor: Colors.transparent,
+  body: Container(
+    decoration: BoxDecoration(
+        image: DecorationImage(
+            image: AssetImage("background.png"), fit: BoxFit.cover)),
+    child: Center(
+      child: CircularProgressIndicator(
+        color: Colors.orange,
+      ),
+    ),
+  ),
+);
 
 class MyApp extends StatefulWidget {
   MyApp({Key? key}) : super(key: key);
@@ -95,6 +108,6 @@ class _MyAppState extends State<MyApp> {
                 ),
             primarySwatch: Colors.blue,
             unselectedWidgetColor: Colors.white),
-        home: check_user() ? SignUp() : screen);
+        home: check_user() ? Login() : screen);
   }
 }

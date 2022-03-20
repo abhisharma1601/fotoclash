@@ -107,7 +107,7 @@ class _ProfileState extends State<Profile> {
                                 ),
                                 SizedBox(
                                   width: MediaQuery.of(context).size.width *
-                                      200 /
+                                      175 /
                                       375,
                                 ),
                                 IconButton(
