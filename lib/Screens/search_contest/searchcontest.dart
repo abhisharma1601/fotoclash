@@ -41,7 +41,8 @@ class _SearchContestState extends State<SearchContest> {
                   .add(Duration(days: 1))
                   .difference(DateTime.now()) >
               Duration(seconds: 0)),
-          CreatorID: (key.data() as dynamic)["CreatorID"]),
+          CreatorID: (key.data() as dynamic)["CreatorID"],
+          participations:(key.data() as dynamic)["Participations"]),
     );
     setState(() {});
   }
@@ -123,6 +124,7 @@ class _ContestBlock extends StatelessWidget {
   List images, likes;
   String? CreatorID;
   bool voted;
+  List participations;
   _ContestBlock(
       {Key? key,
       required this.contestID,
@@ -134,7 +136,8 @@ class _ContestBlock extends StatelessWidget {
       required this.likes,
       required this.participants,
       required this.isVisible,
-      required this.CreatorID})
+      required this.CreatorID,
+      required this.participations})
       : super(key: key);
 
   @override
@@ -205,7 +208,8 @@ class _ContestBlock extends StatelessWidget {
                                       builder: (context) => Contest2v2(
                                           images: images,
                                           likes: likes,
-                                          contest_id: contestID!)));
+                                          contest_id: contestID!,
+                                          participations: participations,)));
                             } else if (participants == 4) {
                               Navigator.push(
                                   context,
@@ -213,7 +217,8 @@ class _ContestBlock extends StatelessWidget {
                                       builder: (context) => Contest4v4(
                                           images: images,
                                           likes: likes,
-                                          contest_id: contestID!)));
+                                          contest_id: contestID!,
+                                          participations: participations,)));
                             }
                           }
                         },

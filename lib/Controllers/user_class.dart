@@ -1,4 +1,7 @@
-class user_class {
+import 'package:get/get.dart';
+
+class user_class extends GetxController {
+  RxMap<dynamic, dynamic> userInfo = {}.obs;
   user_class({
     required this.name,
     required this.uid,
@@ -14,4 +17,5 @@ class user_class {
   String name, uid, username, phone, email, photo, place, bio;
   List data;
   int balance;
+  
 }

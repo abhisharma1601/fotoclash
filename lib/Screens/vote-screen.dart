@@ -48,6 +48,7 @@ class _VoteScreenState extends State<VoteScreen> {
               images: i.data()["images"],
               likes: i.data()["Likes"],
               contest_id: i.data()["ContestID"],
+              participations: i.data()["Participations"]
             ));
           } else if (i.data()["Participations"].length == 4 &&
               !i.data()["images"].contains("")) {
@@ -56,6 +57,7 @@ class _VoteScreenState extends State<VoteScreen> {
               images: i.data()["images"],
               likes: i.data()["Likes"],
               contest_id: i.data()["ContestID"],
+              participations: i.data()["Participations"],
             ));
           }
         }

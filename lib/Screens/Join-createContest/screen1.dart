@@ -57,172 +57,195 @@ class _ContestSState extends State<ContestS> {
   Widget _show = JOinConS();
   String _copy = "Copy Me";
 
-  @override
-  void initState() {
-    get_balance();
-    super.initState();
-  }
+  // @override
+  // void initState() {
+  //   get_balance();
+  //   super.initState();
+  // }
 
-  Future<void> get_balance() async {
-    var key = await FirebaseFirestore.instance
-        .collection("Users")
-        .doc(app_user.uid)
-        .get();
-    _balance_amount = (key.data() as dynamic)["Wallet"]["Balance"];
-    setState(() {});
-  }
+  // Future<void> get_balance() async {
+  //   var key = await FirebaseFirestore.instance
+  //       .collection("Users")
+  //       .doc(app_user.uid)
+  //       .get();
+  //   _balance_amount = (key.data() as dynamic)["Wallet"]["Balance"];
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.of(context).size;
     return Scaffold(
-      backgroundColor: Colors.transparent,
-      body: Container(
-        decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage("assets/background.png"), fit: BoxFit.cover),
-        ),
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(
-                height: size.height * 40 / 812,
-              ),
-              Padding(
-                padding: EdgeInsets.only(left: 20, bottom: 20),
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        Navigator.pop(context);
-                      },
-                      child: Icon(
-                        Icons.arrow_back_ios,
-                        color: Colors.white,
-                      ),
-                    ),
-                    SizedBox(
-                      width: 15,
-                    ),
-                    Text(
-                      "Fotoclash",
-                      style: TextStyle(color: Colors.white, fontSize: 20),
-                    ),
-                    Spacer(),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(context,
-                            MaterialPageRoute(builder: (context) => Wallet()));
-                      },
-                      child: Chip(
-                        label: Text("₹$_balance_amount"),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 20,
-                    )
-                  ],
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 18),
-                height: size.height * 52 / 812,
-                decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.2),
-                    borderRadius: BorderRadius.circular(10)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (join_con != _active_gra) {
-                            _show = JOinConS();
-                            join_con = _active_gra;
-                            create_con = _notactive_gra;
-                            my_con = _notactive_gra;
-                          }
-                        });
-                      },
-                      child: Container(
-                        height: 36,
-                        width: 105,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: join_con),
-                        child: Center(
-                            child: Text(
-                          "Join Contest",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (create_con != _active_gra) {
-                            _show = CreateConS(
-                              size: size,
-                            );
-                            create_con = _active_gra;
-                            join_con = _notactive_gra;
-                            my_con = _notactive_gra;
-                          }
-                        });
-                      },
-                      child: Container(
-                        height: 36,
-                        width: 105,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: create_con),
-                        child: Center(
-                            child: Text(
-                          "Create Contest",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: () {
-                        setState(() {
-                          if (my_con != _active_gra) {
-                            _show = MyConS();
-                            my_con = _active_gra;
-                            create_con = _notactive_gra;
-                            join_con = _notactive_gra;
-                          }
-                        });
-                      },
-                      child: Container(
-                        height: 36,
-                        width: 105,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10),
-                            gradient: my_con),
-                        child: Center(
-                            child: Text(
-                          "Created",
-                          style: TextStyle(
-                              color: Colors.white, fontWeight: FontWeight.bold),
-                        )),
-                      ),
-                    )
-                  ],
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              _show
-            ],
+        backgroundColor: Colors.transparent,
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/background.png"), fit: BoxFit.cover),
           ),
-        ),
-      ),
-    );
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(
+                  height: size.height * 40 / 812,
+                ),
+                Padding(
+                  padding: EdgeInsets.only(left: 20, bottom: 20),
+                  child: Row(
+                    children: [
+                      InkWell(
+                        onTap: () {
+                          Navigator.pop(context);
+                        },
+                        child: Icon(
+                          Icons.arrow_back_ios,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        width: 15,
+                      ),
+                      Text(
+                        "Fotoclash",
+                        style: TextStyle(color: Colors.white, fontSize: 20),
+                      ),
+                      Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Wallet()));
+                        },
+                        child: StreamBuilder<Object>(
+                            stream: FirebaseFirestore.instance
+                                .collection("Users")
+                                .doc(app_user.uid)
+                                .snapshots(),
+                            builder: (context, AsyncSnapshot snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              } else {
+                                return snapshot.hasData
+                                    ? Chip(
+                                        label: Text("₹" +
+                                            snapshot.requireData["Wallet"]
+                                                    ["Balance"]
+                                                .toString()),
+                                      )
+                                    : Container();
+                              }
+                            }),
+                      ),
+                      SizedBox(
+                        width: 20,
+                      )
+                    ],
+                  ),
+                ),
+                Container(
+                  margin: EdgeInsets.symmetric(horizontal: 18),
+                  height: size.height * 52 / 812,
+                  decoration: BoxDecoration(
+                      color: Colors.white.withOpacity(0.2),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (join_con != _active_gra) {
+                              _show = JOinConS();
+                              join_con = _active_gra;
+                              create_con = _notactive_gra;
+                              my_con = _notactive_gra;
+                            }
+                          });
+                        },
+                        child: Container(
+                          height: 36,
+                          width: 105,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: join_con),
+                          child: Center(
+                              child: Text(
+                            "Join Contest",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (create_con != _active_gra) {
+                              _show = CreateConS(
+                                size: size,
+                              );
+                              create_con = _active_gra;
+                              join_con = _notactive_gra;
+                              my_con = _notactive_gra;
+                            }
+                          });
+                        },
+                        child: Container(
+                          height: 36,
+                          width: 105,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: create_con),
+                          child: Center(
+                              child: Text(
+                            "Create Contest",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                        ),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            if (my_con != _active_gra) {
+                              _show = MyConS();
+                              my_con = _active_gra;
+                              create_con = _notactive_gra;
+                              join_con = _notactive_gra;
+                            }
+                          });
+                        },
+                        child: Container(
+                          height: 36,
+                          width: 105,
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              gradient: my_con),
+                          child: Center(
+                              child: Text(
+                            "Created",
+                            style: TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          )),
+                        ),
+                      )
+                    ],
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                _show
+              ],
+            ),
+          ),
+        ));
   }
 }
 
@@ -564,8 +587,8 @@ class _JOinConSState extends State<JOinConS> {
   String cid = "";
 
   Widget contests = Container(
-    child: FutureBuilder(
-        future: FirebaseFirestore.instance.collection("Contests").get(),
+    child: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection("Contests").snapshots(),
         builder: (context, AsyncSnapshot futureSnapshot) {
           if (futureSnapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -627,6 +650,7 @@ class _JOinConSState extends State<JOinConS> {
                   )
                 : Container(
                     color: Colors.transparent,
+                    
                   );
           }
         }),
@@ -769,12 +793,12 @@ class MyConS extends StatelessWidget {
           height: 15,
         ),
         Container(
-          child: FutureBuilder(
-              future: FirebaseFirestore.instance
+          child: StreamBuilder(
+              stream: FirebaseFirestore.instance
                   .collection("Users")
                   .doc(_auth.currentUser!.uid)
                   .collection("Contests")
-                  .get(),
+                  .snapshots(),
               builder: (context, AsyncSnapshot futureSnapshot) {
                 if (futureSnapshot.connectionState == ConnectionState.waiting) {
                   return const Center(

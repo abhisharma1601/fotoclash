@@ -48,6 +48,7 @@ class _UserProfileState extends State<UserProfile> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.username);
     return Scaffold(
       body: Stack(
         children: [
@@ -60,11 +61,11 @@ class _UserProfileState extends State<UserProfile> {
             height: MediaQuery.of(context).size.height,
           ),
           SingleChildScrollView(
-            child: FutureBuilder(
-                future: FirebaseFirestore.instance
+            child: StreamBuilder(
+                stream: FirebaseFirestore.instance
                     .collection("Users")
                     .where("userName", isEqualTo: widget.username)
-                    .get(),
+                    .snapshots(),
                 builder: (context, AsyncSnapshot snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return Container(

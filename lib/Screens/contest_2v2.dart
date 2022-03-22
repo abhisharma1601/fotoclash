@@ -10,9 +10,10 @@ import 'package:share_plus/share_plus.dart';
 
 class Contest2v2 extends StatefulWidget {
   Contest2v2(
-      {required this.images, required this.likes, required this.contest_id});
+      {required this.images, required this.likes, required this.contest_id,required this.participations});
   List images, likes;
   String contest_id;
+  List participations;
 
   @override
   _Contest2v2State createState() => _Contest2v2State();
@@ -50,8 +51,8 @@ class _Contest2v2State extends State<Contest2v2> {
         ),
         Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Row(children: [
-            imageContainer(context, widget.images[0]),
-            imageContainer(context, widget.images[1])
+            imageContainer(context, widget.images[0],widget.participations[0]),
+            imageContainer(context, widget.images[1],widget.participations[0])
           ]),
         ]),
         Positioned(
@@ -255,12 +256,13 @@ class _Contest2v2State extends State<Contest2v2> {
   }
 }
 
-imageContainer(BuildContext context, String image) {
+imageContainer(BuildContext context, String image,String Participations) {
   return InkWell(
     onTap: () {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => SingleImage(
                 image: image,
+                 Participations:Participations,
               )));
     },
     child: Container(

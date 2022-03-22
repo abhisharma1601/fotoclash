@@ -11,11 +11,11 @@ import 'drawer_details.dart';
 
 class Contest4v4 extends StatefulWidget {
   Contest4v4(
-      {required this.images, required this.likes, required this.contest_id});
+      {required this.images, required this.likes, required this.contest_id,required this.participations});
   List images;
   List likes;
   String contest_id;
-
+  List participations;
   @override
   _Contest4v4State createState() => _Contest4v4State();
 }
@@ -29,12 +29,18 @@ class _Contest4v4State extends State<Contest4v4> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+            key: _scaffoldkey,
+      drawer: const Drawer(
+        backgroundColor: Color(0xffbac333863),
+        child: ProfileDrawer(),
+      ),
         body: _Comp4v4(
             contest_id: widget.contest_id,
             images: widget.images,
             likes: widget.likes,
             scaffoldkey: _scaffoldkey,
-            isLiked: isLiked));
+            isLiked: isLiked,
+            participations:widget.participations));
   }
 }
 
@@ -45,13 +51,14 @@ class _Comp4v4 extends StatefulWidget {
     Key? key,
     required this.images,
     required this.likes,
+    required this.participations,
     required this.contest_id,
     required GlobalKey<ScaffoldState> scaffoldkey,
     required this.isLiked,
   })  : _scaffoldkey = scaffoldkey,
         super(key: key);
 
-  final List images, likes;
+  final List images, likes,participations;
   final GlobalKey<ScaffoldState> _scaffoldkey;
   final bool isLiked;
   final String contest_id;
@@ -66,7 +73,7 @@ class _Comp4v4State extends State<_Comp4v4> {
   Color like3 = Colors.white;
   Color like4 = Colors.white;
 
-  final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
+  // final GlobalKey<ScaffoldState> _scaffoldkey = GlobalKey<ScaffoldState>();
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
@@ -80,13 +87,13 @@ class _Comp4v4State extends State<_Comp4v4> {
       Column(children: [
         // SizedBox(height: 50,),
         Row(children: [
-          imageContainer(context, widget.images[0]),
-          imageContainer(context, widget.images[1])
+          imageContainer(context, widget.images[0],widget.participations[0]),
+          imageContainer(context, widget.images[1],widget.participations[1])
         ]),
 
         Row(children: [
-          imageContainer(context, widget.images[2]),
-          imageContainer(context, widget.images[3])
+          imageContainer(context, widget.images[2],widget.participations[2]),
+          imageContainer(context, widget.images[3],widget.participations[3])
         ])
       ]),
       Positioned(
@@ -115,7 +122,7 @@ class _Comp4v4State extends State<_Comp4v4> {
         padding: const EdgeInsets.only(left: 20, top: 30),
         child: IconButton(
             onPressed: () {
-              _scaffoldkey.currentState!.openDrawer();
+              widget._scaffoldkey.currentState!.openDrawer();
             },
             icon: const Icon(
               Icons.menu,
@@ -198,7 +205,7 @@ class _Comp4v4State extends State<_Comp4v4> {
             }
           },
           child: Container(
-            decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+
             child: Column(
               children: [
                 Icon(
@@ -281,7 +288,6 @@ class _Comp4v4State extends State<_Comp4v4> {
             }
           },
           child: Container(
-            decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
             child: Column(
               children: [
                 Icon(
@@ -365,7 +371,6 @@ class _Comp4v4State extends State<_Comp4v4> {
             }
           },
           child: Container(
-            decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
             child: Column(
               children: [
                 Icon(
@@ -451,8 +456,6 @@ class _Comp4v4State extends State<_Comp4v4> {
             }
           },
           child: Container(
-                // width: MediaQuery.of(context).size.width * 0.25,
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
             child: Column(
               children: [
                 Icon(
@@ -616,12 +619,13 @@ class _Comp4v4State extends State<_Comp4v4> {
   }
 }
 
-imageContainer(BuildContext context, String image) {
+imageContainer(BuildContext context, String image, String Participations) {
   return InkWell(
     onTap: () {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => SingleImage(
+          builder: (context) => SingleImage(            
                 image: image,
+                Participations:Participations,
               )));
     },
     child: Container(
