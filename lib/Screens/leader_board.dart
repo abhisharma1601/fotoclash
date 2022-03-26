@@ -30,17 +30,17 @@ class _LeaderBoardState extends State<LeaderBoard> {
               Row(
                 children: [
                   SizedBox(
-                    width: 20,
+                    width: 25,
                   ),
-                  InkWell(
-                    onTap: () {
-                      // Navigator.pop(context);
-                    },
-                    child: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Colors.white,
-                    ),
-                  ),
+                  // InkWell(
+                  //   onTap: () {
+                  //     // Navigator.pop(context);
+                  //   },
+                  //   child: const Icon(
+                  //     Icons.arrow_back_ios_new,
+                  //     color: Colors.white,
+                  //   ),
+                  // ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width * 100 / 375,
                   ),
@@ -55,93 +55,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                   ),
                 ],
               ),
-              // Row(
-              //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              //   children: [
-              //     Column(
-              //       children: [
-              //         _otherswinners(context,
-              //             "https://i.insider.com/5e820b04671de06758588fb8?width=700"),
-              //         const SizedBox(
-              //           height: 5,
-              //         ),
-              //         const Text(
-              //           "Lucy",
-              //           style: TextStyle(
-              //               color: Colors.white,
-              //               fontWeight: FontWeight.w700,
-              //               fontSize: 18),
-              //         ),
-              //         const SizedBox(
-              //           height: 3,
-              //         ),
-              //         const Text(
-              //           "170 W 16L",
-              //           style: TextStyle(
-              //               color: Colors.white,
-              //               fontWeight: FontWeight.w300,
-              //               fontSize: 14),
-              //         ),
-              //       ],
-              //     ),
-              //     SizedBox(width: MediaQuery.of(context).size.width * 18 / 812),
-              //     Column(
-              //       children: [
-              //         _firstwinners(
-              //           context,
-              //           "https://i.insider.com/5e820b04671de06758588fb8?width=700",
-              //         ),
-              //         const SizedBox(
-              //           height: 5,
-              //         ),
-              //         const Text(
-              //           "Lucy",
-              //           style: TextStyle(
-              //               color: Colors.white,
-              //               fontWeight: FontWeight.w700,
-              //               fontSize: 18),
-              //         ),
-              //         const SizedBox(
-              //           height: 3,
-              //         ),
-              //         const Text(
-              //           "170 W 16L",
-              //           style: TextStyle(
-              //               color: Colors.white,
-              //               fontWeight: FontWeight.w300,
-              //               fontSize: 14),
-              //         ),
-              //       ],
-              //     ),
-              //     SizedBox(width: MediaQuery.of(context).size.width * 18 / 812),
-              //     Column(
-              //       children: [
-              //         _otherswinners(context,
-              //             "https://i.insider.com/5e820b04671de06758588fb8?width=700"),
-              //         const SizedBox(
-              //           height: 5,
-              //         ),
-              //         const Text(
-              //           "Lucy",
-              //           style: TextStyle(
-              //               color: Colors.white,
-              //               fontWeight: FontWeight.w700,
-              //               fontSize: 18),
-              //         ),
-              //         const SizedBox(
-              //           height: 3,
-              //         ),
-              //         const Text(
-              //           "170 W 16L",
-              //           style: TextStyle(
-              //               color: Colors.white,
-              //               fontWeight: FontWeight.w300,
-              //               fontSize: 14),
-              //         ),
-              //       ],
-              //     ),
-              //   ],
-              // ),
+    
               const SizedBox(
                 height: 2,
               ),

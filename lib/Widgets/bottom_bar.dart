@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:fotoclash/Screens/Chats/chat_home.dart';
 import 'package:fotoclash/Screens/Join-createContest/screen1.dart';
-import 'package:fotoclash/Screens/Profile/profile.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int index;
@@ -24,8 +22,6 @@ class _BottomNavBar extends State<BottomNavBar> {
     );
     Size size = MediaQuery.of(context).size;
     double height = 56;
-    const primaryColor = Colors.orange;
-    const secondaryColor = Colors.white;
     const backgroundColor = Color(0xFF263238);
 
     return BottomAppBar(
@@ -40,8 +36,6 @@ class _BottomNavBar extends State<BottomNavBar> {
           Center(
             heightFactor: 0.6,
             child: Container(
-                // height: MediaQuery.of(context).size.height*56/812,
-                // width: MediaQuery.of(context).size.width*56/375,
                 decoration: const BoxDecoration(
                     borderRadius: BorderRadius.all(Radius.circular(35)),
                     gradient: LinearGradient(colors: [

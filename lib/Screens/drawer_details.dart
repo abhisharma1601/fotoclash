@@ -6,6 +6,7 @@ import 'package:fotoclash/Screens/Notification/notification.dart';
 import 'package:fotoclash/Screens/Profile/edit_profile.dart';
 import 'package:fotoclash/Screens/leader_board.dart';
 import 'package:fotoclash/Screens/Profile/set_profile.dart';
+import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:fotoclash/Wallet/wallet.dart';
 import 'package:fotoclash/main.dart';
@@ -106,7 +107,7 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
               onTap: () {
                 FirebaseAuth.instance.signOut().then((value) =>
                     Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (context) => const SignUp())));
+                        builder: (context) => const Login())));
               },
               child: _RowBox(ico: Icons.logout, body: "Log Out"))
         ],

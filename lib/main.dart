@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/home_screen.dart';
 import 'package:fotoclash/Screens/Profile/set_profile.dart';
 import 'package:fotoclash/Screens/sign_in.dart';
-import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 
@@ -95,7 +94,6 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return GetMaterialApp(

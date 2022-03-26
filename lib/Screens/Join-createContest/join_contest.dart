@@ -5,7 +5,6 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Models/userModel.dart';
-import 'package:fotoclash/Screens/Join-createContest/screen1.dart';
 import 'package:image_picker/image_picker.dart';
 
 import '../../main.dart';

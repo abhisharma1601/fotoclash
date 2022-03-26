@@ -27,7 +27,7 @@ class _HomeBodyState extends State<HomeBody> {
             future: FirebaseFirestore.instance.collection("Users").get(),
             builder: (ctx, AsyncSnapshot futureSnapshot) {
               if (futureSnapshot.connectionState == ConnectionState.waiting) {
-                return const CircularProgressIndicator();
+                return Center(child: const CircularProgressIndicator());
               }
               return Row(
                 children: [

@@ -1,12 +1,9 @@
-import 'package:card_swiper/card_swiper.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Screens/contest_2v2.dart';
 import 'package:fotoclash/Screens/contest_4v4.dart';
 import 'package:fotoclash/Screens/search_contest/searchcontest.dart';
-import 'package:fotoclash/main.dart';
 import 'package:swipable_stack/swipable_stack.dart';
 
 import 'drawer_details.dart';

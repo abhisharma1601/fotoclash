@@ -4,10 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Controllers/auth_controller.dart';
 import 'package:fotoclash/Models/userModel.dart';
-
 import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:get/get.dart';
-
 import 'Profile/set_profile.dart';
 
 class SignUp extends StatefulWidget {
@@ -32,7 +30,7 @@ class _SignUpState extends State<SignUp> {
     "	Bihar",
     "	Madhya Pradesh",
     "Rajasthan"
-        "	Tamil Nadu"
+    "	Tamil Nadu"
   ];
   String? value;
   bool isChecked = false;
@@ -399,7 +397,11 @@ class _SignUpState extends State<SignUp> {
                                                     BorderRadius.circular(16)),
                                           )),
                                       onPressed: () {
+                                        if(isChecked==true){
                                         signUp(emailC, passC);
+                                        }else{
+                                          Fluttertoast.showToast(msg: "Please accept Terms and Conditions");
+                                        }
                                       },
                                       child: const Text(
                                         "SignUp",
