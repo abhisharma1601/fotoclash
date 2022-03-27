@@ -805,7 +805,7 @@ class MyConS extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return futureSnapshot.data == null
+                  return futureSnapshot.hasData
                       ? Container(
                           color: Colors.transparent,
                           height: MediaQuery.of(context).size.height * 0.8,
