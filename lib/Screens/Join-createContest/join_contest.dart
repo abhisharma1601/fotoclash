@@ -65,13 +65,11 @@ class _JoinContestState extends State<JoinContest> {
     ImagePicker picker = ImagePicker();
     XFile? pickedFile;
     if (gallery) {
-      pickedFile = await picker
-          .pickImage(
+      pickedFile = await picker.pickImage(
         source: ImageSource.gallery,
       );
     } else {
-      pickedFile = await picker
-          .pickImage(
+      pickedFile = await picker.pickImage(
         source: ImageSource.camera,
       );
     }
@@ -79,7 +77,7 @@ class _JoinContestState extends State<JoinContest> {
     setState(() {
       if (pickedFile != null) {
         _photo1 = File(pickedFile.path);
-        imagePicked=true;
+        imagePicked = true;
       } else {
         print('No image selected.');
       }
@@ -102,7 +100,7 @@ class _JoinContestState extends State<JoinContest> {
     setState(() {
       if (pickedFile != null) {
         _photo2 = File(pickedFile.path);
-        imagePicked=true;
+        imagePicked = true;
       } else {
         print('No image selected.');
       }
@@ -125,7 +123,7 @@ class _JoinContestState extends State<JoinContest> {
     setState(() {
       if (pickedFile != null) {
         _photo3 = File(pickedFile.path);
-        imagePicked=true;
+        imagePicked = true;
       } else {
         print('No image selected.');
       }
@@ -227,9 +225,9 @@ class _JoinContestState extends State<JoinContest> {
       "isActive": widget.isActive,
       "Winner": widget.winnerisME,
       "images": prevImages,
-      "Entry Fee":widget.EntryFee,
-      "DateTime":DateTime.now().toString().substring(0, 18),
-      "Prize":widget.winnerPrize
+      "Entry Fee": widget.EntryFee,
+      "DateTime": DateTime.now().toString().substring(0, 18),
+      "Prize": widget.winnerPrize
     }, SetOptions(merge: true));
   }
 
@@ -389,6 +387,7 @@ class _JoinContestState extends State<JoinContest> {
                                       )),
                                   TextButton(
                                       onPressed: () {
+                                        print(widget.balance);
                                         if (int.parse(widget.EntryFee!) <=
                                             widget.balance) {
                                           postDataToFirestore();
@@ -478,7 +477,7 @@ class _JoinContestState extends State<JoinContest> {
                   futureSnapshot.requireData.docs[0]["images"][1] == ""
                       ? GestureDetector(
                           onTap: () {
-                            if (_photo1 == null && imagePicked==false ) {
+                            if (_photo1 == null && imagePicked == false) {
                               index = 1;
                               getImage1(true);
                             }
@@ -524,7 +523,7 @@ class _JoinContestState extends State<JoinContest> {
                   futureSnapshot.requireData.docs[0]["images"][2] == ""
                       ? GestureDetector(
                           onTap: () {
-                            if (_photo2 == null && imagePicked ==false) {
+                            if (_photo2 == null && imagePicked == false) {
                               index = 2;
                               getImage2(true);
                             }
@@ -570,7 +569,7 @@ class _JoinContestState extends State<JoinContest> {
                   futureSnapshot.requireData.docs[0]["images"][3] == ""
                       ? GestureDetector(
                           onTap: () {
-                            if (_photo3 == null && imagePicked ==false) {
+                            if (_photo3 == null && imagePicked == false) {
                               index = 3;
                               getImage3(true);
                             }

@@ -57,20 +57,20 @@ class _ContestSState extends State<ContestS> {
   Widget _show = JOinConS();
   String _copy = "Copy Me";
 
-  // @override
-  // void initState() {
-  //   get_balance();
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    get_balance();
+    super.initState();
+  }
 
-  // Future<void> get_balance() async {
-  //   var key = await FirebaseFirestore.instance
-  //       .collection("Users")
-  //       .doc(app_user.uid)
-  //       .get();
-  //   _balance_amount = (key.data() as dynamic)["Wallet"]["Balance"];
-  //   setState(() {});
-  // }
+  Future<void> get_balance() async {
+    var key = await FirebaseFirestore.instance
+        .collection("Users")
+        .doc(app_user.uid)
+        .get();
+    _balance_amount = (key.data() as dynamic)["Wallet"]["Balance"];
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -651,6 +651,7 @@ class _JOinConSState extends State<JOinConS> {
                 : Container(
                     color: Colors.transparent,
                     child: Text("No Contest available"),
+
                   );
           }
         }),
