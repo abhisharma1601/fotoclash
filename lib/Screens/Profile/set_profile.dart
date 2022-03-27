@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Models/userModel.dart';
-import 'package:fotoclash/Screens/home_screen.dart';
 import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:fotoclash/Widgets/image_picker.dart';
 

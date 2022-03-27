@@ -41,10 +41,6 @@ class _UImagePickerState extends State<UImagePicker> {
         const SizedBox(
           height: 10,
         ),
-        // TextButton.icon(
-        //     onPressed: picker,
-        //     icon: const Icon(Icons.image),
-        //     label: const Text("Add image")),
       ],
     );
   }

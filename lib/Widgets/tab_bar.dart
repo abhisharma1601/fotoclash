@@ -129,7 +129,7 @@ List<TabPair> TabPairs = [
                           );
                         }),
                   )
-                : CircularProgressIndicator();
+                : Center(child: CircularProgressIndicator());
           }
         }),
   ),
@@ -256,7 +256,7 @@ List<TabPair> TabPairs = [
                       },
                     ),
                   )
-                : CircularProgressIndicator();
+                : Center(child: CircularProgressIndicator());
           }
         }),
   ),
