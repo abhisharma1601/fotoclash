@@ -650,7 +650,7 @@ class _JOinConSState extends State<JOinConS> {
                   )
                 : Container(
                     color: Colors.transparent,
-                    
+                    child: Text("No Contest available"),
                   );
           }
         }),
@@ -804,7 +804,7 @@ class MyConS extends StatelessWidget {
                     child: CircularProgressIndicator(),
                   );
                 } else {
-                  return futureSnapshot.hasData
+                  return futureSnapshot.data == null
                       ? Container(
                           color: Colors.transparent,
                           height: MediaQuery.of(context).size.height * 0.8,
@@ -834,7 +834,15 @@ class MyConS extends StatelessWidget {
                                 );
                               }),
                         )
-                      : Container();
+                      : Container(
+                        height: MediaQuery.of(context).size.height*0.7,
+                        color: Colors.transparent,
+                          child: Center(
+                            child: Text("No contests created",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                )),
+                          ));
                 }
               }),
         )
