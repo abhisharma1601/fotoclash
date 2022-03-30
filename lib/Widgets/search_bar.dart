@@ -22,8 +22,8 @@ class _SearchInputState extends State<SearchInput> {
     return StreamBuilder(
       stream: chatRoomsStream,
       builder: (context, AsyncSnapshot snapshot) {
-        return snapshot.hasData
-            ? ListView.builder(
+        return snapshot.hasData ? snapshot.data.docs.isNotEmpty? 
+            ListView.builder(
                 itemCount: snapshot.requireData.size,
                 itemBuilder: (context, index) {
                   return ChatTile(
@@ -46,6 +46,10 @@ class _SearchInputState extends State<SearchInput> {
                   "First start chats",
                   style: TextStyle(color: Colors.white),
                 )),
+              ): Container(
+               color: Colors.transparent,
+                child: Center(
+                  child: CircularProgressIndicator()),
               );
       },
     );
