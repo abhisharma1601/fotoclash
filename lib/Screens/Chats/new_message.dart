@@ -1,21 +1,19 @@
-
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Models/databse.dart';
 import 'package:fotoclash/main.dart';
 
 class NewMessages extends StatefulWidget {
-   String chatRoomId;
-   NewMessages(this.chatRoomId,{Key? key}) : super(key: key);
+  String chatRoomId;
+  NewMessages(this.chatRoomId, {Key? key}) : super(key: key);
 
   @override
   State<NewMessages> createState() => _NewMessagesState();
 }
 
 class _NewMessagesState extends State<NewMessages> {
-
   final _controller = TextEditingController();
   var _enteredMessage = '';
-    addMessage() async {
+  addMessage() async {
     if (_controller.text.isNotEmpty) {
       Map<String, dynamic> chatMessageMap = {
         'userName': app_user.username,
@@ -56,8 +54,8 @@ class _NewMessagesState extends State<NewMessages> {
                 prefixIcon: Icon(
                   Icons.add,
                   color: Colors.grey[500]!,
+                  size: 0,
                 ),
-                
                 filled: true,
                 fillColor: const Color(0xFF263238),
                 hintText: "Type Message",
