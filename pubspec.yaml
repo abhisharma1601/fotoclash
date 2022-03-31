@@ -54,6 +54,7 @@ dependencies:
   double_back_to_close_app: ^2.1.0
   steps: ^1.0.1
   razorpay_flutter: ^1.2.2
+  package_info_plus: ^1.4.0
 
 dev_dependencies:
   flutter_test:

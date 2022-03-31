@@ -22,25 +22,35 @@ class _SearchInputState extends State<SearchInput> {
     return StreamBuilder(
       stream: chatRoomsStream,
       builder: (context, AsyncSnapshot snapshot) {
-        return snapshot.hasData
-            ? ListView.builder(
+        return snapshot.hasData ? snapshot.data.docs.isNotEmpty? 
+            ListView.builder(
                 itemCount: snapshot.requireData.size,
                 itemBuilder: (context, index) {
                   return ChatTile(
-                    snapshot.requireData.docs[index]
-                        .get("chatRoomId")
-                        .toString()
-                        .replaceAll("_", "")
-                        .replaceAll(app_user.username, ""),
-                    snapshot.requireData.docs[index]
-                        .get("chatRoomId")
-                        .toString(),
-                    snapshot.requireData.docs[index]["image"],
-                    index
-                  );
+                      snapshot.requireData.docs[index]
+                          .get("chatRoomId")
+                          .toString()
+                          .replaceAll("_", "")
+                          .replaceAll(app_user.username, ""),
+                      snapshot.requireData.docs[index]
+                          .get("chatRoomId")
+                          .toString(),
+                      snapshot.requireData.docs[index]["image"],
+                      index);
                 },
               )
-            : Container();
+            : Container(
+               color: Colors.transparent,
+                child: Center(
+                    child: Text(
+                  "First start chats",
+                  style: TextStyle(color: Colors.white),
+                )),
+              ): Container(
+               color: Colors.transparent,
+                child: Center(
+                  child: CircularProgressIndicator()),
+              );
       },
     );
   }
@@ -120,7 +130,7 @@ class _SearchInputState extends State<SearchInput> {
           context,
           MaterialPageRoute(
             builder: (context) => Messages(chatRoomId, search.text,
-                app_user.photo == image[0] ? image[1] : image[0],0),
+                app_user.photo == image[0] ? image[1] : image[0], 0),
           ));
     } else {
       SnackBar(
@@ -199,7 +209,7 @@ class ChatTile extends StatelessWidget {
   final String chatRoom;
   final List image;
   int index;
-  ChatTile(this.userName, this.chatRoom, this.image,this.index);
+  ChatTile(this.userName, this.chatRoom, this.image, this.index);
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
@@ -208,7 +218,7 @@ class ChatTile extends StatelessWidget {
             context,
             MaterialPageRoute(
               builder: (context) => Messages(chatRoom, userName,
-                  app_user.photo == image[0] ? image[1] : image[0],index),
+                  app_user.photo == image[0] ? image[1] : image[0], index),
             ));
       },
       child: Container(

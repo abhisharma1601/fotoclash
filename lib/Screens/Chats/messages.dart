@@ -14,9 +14,8 @@ class Messages extends StatefulWidget {
   Messages(
     this.chatRoomId,
     this.userName,
-    this.image, 
-    this.index,
-    {
+    this.image,
+    this.index, {
     Key? key,
   }) : super(key: key);
 
@@ -83,8 +82,9 @@ class _MessagesState extends State<Messages> {
                     children: [
                       GestureDetector(
                         onTap: () {
-                          Navigator.of(context).push(
-                              MaterialPageRoute(builder: (_) => UserProfile(widget.userName,widget.index)));
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) =>
+                                  UserProfile(widget.userName, widget.index)));
                         },
                         child: CircleAvatar(
                           radius: 24,
@@ -113,68 +113,81 @@ class _MessagesState extends State<Messages> {
                       stream: chatMessageStream,
                       builder: (ctx, AsyncSnapshot snapshot) {
                         return snapshot.hasData
-                            ? ListView.builder(
-                                itemCount: snapshot.requireData.size,
-                                itemBuilder: (context, index) {
-                                  return Row(
-                                    mainAxisAlignment: app_user.username ==
-                                            snapshot.requireData.docs[index]
-                                                ["userName"]
-                                        ? MainAxisAlignment.end
-                                        : MainAxisAlignment.start,
-                                    children: [
-                                      Padding(
-                                        padding: const EdgeInsets.symmetric(
-                                            horizontal: 10),
-                                        child: Container(
-                                          decoration: BoxDecoration(
-                                              color: app_user.username ==
-                                                      snapshot.requireData.docs[index]
-                                                          ["userName"]
-                                                  ? Colors.blueGrey[900]
-                                                  : Colors.grey[600],
-                                              borderRadius: app_user.username ==
-                                                      snapshot.requireData.docs[index]
-                                                          ["userName"]
-                                                  ? const BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(20),
-                                                      bottomRight:
-                                                          Radius.circular(20),
-                                                      topLeft:
-                                                          Radius.circular(20))
-                                                  : const BorderRadius.only(
-                                                      bottomLeft:
-                                                          Radius.circular(20),
-                                                      bottomRight:
-                                                          Radius.circular(20),
-                                                      topRight: Radius.circular(20))),
-                                          margin:
-                                              const EdgeInsets.only(top: 20),
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 20 * 0.85,
-                                              vertical: 10),
-                                          child: LimitedBox(
-                                            maxHeight: 1000,
-                                            maxWidth: 250,
-                                            child: Text(
-                                              snapshot.requireData.docs[index]
-                                                  .get("message"),
-                                              maxLines: 1000,
-                                              textAlign: app_user.username ==
-                                                      snapshot.requireData.docs[index]
-                                                          ["userName"]
-                                                  ? TextAlign.end:TextAlign.start,
-                                              style: const TextStyle(
-                                                  color: Colors.white),
+                            ? snapshot.data.docs.isNotEmpty
+                                ? ListView.builder(
+                                    itemCount: snapshot.requireData.size,
+                                    itemBuilder: (context, index) {
+                                      return Row(
+                                        mainAxisAlignment: app_user.username ==
+                                                snapshot.requireData.docs[index]
+                                                    ["userName"]
+                                            ? MainAxisAlignment.end
+                                            : MainAxisAlignment.start,
+                                        children: [
+                                          Padding(
+                                            padding: const EdgeInsets.symmetric(
+                                                horizontal: 10),
+                                            child: Container(
+                                              decoration: BoxDecoration(
+                                                  color: app_user.username ==
+                                                          snapshot.requireData
+                                                                  .docs[index]
+                                                              ["userName"]
+                                                      ? Colors.blueGrey[900]
+                                                      : Colors.grey[600],
+                                                  borderRadius: app_user.username ==
+                                                          snapshot.requireData
+                                                                  .docs[index]
+                                                              ["userName"]
+                                                      ? const BorderRadius.only(
+                                                          bottomLeft:
+                                                              Radius.circular(
+                                                                  20),
+                                                          bottomRight:
+                                                              Radius.circular(20),
+                                                          topLeft: Radius.circular(20))
+                                                      : const BorderRadius.only(bottomLeft: Radius.circular(20), bottomRight: Radius.circular(20), topRight: Radius.circular(20))),
+                                              margin: const EdgeInsets.only(
+                                                  top: 20),
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                      horizontal: 20 * 0.85,
+                                                      vertical: 10),
+                                              child: LimitedBox(
+                                                maxHeight: 1000,
+                                                maxWidth: 250,
+                                                child: Text(
+                                                  snapshot
+                                                      .requireData.docs[index]
+                                                      .get("message"),
+                                                  maxLines: 1000,
+                                                  textAlign: app_user
+                                                              .username ==
+                                                          snapshot.requireData
+                                                                  .docs[index]
+                                                              ["userName"]
+                                                      ? TextAlign.start
+                                                      : TextAlign.start,
+                                                  style: const TextStyle(
+                                                      color: Colors.white),
+                                                ),
+                                              ),
                                             ),
                                           ),
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                })
-                            : Container();
+                                        ],
+                                      );
+                                    })
+                                : Container(
+                                    child: Center(
+                                        child: Text(
+                                    "Send message to start chats",
+                                    style: TextStyle(color: Colors.white),
+                                  )))
+                            : Container(child:Center(
+                                        child: Text(
+                                    "Send message to start chats",
+                                    style: TextStyle(color: Colors.white),
+                                  )));
                       })),
               NewMessages(widget.chatRoomId)
             ],

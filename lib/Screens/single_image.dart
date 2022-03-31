@@ -110,26 +110,6 @@ class _SingleImageState extends State<SingleImage> {
                   }
                 }),
           ),
-          Positioned(
-              left: MediaQuery.of(context).size.width * 30 / 375,
-              top: MediaQuery.of(context).size.height * 740 / 812,
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.comment,
-                    color: Colors.red,
-                    size: 28,
-                  ),
-                  SizedBox(
-                    width: 40,
-                  ),
-                  const Icon(
-                    Icons.favorite,
-                    color: Colors.red,
-                    size: 28,
-                  ),
-                ],
-              ))
         ],
       ),
     );

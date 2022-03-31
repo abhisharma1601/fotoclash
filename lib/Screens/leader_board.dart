@@ -115,6 +115,7 @@ class _LeaderBoardState extends State<LeaderBoard> {
                               )
                             : Container(
                                 color: Colors.transparent,
+                              child: Text("You didn't participate in events"),
                               );
                       }
                     }),

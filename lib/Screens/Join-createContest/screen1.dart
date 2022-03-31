@@ -596,60 +596,66 @@ class _JOinConSState extends State<JOinConS> {
             );
           } else {
             return futureSnapshot.hasData
-                ? Container(
-                    color: Colors.transparent,
-                    height: MediaQuery.of(context).size.height * 0.8,
-                    child: ListView.builder(
-                        physics: const BouncingScrollPhysics(),
-                        shrinkWrap: true,
-                        itemCount: futureSnapshot.requireData.size,
-                        itemBuilder: (context, index) {
-                          if (futureSnapshot.requireData.docs[index]
-                                      ["CreatorID"] !=
-                                  app_user.uid &&
-                              !futureSnapshot
-                                  .requireData.docs[index]["Participations"]
-                                  .contains(app_user.uid) &&
-                              DateTime.parse(futureSnapshot.requireData
-                                              .docs[index]["DateTime"] +
-                                          "0")
-                                      .add(Duration(days: 1))
-                                      .difference(DateTime.now()) >
-                                  Duration(seconds: 0)) {
-                            // isActive =true;
-                            int join = 0;
-                            print(DateTime.parse(futureSnapshot
-                                        .requireData.docs[index]["DateTime"] +
-                                    "0")
-                                .add(Duration(days: 1))
-                                .difference(DateTime.now()));
-                            for (var i in futureSnapshot.requireData.docs[index]
-                                ["Participations"]) {
-                              if (i != "") {
-                                join += 1;
-                              }
-                            }
-                            return _joinBlock(
-                                contestID: futureSnapshot
-                                    .requireData.docs[index]["ContestID"],
-                                participants: join,
-                                players: futureSnapshot.requireData
-                                    .docs[index]["Participations"].length,
-                                EntryFee: futureSnapshot.requireData.docs[index]
-                                    ["EntryFee"],
-                                winningPrize: futureSnapshot
-                                    .requireData.docs[index]["winnerPrize"],
-                                isVisible: true,
-                                CreatorID: futureSnapshot
-                                    .requireData.docs[index]["CreatorID"]);
-                          } else
-                            return Container(
-                              color: Colors.transparent,
-                            );
-                        }),
-                  )
+                ? futureSnapshot.data.docs.isNotEmpty
+                    ? Container(
+                        color: Colors.transparent,
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: ListView.builder(
+                            physics: const BouncingScrollPhysics(),
+                            shrinkWrap: true,
+                            itemCount: futureSnapshot.requireData.size,
+                            itemBuilder: (context, index) {
+                              if (futureSnapshot.requireData.docs[index]
+                                          ["CreatorID"] !=
+                                      app_user.uid &&
+                                  !futureSnapshot
+                                      .requireData.docs[index]["Participations"]
+                                      .contains(app_user.uid) &&
+                                  DateTime.parse(futureSnapshot.requireData
+                                                  .docs[index]["DateTime"] +
+                                              "0")
+                                          .add(Duration(days: 1))
+                                          .difference(DateTime.now()) >
+                                      Duration(seconds: 0)) {
+                                // isActive =true;
+                                int join = 0;
+                                print(DateTime.parse(futureSnapshot.requireData
+                                            .docs[index]["DateTime"] +
+                                        "0")
+                                    .add(Duration(days: 1))
+                                    .difference(DateTime.now()));
+                                for (var i in futureSnapshot.requireData
+                                    .docs[index]["Participations"]) {
+                                  if (i != "") {
+                                    join += 1;
+                                  }
+                                }
+                                return _joinBlock(
+                                    contestID: futureSnapshot
+                                        .requireData.docs[index]["ContestID"],
+                                    participants: join,
+                                    players: futureSnapshot.requireData
+                                        .docs[index]["Participations"].length,
+                                    EntryFee: futureSnapshot
+                                        .requireData.docs[index]["EntryFee"],
+                                    winningPrize: futureSnapshot
+                                        .requireData.docs[index]["winnerPrize"],
+                                    isVisible: true,
+                                    CreatorID: futureSnapshot
+                                        .requireData.docs[index]["CreatorID"]);
+                              } else
+                                return Container(
+                                  color: Colors.transparent,
+                                );
+                            }),
+                      )
+                    : Container(
+                        color: Colors.transparent,
+                        child: Text("No Contest available"),
+                      )
                 : Container(
                     color: Colors.transparent,
+                    child: Text("No Contest available"),
                   );
           }
         }),
@@ -804,36 +810,54 @@ class MyConS extends StatelessWidget {
                   );
                 } else {
                   return futureSnapshot.hasData
-                      ? Container(
+                      ? futureSnapshot.data.docs.isNotEmpty
+                          ? Container(
+                              color: Colors.transparent,
+                              height: MediaQuery.of(context).size.height * 0.8,
+                              child: ListView.builder(
+                                  physics: const BouncingScrollPhysics(),
+                                  shrinkWrap: true,
+                                  itemCount: futureSnapshot.requireData.size,
+                                  itemBuilder: (context, index) {
+                                    int join = 0;
+                                    for (var i in futureSnapshot.requireData
+                                        .docs[index]["Participations"]) {
+                                      if (i != "") {
+                                        join += 1;
+                                      }
+                                    }
+                                    return _joinBlockMy(
+                                      contestID: futureSnapshot
+                                          .requireData.docs[index]["ContestID"],
+                                      participants: join,
+                                      players: futureSnapshot.requireData
+                                          .docs[index]["Participations"].length,
+                                      EntryFee: futureSnapshot
+                                          .requireData.docs[index]["EntryFee"],
+                                      winningPrize: futureSnapshot.requireData
+                                          .docs[index]["winnerPrize"],
+                                      isVisible: true,
+                                    );
+                                  }),
+                            )
+                          : Container(
+                              height: MediaQuery.of(context).size.height * 0.7,
+                              color: Colors.transparent,
+                              child: Center(
+                                child: Text("No contests created",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                    )),
+                              ))
+                      : Container(
+                          height: MediaQuery.of(context).size.height * 0.7,
                           color: Colors.transparent,
-                          height: MediaQuery.of(context).size.height * 0.8,
-                          child: ListView.builder(
-                              physics: const BouncingScrollPhysics(),
-                              shrinkWrap: true,
-                              itemCount: futureSnapshot.requireData.size,
-                              itemBuilder: (context, index) {
-                                int join = 0;
-                                for (var i in futureSnapshot.requireData
-                                    .docs[index]["Participations"]) {
-                                  if (i != "") {
-                                    join += 1;
-                                  }
-                                }
-                                return _joinBlockMy(
-                                  contestID: futureSnapshot
-                                      .requireData.docs[index]["ContestID"],
-                                  participants: join,
-                                  players: futureSnapshot.requireData
-                                      .docs[index]["Participations"].length,
-                                  EntryFee: futureSnapshot
-                                      .requireData.docs[index]["EntryFee"],
-                                  winningPrize: futureSnapshot
-                                      .requireData.docs[index]["winnerPrize"],
-                                  isVisible: true,
-                                );
-                              }),
-                        )
-                      : Container();
+                          child: Center(
+                            child: Text("No contests created",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                )),
+                          ));
                 }
               }),
         )

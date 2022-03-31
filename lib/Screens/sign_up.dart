@@ -96,15 +96,10 @@ class _SignUpState extends State<SignUp> {
     }, SetOptions(merge: true));
 
     FirebaseFirestore.instance.collection("AppData").doc("existingUsers").set({
-      "users": FieldValue.arrayUnion([username])
+      "users": FieldValue.arrayUnion([username]),
     }, SetOptions(merge: true));
   }
 
-  // @override
-  // void dispose() {
-  //   username.dispose();
-  //   super.dispose();
-  // }
 
   @override
   Widget build(BuildContext context) {
