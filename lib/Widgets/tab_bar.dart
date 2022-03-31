@@ -11,6 +11,7 @@ class TabPair {
 }
 
 final _auth = FirebaseAuth.instance;
+
 List<TabPair> TabPairs = [
   TabPair(
     tab: const Tab(
@@ -94,20 +95,44 @@ List<TabPair> TabPairs = [
                                             opacity: 0.8,
                                             child: Container(
                                               height: 22,
-                                              width: 50,
+                                              width: 60,
                                               decoration: BoxDecoration(
                                                   color: snapshot.requireData
                                                                   .docs[index]
                                                               ['Winner'] ==
                                                           false
-                                                      ? Colors.red[300]
+                                                      ? snapshot.requireData
+                                                                          .docs[
+                                                                      index]
+                                                                  ['Status'] ==
+                                                              "No_Participation"
+                                                          ? Colors.yellow[300]
+                                                          : snapshot.requireData
+                                                                              .docs[
+                                                                          index]
+                                                                      [
+                                                                      'Status'] ==
+                                                                  "Tie"
+                                                              ? Colors.blue[300]
+                                                              : Colors.red[300]
                                                       : Colors.green[300]),
                                               child: Center(
                                                   child: Text(
                                                 snapshot.requireData.docs[index]
                                                             ['Winner'] ==
                                                         false
-                                                    ? "Lost"
+                                                    ? snapshot.requireData
+                                                                    .docs[index]
+                                                                ['Status'] ==
+                                                            "No_Participation"
+                                                        ? "Fail"
+                                                        : snapshot.requireData
+                                                                            .docs[
+                                                                        index][
+                                                                    'Status'] ==
+                                                                "Tie"
+                                                            ? "Tie"
+                                                            : "Lost"
                                                     : "Won",
                                                 style: TextStyle(
                                                     color: snapshot.requireData
