@@ -55,6 +55,7 @@ dependencies:
   steps: ^1.0.1
   razorpay_flutter: ^1.2.2
   package_info_plus: ^1.4.0
+  webview_flutter: ^3.0.1
 
 dev_dependencies:
   flutter_test:

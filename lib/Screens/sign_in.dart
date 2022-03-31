@@ -6,6 +6,8 @@ import 'package:fotoclash/Screens/home_screen.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:get/get.dart';
 
+import '../Widgets/webview.dart';
+
 class Login extends StatefulWidget {
   const Login({Key? key}) : super(key: key);
 
@@ -22,13 +24,11 @@ class _LoginState extends State<Login> {
   AuthMethods authMethods = Get.find();
   Future<void> signIn(String email, String password) async {
     if (_formKey.currentState!.validate()) {
-      authMethods.signIn(email: email, password: password).then((value) async {       
+      authMethods.signIn(email: email, password: password).then((value) async {
         Fluttertoast.showToast(msg: "Login Successful");
-        
-        Navigator.of(context).pushReplacement(MaterialPageRoute(
-            builder: (context) => HomeScreen(
-                  
-                )));
+
+        Navigator.of(context).pushReplacement(
+            MaterialPageRoute(builder: (context) => HomeScreen()));
       }).catchError((e) {
         Fluttertoast.showToast(msg: e.toString());
       });
@@ -172,37 +172,7 @@ class _LoginState extends State<Login> {
                                       SizedBox(
                                         height:
                                             MediaQuery.of(context).size.height *
-                                                20 /
-                                                865,
-                                      ),
-                                      Padding(
-                                        padding: EdgeInsets.only(
-                                          left: MediaQuery.of(context)
-                                                  .size
-                                                  .width *
-                                              200 /
-                                              365,
-                                        ),
-                                        child: GestureDetector(
-                                          onTap: () {
-                                            Navigator.of(context).push(
-                                                MaterialPageRoute(
-                                                    builder: (_) =>
-                                                        const ForgetPass()));
-                                          },
-                                          child: const Text(
-                                            "Forget Password?",
-                                            style: TextStyle(
-                                                fontWeight: FontWeight.w400,
-                                                color: Colors.white,
-                                                fontSize: 16),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                        height:
-                                            MediaQuery.of(context).size.height *
-                                                20 /
+                                                40 /
                                                 865,
                                       ),
                                       Container(
@@ -249,35 +219,65 @@ class _LoginState extends State<Login> {
                                                     color: Colors.white),
                                               ))),
                                       const SizedBox(
-                                        height: 30,
+                                        height: 20,
                                       ),
                                     ])),
-                            Row(
-                              children: [
-                                Checkbox(
-                                  checkColor: Colors.black,
-                                  activeColor: Colors.white,
-                                  value: isChecked,
-                                  onChanged: (bool? value) {
-                                    setState(() {
-                                      isChecked = value!;
-                                    });
-                                  },
+                            Padding(
+                              padding: EdgeInsets.only(
+                                left: MediaQuery.of(context).size.width *
+                                    100 /
+                                    365,
+                              ),
+                              child: GestureDetector(
+                                onTap: () {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (_) => const ForgetPass()));
+                                },
+                                child: const Text(
+                                  "Forgot Password ?",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.w400,
+                                      color: Colors.white,
+                                      fontSize: 16),
                                 ),
-                                const Expanded(
-                                  child: Text(
-                                      "Remember me and and keep my session started. See our Privacy Police and Terms",
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.w400,
-                                          color:
-                                              Color.fromRGBO(107, 112, 118, 1),
-                                          fontSize: 16)),
-                                )
-                              ],
+                              ),
                             ),
+                            // Row(
+                            //   children: [
+                            //     Checkbox(
+                            //       checkColor: Colors.black,
+                            //       activeColor: Colors.white,
+                            //       value: isChecked,
+                            //       onChanged: (bool? value) {
+                            //         setState(() {
+                            //           isChecked = value!;
+                            //         });
+                            //       },
+                            //     ),
+                            //     Expanded(
+                            //       child: GestureDetector(
+                            //         onTap: () {
+                            //           Navigator.push(
+                            //               context,
+                            //               MaterialPageRoute(
+                            //                   builder: (context) => WebSurf(
+                            //                       url:
+                            //                           "https://fotoclash.com/privacy.html")));
+                            //         },
+                            //         child: Text(
+                            //             "Remember me and and keep my session started. See our Privacy Police and Terms",
+                            //             style: TextStyle(
+                            //                 fontWeight: FontWeight.w400,
+                            //                 color: Color.fromRGBO(
+                            //                     107, 112, 118, 1),
+                            //                 fontSize: 16)),
+                            //       ),
+                            //     )
+                            //   ],
+                            // ),
                             SizedBox(
                               height: MediaQuery.of(context).size.height *
-                                  250 /
+                                  260 /
                                   865,
                             ),
                             Center(

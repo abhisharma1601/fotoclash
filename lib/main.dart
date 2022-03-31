@@ -7,6 +7,8 @@ import 'package:fotoclash/Screens/Profile/set_profile.dart';
 import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
+import 'package:fotoclash/Wallet/wallet.dart';
+import 'package:fotoclash/Widgets/updateapp.dart';
 import 'package:get/get.dart';
 import 'Controllers/user_class.dart';
 import 'homeBinding.dart';
@@ -74,30 +76,28 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     try {
       get_screen(auth_check.currentUser!.uid);
-  
+
       _initPackageInfo().then((value) => print(_packageInfo.version));
-       update();
+      update();
     } catch (e) {}
 
     super.initState();
   }
 
-  void update() async {
+  Future<bool> update() async {
     await FirebaseFirestore.instance
         .collection("AppData")
         .doc("Version")
         .get()
         .then((value) {
       ;
-      latest_ver= value.data()!["Version"];
+      latest_ver = value.data()!["Version"];
     });
 
-    if(_packageInfo.version == latest_ver){
-      setState(() {
-        screen = HomeScreen();
-      });
-    }else{
-      Fluttertoast.showToast(msg: "Please update your app");
+    if (_packageInfo.version == latest_ver) {
+      return false;
+    } else {
+      return true;
     }
   }
 
@@ -113,9 +113,15 @@ class _MyAppState extends State<MyApp> {
           screen = SetProfile();
         });
       } else {
-        setState(() {
-          screen = HomeScreen();
-        });
+        if (await update()) {
+          setState(() {
+            screen = UpdateApp();
+          });
+        } else {
+          setState(() {
+            screen = HomeScreen();
+          });
+        }
       }
     } catch (e) {
       setState(() {

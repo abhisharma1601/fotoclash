@@ -9,6 +9,7 @@ import 'package:fotoclash/Screens/Profile/set_profile.dart';
 import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:fotoclash/Wallet/wallet.dart';
+import 'package:fotoclash/Widgets/webview.dart';
 import 'package:fotoclash/main.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -80,8 +81,11 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
                   _RowBox(ico: Icons.notifications_none, body: "Notification")),
           GestureDetector(
             onTap: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (context) => Instructions()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>
+                          WebSurf(url: "https://fotoclash.com/howto.html")));
             },
             child: _RowBox(
                 ico: Icons.integration_instructions_outlined,
@@ -100,9 +104,34 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
                     subject: "Fotoclash Invitation!");
               },
               child: _RowBox(ico: Icons.share, body: "Share App")),
-          _RowBox(ico: Icons.info_outlined, body: "About Us"),
-          _RowBox(ico: Icons.fact_check_outlined, body: "Terms of Services"),
-          _RowBox(ico: Icons.poll_outlined, body: "Privacy Policy"),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => WebSurf(
+                            url: "https://fotoclash.com/About%20Us.html")));
+              },
+              child: _RowBox(ico: Icons.info_outlined, body: "About Us")),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            WebSurf(url: "https://fotoclash.com/terms.html")));
+              },
+              child: _RowBox(
+                  ico: Icons.fact_check_outlined, body: "Terms of Services")),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => WebSurf(
+                            url: "https://fotoclash.com/privacy.html")));
+              },
+              child: _RowBox(ico: Icons.poll_outlined, body: "Privacy Policy")),
           InkWell(
               onTap: () {
                 FirebaseAuth.instance.signOut().then((value) =>

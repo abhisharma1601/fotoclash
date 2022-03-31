@@ -6,6 +6,7 @@ import 'package:fotoclash/Controllers/auth_controller.dart';
 import 'package:fotoclash/Models/userModel.dart';
 import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:get/get.dart';
+import '../Widgets/webview.dart';
 import 'Profile/set_profile.dart';
 
 class SignUp extends StatefulWidget {
@@ -30,7 +31,7 @@ class _SignUpState extends State<SignUp> {
     "	Bihar",
     "	Madhya Pradesh",
     "Rajasthan"
-    "	Tamil Nadu"
+        "	Tamil Nadu"
   ];
   String? value;
   bool isChecked = false;
@@ -99,7 +100,6 @@ class _SignUpState extends State<SignUp> {
       "users": FieldValue.arrayUnion([username]),
     }, SetOptions(merge: true));
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -392,10 +392,12 @@ class _SignUpState extends State<SignUp> {
                                                     BorderRadius.circular(16)),
                                           )),
                                       onPressed: () {
-                                        if(isChecked==true){
-                                        signUp(emailC, passC);
-                                        }else{
-                                          Fluttertoast.showToast(msg: "Please accept Terms and Conditions");
+                                        if (isChecked == true) {
+                                          signUp(emailC, passC);
+                                        } else {
+                                          Fluttertoast.showToast(
+                                              msg:
+                                                  "Please accept Terms and Conditions");
                                         }
                                       },
                                       child: const Text(
@@ -419,13 +421,22 @@ class _SignUpState extends State<SignUp> {
                             });
                           },
                         ),
-                        const Expanded(
-                          child: Text(
-                              "I agree with Terms and Privacy policy Weld.com",
-                              style: TextStyle(
-                                  fontWeight: FontWeight.w400,
-                                  color: Color.fromRGBO(107, 112, 118, 1),
-                                  fontSize: 16)),
+                        GestureDetector(
+                          onTap: () {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (context) => WebSurf(
+                                        url:
+                                            "https://fotoclash.com/terms.html")));
+                          },
+                          child: const Expanded(
+                            child: Text("I agree with Terms and Privacy policy",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.w400,
+                                    color: Color.fromRGBO(107, 112, 118, 1),
+                                    fontSize: 16)),
+                          ),
                         )
                       ],
                     ),

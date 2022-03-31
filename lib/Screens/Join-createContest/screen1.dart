@@ -268,28 +268,31 @@ class _CreateConSState extends State<CreateConS> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
-            children: [
-              Text(
-                "Make it Private",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-              ),
-              Spacer(),
-              Switch(
-                value: _private,
-                onChanged: (val) {
-                  setState(() {
-                    _private = val;
-                  });
-                },
-                inactiveTrackColor: Colors.grey.withOpacity(0.4),
-                inactiveThumbColor: Color.fromRGBO(218, 62, 45, 1),
-                thumbColor:
-                    MaterialStateProperty.all(Color.fromRGBO(218, 62, 45, 1)),
-              )
-            ],
-          ),
+          //Make contest Private
+
+          // Row(
+          //   children: [
+          //     Text(
+          //       "Make it Private",
+          //       style:
+          //           TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
+          //     ),
+          //     Spacer(),
+          //     Switch(
+          //       value: _private,
+          //       onChanged: (val) {
+          //         setState(() {
+          //           _private = val;
+          //         });
+          //       },
+          //       inactiveTrackColor: Colors.grey.withOpacity(0.4),
+          //       inactiveThumbColor: Color.fromRGBO(218, 62, 45, 1),
+          //       thumbColor:
+          //           MaterialStateProperty.all(Color.fromRGBO(218, 62, 45, 1)),
+          //     )
+          //   ],
+          // ),
+
           SizedBox(
             height: 22,
           ),
@@ -486,7 +489,7 @@ class _CreateConSState extends State<CreateConS> {
                 ),
                 Spacer(),
                 Text(
-                  "₹${((_con_size * _amount) / 1.25).ceil()}",
+                  "₹${((_con_size * _amount) / 1.1765).ceil()}",
                   style: TextStyle(
                       color: Colors.white, fontWeight: FontWeight.w500),
                 ),
@@ -508,7 +511,7 @@ class _CreateConSState extends State<CreateConS> {
                       prize: _amount.toString(),
                       pass: PasswordC.text,
                       private: _private.toString(),
-                      winnerPrize: "₹${((_con_size * _amount) / 1.25).ceil()}",
+                      winnerPrize: "₹${((_con_size * _amount) / 1.18).ceil()}",
                       ContestName: ContestNameC.text,
                     ),
                   ),
@@ -522,7 +525,7 @@ class _CreateConSState extends State<CreateConS> {
                           pass: PasswordC.text,
                           private: _private.toString(),
                           winnerPrize:
-                              "₹${((_con_size * _amount) / 1.25).ceil()}",
+                              "₹${((_con_size * _amount) / 1.18).ceil()}",
                           ContestName: ContestNameC.text,
                         )));
               }
@@ -536,7 +539,7 @@ class _CreateConSState extends State<CreateConS> {
                           pass: PasswordC.text,
                           private: _private.toString(),
                           winnerPrize:
-                              "₹${((_con_size * _amount) / 1.25).ceil()}",
+                              "₹${((_con_size * _amount) / 1.18).ceil()}",
                           ContestName: ContestNameC.text,
                         )));
               }

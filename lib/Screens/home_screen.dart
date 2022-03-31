@@ -75,6 +75,8 @@ class _HomeScreenState extends State<HomeScreen> {
       if (message.notification != null) {
         print(message.notification!.body);
         Fluttertoast.showToast(msg: "New Notifications!");
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => NotificationsPage()));
       }
     });
 
@@ -133,7 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .doc(j)
                     .collection("Participations")
                     .doc(i.data()["ContestID"])
-                    .set({"isActive": false, "Winner": true},
+                    .set({"isActive": false, "Winner": false, "Status": "Tie"},
                         SetOptions(merge: true));
                 FirebaseFirestore.instance.collection("Users").doc(j).set({
                   "Wallet": {
@@ -258,7 +260,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   .doc(j)
                   .collection("Participations")
                   .doc(i.data()["ContestID"])
-                  .set({"isActive": false, "Winner": true},
+                  .set({"isActive": false, "Winner": false, "Status": "Tie"},
                       SetOptions(merge: true));
               FirebaseFirestore.instance.collection("Users").doc(j).set({
                 "Wallet": {
@@ -397,13 +399,9 @@ class _HomeScreenState extends State<HomeScreen> {
                     .doc(person)
                     .collection("Participations")
                     .doc(i.data()["ContestID"])
-                    .set({"isActive": false}, SetOptions(merge: true));
-                FirebaseFirestore.instance
-                    .collection("Users")
-                    .doc(person)
-                    .collection("Participations")
-                    .doc(i.data()["ContestID"])
-                    .set({"isActive": false}, SetOptions(merge: true));
+                    .set({"isActive": false, "Status": "No_Participation"},
+                        SetOptions(merge: true));
+
                 var token_key = await FirebaseFirestore.instance
                     .collection("Users")
                     .doc(person)
@@ -440,13 +438,9 @@ class _HomeScreenState extends State<HomeScreen> {
                   .doc(person)
                   .collection("Participations")
                   .doc(i.data()["ContestID"])
-                  .set({"isActive": false}, SetOptions(merge: true));
-              FirebaseFirestore.instance
-                  .collection("Users")
-                  .doc(person)
-                  .collection("Participations")
-                  .doc(i.data()["ContestID"])
-                  .set({"isActive": false}, SetOptions(merge: true));
+                  .set({"isActive": false, "Status": "No_Participation"},
+                      SetOptions(merge: true));
+
               var token_key = await FirebaseFirestore.instance
                   .collection("Users")
                   .doc(person)
