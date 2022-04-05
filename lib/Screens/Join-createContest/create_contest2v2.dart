@@ -135,10 +135,11 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
           "Likes": [0, 0],
           "isActive": widget.isActive,
           "Winner": widget.winnerisME,
-          "DateTime":DateTime.now().toString().substring(0, 18),
+          "Status": "Lost",
+          "DateTime": DateTime.now().toString().substring(0, 18),
           "images": [url, ""],
           "Prize": int.parse(widget.winnerPrize?.replaceAll("₹", "") as String),
-          "Entry Fee":widget.prize,
+          "Entry Fee": widget.prize,
         }, SetOptions(merge: true));
       },
     );

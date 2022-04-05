@@ -75,8 +75,6 @@ class _HomeScreenState extends State<HomeScreen> {
       if (message.notification != null) {
         print(message.notification!.body);
         Fluttertoast.showToast(msg: "New Notifications!");
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => NotificationsPage()));
       }
     });
 
@@ -147,6 +145,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     .doc(j)
                     .get();
                 String token = (key.data() as dynamic)["Token"];
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(j)
+                    .collection("Notifications")
+                    .doc(DateTime.now().toString())
+                    .set({
+                  "head": "Result Declared",
+                  "body":
+                      "The result of contest with id ${i.data()["ContestID"]} is declared with a tie! Entry fee will be refunded!",
+                  "Time": DateTime.now().toString()
+                }, SetOptions(merge: true));
                 send_noti(
                     token,
                     int.parse(i.data()['EntryFee']),
@@ -204,6 +213,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   .get();
               String token = (token_key.data() as dynamic)["Token"];
 
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(winner_id)
+                  .collection("Notifications")
+                  .doc(DateTime.now().toString())
+                  .set({
+                "head": "Result Declared",
+                "body":
+                    "Congratulations! You won the contest with id ${i.data()["ContestID"]}. Prize money will be added to your wallet!",
+                "Time": DateTime.now().toString()
+              }, SetOptions(merge: true));
+
               send_noti(
                   token,
                   int.parse(
@@ -228,6 +249,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 if (j != winner_id) {
                   store.collection("Users").doc(j).set({
                     "WinningData": {"Lost": FieldValue.increment(1)}
+                  }, SetOptions(merge: true));
+                  store
+                      .collection("Users")
+                      .doc(winner_id)
+                      .collection("Notifications")
+                      .doc(DateTime.now().toString())
+                      .set({
+                    "head": "Result Declared",
+                    "body":
+                        "Better Luck next time! You lost the contest with id ${i.data()["ContestID"]}. Don't worry, participate in some other contest to win!",
+                    "Time": DateTime.now().toString()
                   }, SetOptions(merge: true));
                   send_noti(
                       token,
@@ -273,6 +305,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   .doc(j)
                   .get();
               String token = (key.data() as dynamic)["Token"];
+              store
+                  .collection("Users")
+                  .doc(j)
+                  .collection("Notifications")
+                  .doc(DateTime.now().toString())
+                  .set({
+                "head": "Result Declared",
+                "body":
+                    "The result of contest with id ${i.data()["ContestID"]} is declared with a tie! Entry fee will be refunded!",
+                "Time": DateTime.now().toString()
+              }, SetOptions(merge: true));
               send_noti(
                   token,
                   int.parse(i.data()['EntryFee']),
@@ -327,6 +370,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 .get();
             String token = (token_key.data() as dynamic)["Token"];
 
+            store
+                .collection("Users")
+                .doc(winner_id)
+                .collection("Notifications")
+                .doc(DateTime.now().toString())
+                .set({
+              "head": "Result Declared",
+              "body":
+                  "Congratulations! You won the contest with id ${i.data()["ContestID"]}. Prize money will be added to your wallet!",
+              "Time": DateTime.now().toString()
+            }, SetOptions(merge: true));
+
             send_noti(
                 token,
                 int.parse(
@@ -351,6 +406,18 @@ class _HomeScreenState extends State<HomeScreen> {
               if (j != winner_id) {
                 store.collection("Users").doc(j).set({
                   "WinningData": {"Lost": FieldValue.increment(1)}
+                }, SetOptions(merge: true));
+
+                store
+                    .collection("Users")
+                    .doc(j)
+                    .collection("Notifications")
+                    .doc(DateTime.now().toString())
+                    .set({
+                  "head": "Result Declared",
+                  "body":
+                      "Better Luck next time! You lost the contest with id ${i.data()["ContestID"]}. Don't worry, participate in some other contest to win!",
+                  "Time": DateTime.now().toString()
                 }, SetOptions(merge: true));
                 send_noti(
                     token,
@@ -408,6 +475,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     .get();
                 String token = (token_key.data() as dynamic)["Token"];
 
+                store
+                    .collection("Users")
+                    .doc(person)
+                    .collection("Notifications")
+                    .doc(DateTime.now().toString())
+                    .set({
+                  "head": "No Participation",
+                  "body":
+                      "There was no participation for your contest with id ${i.data()["ContestID"]}. Don't worry, keep sharing your contests! Entry fee will be refunded!",
+                  "Time": DateTime.now().toString()
+                }, SetOptions(merge: true));
+
                 send_noti(
                     token,
                     int.parse(i.data()["EntryFee"].replaceAll("₹", "")),
@@ -446,6 +525,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   .doc(person)
                   .get();
               String token = (token_key.data() as dynamic)["Token"];
+              store
+                  .collection("Users")
+                  .doc(person)
+                  .collection("Notifications")
+                  .doc(DateTime.now().toString())
+                  .set({
+                "head": "No Participation",
+                "body":
+                    "There was no participation for your contest with id ${i.data()["ContestID"]}. Don't worry, keep sharing your contests! Entry fee will be refunded!",
+                "Time": DateTime.now().toString()
+              }, SetOptions(merge: true));
 
               send_noti(
                   token,

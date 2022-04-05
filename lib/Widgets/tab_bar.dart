@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TabPair {
   final Tab tab;
@@ -95,7 +96,6 @@ List<TabPair> TabPairs = [
                                             opacity: 0.8,
                                             child: Container(
                                               height: 22,
-                                              width: 60,
                                               decoration: BoxDecoration(
                                                   color: snapshot.requireData
                                                                   .docs[index]
@@ -125,15 +125,15 @@ List<TabPair> TabPairs = [
                                                                     .docs[index]
                                                                 ['Status'] ==
                                                             "No_Participation"
-                                                        ? "Fail"
+                                                        ? "  No Participation  "
                                                         : snapshot.requireData
                                                                             .docs[
                                                                         index][
                                                                     'Status'] ==
                                                                 "Tie"
-                                                            ? "Tie"
-                                                            : "Lost"
-                                                    : "Won",
+                                                            ? "  Tie  "
+                                                            : "  Lost  "
+                                                    : "  Won  ",
                                                 style: TextStyle(
                                                     color: snapshot.requireData
                                                                     .docs[index]
@@ -192,9 +192,24 @@ List<TabPair> TabPairs = [
                                 builder: (context) {
                                   return AlertDialog(
                                     backgroundColor: Color(0xFF141E31),
-                                    title: Text(
-                                      "Contest Details",
-                                      style: TextStyle(color: Colors.white),
+                                    title: Row(
+                                      children: [
+                                        Text(
+                                          "Contest Details",
+                                          style: TextStyle(color: Colors.white),
+                                        ),
+                                        Spacer(),
+                                        IconButton(
+                                            onPressed: () {
+                                              Share.share(
+                                                  "Check this live contest now with id ${snapshot.requireData.docs[index]['ContestId']}");
+                                            },
+                                            icon: Icon(
+                                              Icons.share,
+                                              color: Colors.white,
+                                              size: 20,
+                                            ))
+                                      ],
                                     ),
                                     content: Text(
                                       " Prize : " +

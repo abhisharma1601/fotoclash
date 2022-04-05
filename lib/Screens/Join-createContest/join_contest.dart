@@ -224,6 +224,7 @@ class _JoinContestState extends State<JoinContest> {
       "Likes": likes,
       "isActive": widget.isActive,
       "Winner": widget.winnerisME,
+      "Status": "Lost",
       "images": prevImages,
       "Entry Fee": widget.EntryFee,
       "DateTime": DateTime.now().toString().substring(0, 18),

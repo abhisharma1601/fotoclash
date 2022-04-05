@@ -14,8 +14,30 @@ class _UpdateAppState extends State<UpdateApp> {
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-            image: DecorationImage(
-                image: AssetImage("background.png"), fit: BoxFit.cover)),
+          image: DecorationImage(
+              image: AssetImage("background.png"), fit: BoxFit.cover),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Center(
+              child: Container(
+                padding: EdgeInsets.all(15),
+                decoration: BoxDecoration(
+                    border: Border.all(color: Colors.pink),
+                    borderRadius: BorderRadius.circular(10)),
+                child: Text(
+                  "Update App",
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
+                ),
+              ),
+            )
+          ],
+        ),
       ),
     );
   }

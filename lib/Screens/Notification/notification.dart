@@ -1,6 +1,9 @@
+import 'dart:math';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
-
+import 'package:fotoclash/main.dart';
 
 class NotificationsPage extends StatefulWidget {
   const NotificationsPage({Key? key}) : super(key: key);
@@ -14,31 +17,32 @@ class _NotificationsPageState extends State<NotificationsPage> {
 
   @override
   void initState() {
-    get_notification();
+    // get_notification();
+
     super.initState();
   }
 
-  void get_notification() {
-    notifs = [];
+  // void get_notification() {
+  //   notifs = [];
 
-    FirebaseMessaging.instance.getInitialMessage().then((message) async {
-      notifs.add(Notification(
-        head: message!.notification!.title.toString(),
-        body: message.notification!.body.toString(),
-      ));
-      setState(() {});
-    });
+  //   FirebaseMessaging.instance.getInitialMessage().then((message) async {
+  //     notifs.add(Notification(
+  //       head: message!.notification!.title.toString(),
+  //       body: message.notification!.body.toString(),
+  //     ));
+  //     setState(() {});
+  //   });
 
-    FirebaseMessaging.onMessage.listen((message) async {
-      if (message.notification != null) {
-        notifs.add(Notification(
-          head: message.notification!.title.toString(),
-          body: message.notification!.body.toString(),
-        ));
-        setState(() {});
-      }
-    });
-  }
+  //   FirebaseMessaging.onMessage.listen((message) async {
+  //     if (message.notification != null) {
+  //       notifs.add(Notification(
+  //         head: message.notification!.title.toString(),
+  //         body: message.notification!.body.toString(),
+  //       ));
+  //       setState(() {});
+  //     }
+  //   });
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -50,7 +54,7 @@ class _NotificationsPageState extends State<NotificationsPage> {
         child: Column(
           children: [
             SizedBox(
-              height: 45,
+              height: 55,
             ),
             Row(
               children: [
@@ -83,7 +87,72 @@ class _NotificationsPageState extends State<NotificationsPage> {
             SizedBox(
               height: 25,
             ),
-            Column(children: notifs)
+            Expanded(
+              child: SingleChildScrollView(
+                child: Container(
+                  child: StreamBuilder(
+                    stream: FirebaseFirestore.instance
+                        .collection("Users")
+                        .doc(app_user.uid)
+                        .collection("Notifications")
+                        .snapshots(),
+                    builder: (context, AsyncSnapshot futureSnapshot) {
+                      if (futureSnapshot.connectionState ==
+                          ConnectionState.waiting) {
+                        return const Center(
+                          child: CircularProgressIndicator(),
+                        );
+                      } else {
+                        if (futureSnapshot.hasData) {
+                          notifs = [];
+                          int notis = futureSnapshot.requireData.size;
+                          if (notis <= 5) {
+                            for (var i
+                                in futureSnapshot.requireData.docs.reversed) {
+                              notifs.add(Notification(
+                                head: i["head"],
+                                body: i["body"],
+                                docu: i["Time"],
+                              ));
+                            }
+                          } else {
+                            int k = 0;
+                            while (k < 5) {
+                              for (var i
+                                  in futureSnapshot.requireData.docs.reversed) {
+                                k += 1;
+                                notifs.add(Notification(
+                                  head: i["head"],
+                                  body: i["body"],
+                                  docu: i["Time"],
+                                ));
+                              }
+                            }
+                          }
+                        }
+                      }
+                      return Column(
+                        children: notifs.length != 0
+                            ? notifs
+                            : [
+                                Padding(
+                                  padding: EdgeInsets.only(
+                                      top: MediaQuery.of(context).size.height *
+                                          0.335),
+                                  child: Text(
+                                    "No New\nNotifications !",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 16),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                )
+                              ],
+                      );
+                    },
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
@@ -92,51 +161,79 @@ class _NotificationsPageState extends State<NotificationsPage> {
 }
 
 class Notification extends StatelessWidget {
-  Notification({required this.head, required this.body});
-  String body, head;
+  Notification({required this.head, required this.body, required this.docu});
+  String body, head, docu;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.only(left: 15, right: 15, bottom: 20),
-      padding: EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Color(0xffF49D63)),
-        borderRadius: BorderRadius.circular(10),
-      ),
-      child: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      children: [
+        Container(
+          margin: EdgeInsets.only(left: 10, right: 10, bottom: 5, top: 5),
+          padding: EdgeInsets.all(5),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: Row(
             children: [
-              Text(
-                head,
-                style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    head,
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold),
+                  ),
+                  SizedBox(
+                    height: 5,
+                  ),
+                  Container(
+                    width: 265,
+                    child: Text(
+                      body,
+                      style: TextStyle(
+                          color: Colors.white, fontWeight: FontWeight.normal),
+                    ),
+                  ),
+                ],
               ),
-              SizedBox(
-                height: 5,
-              ),
-              Container(
-                width: 265,
-                child: Text(
-                  body,
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.normal),
+              Spacer(),
+              GestureDetector(
+                onTap: () async {
+                  var x = await FirebaseFirestore.instance
+                      .collection("Users")
+                      .doc(app_user.uid)
+                      .collection("Notifications")
+                      .where("Time", isEqualTo: docu)
+                      .get();
+                  for (var i in x.docs) {
+                    print(i.id);
+                    FirebaseFirestore.instance
+                        .collection("Users")
+                        .doc(app_user.uid)
+                        .collection("Notifications")
+                        .doc(i.id)
+                        .delete();
+                  }
+                },
+                child: Icon(
+                  Icons.delete,
+                  color: Colors.red,
+                  size: 35,
                 ),
-              ),
+              )
             ],
           ),
-          Spacer(),
-          Icon(
-            Icons.notification_add,
+        ),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Divider(
             color: Colors.red,
-            size: 35,
-          )
-        ],
-      ),
+          ),
+        )
+      ],
     );
   }
 }

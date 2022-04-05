@@ -421,16 +421,16 @@ class _SignUpState extends State<SignUp> {
                             });
                           },
                         ),
-                        GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => WebSurf(
-                                        url:
-                                            "https://fotoclash.com/terms.html")));
-                          },
-                          child: const Expanded(
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => WebSurf(
+                                          url:
+                                              "https://fotoclash.com/terms.html")));
+                            },
                             child: Text("I agree with Terms and Privacy policy",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400,
