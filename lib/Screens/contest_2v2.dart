@@ -52,7 +52,7 @@ class _Contest2v2State extends State<Contest2v2> {
         Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Row(children: [
             imageContainer(context, widget.images[0],widget.participations[0]),
-            imageContainer(context, widget.images[1],widget.participations[0])
+            imageContainer(context, widget.images[1],widget.participations[1])
           ]),
         ]),
         Positioned(

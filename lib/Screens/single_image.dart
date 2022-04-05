@@ -15,6 +15,7 @@ class SingleImage extends StatefulWidget {
 class _SingleImageState extends State<SingleImage> {
   @override
   Widget build(BuildContext context) {
+    print(widget.Participations);
     return Scaffold(
       body: Stack(
         children: [
