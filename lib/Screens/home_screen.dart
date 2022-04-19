@@ -123,7 +123,7 @@ class _HomeScreenState extends State<HomeScreen> {
         try {
           if (!i.data()["Declared"]) {
             //if there is a tie
-            if (is_tie(i.data()["Likes"])) {
+            if (is_tie(i.data()["Likes"]) && i.data()["Likes"].length == 2) {
               for (var j in i.data()["Participations"]) {
                 store.collection("Users").doc(j).set({
                   "WinningData": {"Contest Tie": FieldValue.increment(1)}
@@ -168,6 +168,62 @@ class _HomeScreenState extends State<HomeScreen> {
                   .doc(i.data()["ContestID"])
                   .set({"Declared": true}, SetOptions(merge: true));
             }
+            if (is4_tie(i.data()["Likes"])[0] == true &&
+                i.data()["Likes"].length == 4) {
+              print("checking func!");
+
+              List parts = [];
+
+              for (int j in is4_tie(i.data()["Likes"])[1]) {
+                parts.add(i.data()["Participations"][j]);
+              }
+
+              int prize = int.parse(
+                  i.data()["winnerPrize"].replaceAll("₹", "") / parts.length);
+
+              for (var j in parts) {
+                store.collection("Users").doc(j).set({
+                  "WinningData": {"Contest Tie": FieldValue.increment(1)}
+                }, SetOptions(merge: true));
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(j)
+                    .collection("Participations")
+                    .doc(i.data()["ContestID"])
+                    .set({"isActive": false, "Winner": false, "Status": "Tie"},
+                        SetOptions(merge: true));
+                FirebaseFirestore.instance.collection("Users").doc(j).set({
+                  "Wallet": {"Balance": FieldValue.increment(prize)}
+                }, SetOptions(merge: true));
+                var key = await FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(j)
+                    .get();
+                String token = (key.data() as dynamic)["Token"];
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(j)
+                    .collection("Notifications")
+                    .doc(DateTime.now().toString())
+                    .set({
+                  "head": "Result Declared",
+                  "body":
+                      "The result of contest with id ${i.data()["ContestID"]} is declared with a tie with an another entry! Price money of Rs $prize shared with other entry will be added!",
+                  "Time": DateTime.now().toString()
+                }, SetOptions(merge: true));
+                send_noti(
+                    token,
+                    int.parse(i.data()['EntryFee']),
+                    "Tie",
+                    i.data()["ContestID"],
+                    "The result of contest with id ${i.data()["ContestID"]} is declared with a tie with an another entry! Price money of Rs $prize shared with other entry will be added!");
+              }
+              FirebaseFirestore.instance
+                  .collection("Contests")
+                  .doc(i.data()["ContestID"])
+                  .set({"Declared": true}, SetOptions(merge: true));
+            }
+
             // if there is no tie
             else {
               int max_likes = get_max(i.data()["Likes"]);
@@ -281,7 +337,7 @@ class _HomeScreenState extends State<HomeScreen> {
           }
         } catch (e) {
           //if there is a tie
-          if (is_tie(i.data()["Likes"])) {
+          if (is_tie(i.data()["Likes"]) && i.data()["Likes"].length == 2) {
             print(i.data()["ContestID"]);
             for (var j in i.data()["Participations"]) {
               store.collection("Users").doc(j).set({
@@ -328,6 +384,67 @@ class _HomeScreenState extends State<HomeScreen> {
                 .doc(i.data()["ContestID"])
                 .set({"Declared": true}, SetOptions(merge: true));
           }
+
+          //4 tie
+
+          if (is4_tie(i.data()["Likes"])[0] == true &&
+              i.data()["Likes"].length == 4) {
+            print("checking func!");
+
+            List parts = [];
+
+            for (int j in is4_tie(i.data()["Likes"])[1]) {
+              parts.add(i.data()["Participations"][j]);
+            }
+
+            int prize =
+                (int.parse(i.data()["winnerPrize"].replaceAll("₹", "")) /
+                        parts.length)
+                    .round();
+
+            for (var j in parts) {
+              store.collection("Users").doc(j).set({
+                "WinningData": {"Contest Tie": FieldValue.increment(1)}
+              }, SetOptions(merge: true));
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(j)
+                  .collection("Participations")
+                  .doc(i.data()["ContestID"])
+                  .set({"isActive": false, "Winner": false, "Status": "Tie"},
+                      SetOptions(merge: true));
+              FirebaseFirestore.instance.collection("Users").doc(j).set({
+                "Wallet": {"Balance": FieldValue.increment(prize)}
+              }, SetOptions(merge: true));
+              var key = await FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(j)
+                  .get();
+              String token = (key.data() as dynamic)["Token"];
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(j)
+                  .collection("Notifications")
+                  .doc(DateTime.now().toString())
+                  .set({
+                "head": "Result Declared",
+                "body":
+                    "The result of contest with id ${i.data()["ContestID"]} is declared with a tie with an another entry! Price money of Rs $prize shared with other entry will be added!",
+                "Time": DateTime.now().toString()
+              }, SetOptions(merge: true));
+              send_noti(
+                  token,
+                  int.parse(i.data()['EntryFee']),
+                  "Tie",
+                  i.data()["ContestID"],
+                  "The result of contest with id ${i.data()["ContestID"]} is declared with a tie with an another entry! Price money of Rs $prize shared with other entry will be added!");
+            }
+            FirebaseFirestore.instance
+                .collection("Contests")
+                .doc(i.data()["ContestID"])
+                .set({"Declared": true}, SetOptions(merge: true));
+          }
+
           //if no tie
           else {
             int max_likes = get_max(i.data()["Likes"]);
@@ -570,6 +687,28 @@ class _HomeScreenState extends State<HomeScreen> {
       }
     }
     return check;
+  }
+
+  List is4_tie(List likes) {
+    int tie = 0;
+    List participants = [];
+
+    int max = 0;
+
+    for (int i in likes) {
+      if (i > max) {
+        max = i;
+      }
+    }
+
+    for (int i = 0; i < likes.length; i++) {
+      if (likes[i] == max) {
+        participants.add(i);
+        tie = tie + 1;
+      }
+    }
+
+    return [tie > 1, participants];
   }
 
   int index = 0;

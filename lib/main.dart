@@ -76,7 +76,6 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     try {
       get_screen(auth_check.currentUser!.uid);
-
       _initPackageInfo().then((value) => print(_packageInfo.version));
       update();
     } catch (e) {}
