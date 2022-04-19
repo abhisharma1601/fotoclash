@@ -11,9 +11,9 @@ import 'package:uuid/uuid.dart';
 
 class CreateContest extends StatefulWidget {
   String? prize;
-  String? pass;
+  int? pass;
   int balance;
-  String private;
+  bool private;
   bool isActive;
   bool winnerisME;
 
@@ -21,13 +21,14 @@ class CreateContest extends StatefulWidget {
   String? ContestName;
   CreateContest(
       {required this.prize,
-      required this.pass,
+      this.pass,
       required this.balance,
       required this.private,
       this.winnerPrize,
       this.ContestName,
       required this.isActive,
-      required this.winnerisME});
+      required this.winnerisME}
+      );
   @override
   State<CreateContest> createState() => _CreateContestState();
 }
@@ -85,7 +86,7 @@ class _CreateContestState extends State<CreateContest> {
         "Likes": [0, 0, 0, 0],
         "Participations": [user.uid, "", "", ""],
         "EntryFee": widget.prize,
-        "password": widget.pass ?? "",
+        "password": widget.pass,
         "Protected": widget.private,
         "winnerPrize": widget.winnerPrize,
         "Voters": []
@@ -122,7 +123,7 @@ class _CreateContestState extends State<CreateContest> {
         "Likes": [0, 0, 0, 0],
         "Participations": [user.uid, "", "", ""],
         "EntryFee": widget.prize,
-        "password": widget.pass ?? "",
+        "password": widget.pass,
         "Protected": widget.private,
         "winnerPrize": widget.winnerPrize,
         "Prize": int.parse(widget.winnerPrize?.replaceAll("₹", "") as String),
