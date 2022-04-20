@@ -12,8 +12,8 @@ import '../../main.dart';
 
 class CreateContest2v2 extends StatefulWidget {
   String? prize;
-  String? pass;
-  String private;
+  int? pass;
+  bool private;
   int balance;
   String? winnerPrize;
   String? ContestName;
@@ -22,7 +22,7 @@ class CreateContest2v2 extends StatefulWidget {
   CreateContest2v2(
       {required this.prize,
       required this.balance,
-      required this.pass,
+      this.pass,
       required this.private,
       this.winnerPrize,
       this.ContestName,
@@ -83,7 +83,7 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
         "Likes": [0, 0],
         "Participations": [user.uid, ""],
         "EntryFee": widget.prize,
-        "password": widget.pass ?? "",
+        "password": widget.pass,
         "Protected": widget.private,
         "winnerPrize": widget.winnerPrize,
         "Voters": []
@@ -119,7 +119,7 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
           "Likes": [0, 0],
           "Participations": [user.uid, ""],
           "EntryFee": widget.prize,
-          "password": widget.pass ?? "",
+          "password": widget.pass,
           "Protected": widget.private,
           "winnerPrize": widget.winnerPrize,
           "Prize": int.parse(widget.winnerPrize?.replaceAll("₹", "") as String),

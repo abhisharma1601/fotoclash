@@ -22,6 +22,7 @@ bool _private = false;
 int _amount = 50;
 int _balance_amount = 0;
 int _con_size = 2;
+final _formKey = GlobalKey<FormState>();
 bool winnerisME = false;
 bool isActive = true;
 final _auth = FirebaseAuth.instance;
@@ -265,312 +266,331 @@ class _CreateConSState extends State<CreateConS> {
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.only(left: 21, right: 21),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Make contest Private
-          Row(
-            children: [
-              Text(
-                "Make it Private",
-                style:
-                    TextStyle(color: Colors.white, fontWeight: FontWeight.w500),
-              ),
-              Spacer(),
-              Switch(
-                value: _private,
-                onChanged: (val) {
-                  setState(() {
-                    _private = val;
-                  });
-                },
-                inactiveTrackColor: Colors.grey.withOpacity(0.4),
-                inactiveThumbColor: Color.fromRGBO(218, 62, 45, 1),
-                thumbColor:
-                    MaterialStateProperty.all(Color.fromRGBO(218, 62, 45, 1)),
-              )
-            ],
-          ),
-
-          SizedBox(
-            height: 22,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10),
-            height: widget.size.height * 48 / 812,
-            width: widget.size.width * 339 / 375,
-            decoration: BoxDecoration(
-                color: Color(0xff222633),
-                borderRadius: BorderRadius.circular(10)),
-            child: TextField(
-              controller: ContestNameC,
-              cursorColor: Colors.white,
-              style: TextStyle(color: Colors.white),
-              decoration: InputDecoration(
-                  border: InputBorder.none,
-                  hintText: "Enter contest name",
-                  hintStyle: TextStyle(color: Color(0xff6B7076))),
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10),
-            height: widget.size.height * 48 / 812,
-            width: widget.size.width * 339 / 375,
-            decoration: BoxDecoration(
-                color: Color(0xff222633),
-                borderRadius: BorderRadius.circular(10)),
-            child: Row(
+      child: Form(
+        key: _formKey,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Row(
               children: [
                 Text(
-                  "Select Entry Fee",
-                  style: TextStyle(color: Color(0xff6B7076)),
+                  "Make it Private",
+                  style: TextStyle(
+                      color: Colors.white, fontWeight: FontWeight.w500),
                 ),
                 Spacer(),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      value: _amount,
-                      iconEnabledColor: Colors.white,
-                      style: TextStyle(color: Colors.white),
-                      dropdownColor: Color(0xff020C12),
-                      items: [
-                        DropdownMenuItem(
-                          child: Text("₹20"),
-                          value: 20,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("₹50"),
-                          value: 50,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("₹100"),
-                          value: 100,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("₹200"),
-                          value: 200,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("₹300"),
-                          value: 300,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("₹400"),
-                          value: 400,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("₹500"),
-                          value: 500,
-                        ),
-                      ],
-                      onChanged: (val) {
-                        setState(() {
-                          _amount = val as int;
-                        });
-                      }),
-                ),
-                SizedBox(
-                  width: 10,
+                Switch(
+                  value: _private,
+                  onChanged: (val) {
+                    setState(() {
+                      _private = val;
+                    });
+                  },
+                  inactiveTrackColor: Colors.grey.withOpacity(0.4),
+                  inactiveThumbColor: Color.fromRGBO(218, 62, 45, 1),
+                  thumbColor:
+                      MaterialStateProperty.all(Color.fromRGBO(218, 62, 45, 1)),
                 )
               ],
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Container(
-            padding: EdgeInsets.only(left: 10),
-            height: widget.size.height * 48 / 812,
-            width: widget.size.width * 339 / 375,
-            decoration: BoxDecoration(
-                color: Color(0xff222633),
-                borderRadius: BorderRadius.circular(10)),
-            child: Row(
-              children: [
-                Text(
-                  "Select Contest size",
-                  style: TextStyle(color: Color(0xff6B7076)),
-                ),
-                Spacer(),
-                DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      iconEnabledColor: Colors.white,
-                      style: TextStyle(color: Colors.white),
-                      dropdownColor: Color(0xff020C12),
-                      value: _con_size,
-                      items: [
-                        DropdownMenuItem(
-                          child: Text("2"),
-                          value: 2,
-                        ),
-                        DropdownMenuItem(
-                          child: Text("4"),
-                          value: 4,
-                        ),
-                      ],
-                      onChanged: (val) {
-                        setState(() {
-                          _con_size = val as int;
-                        });
-                      }),
-                ),
-                SizedBox(
-                  width: 10,
-                )
-              ],
+            SizedBox(
+              height: 22,
             ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          Visibility(
-            visible: _private,
-            child: Container(
+            Container(
               padding: EdgeInsets.only(left: 10),
               height: widget.size.height * 48 / 812,
               width: widget.size.width * 339 / 375,
               decoration: BoxDecoration(
                   color: Color(0xff222633),
                   borderRadius: BorderRadius.circular(10)),
-              child: TextField(
-                controller: PasswordC,
+              child: TextFormField(
+                controller: ContestNameC,
                 cursorColor: Colors.white,
                 style: TextStyle(color: Colors.white),
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return ("Contest Name cannot be empty");
+                  }
+                },
                 decoration: InputDecoration(
+                    contentPadding: EdgeInsets.only(top: 10),
                     border: InputBorder.none,
-                    hintText: "Set Password",
+                    hintText: "Enter contest name",
                     hintStyle: TextStyle(color: Color(0xff6B7076))),
               ),
             ),
-          ),
-          SizedBox(
-            height: 30,
-          ),
-          Text("Winnings",
-              style:
-                  TextStyle(color: Colors.white, fontWeight: FontWeight.bold)),
-          SizedBox(
-            height: 10,
-          ),
-          Row(
-            children: [
-              Text("Rank",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500)),
-              Spacer(),
-              Text("Amount",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500)),
-            ],
-          ),
-          Divider(
-            color: Colors.white,
-          ),
-          Container(
-            padding: EdgeInsets.all(10),
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              gradient: LinearGradient(
-                colors: [
-                  Color.fromRGBO(20, 39, 49, 1),
-                  Color.fromRGBO(0, 0, 0, 0),
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 10),
+              height: widget.size.height * 48 / 812,
+              width: widget.size.width * 339 / 375,
+              decoration: BoxDecoration(
+                  color: Color(0xff222633),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                children: [
+                  Text(
+                    "Select Entry Fee",
+                    style: TextStyle(color: Color(0xff6B7076)),
+                  ),
+                  Spacer(),
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        value: _amount,
+                        iconEnabledColor: Colors.white,
+                        style: TextStyle(color: Colors.white),
+                        dropdownColor: Color(0xff020C12),
+                        items: [
+                          DropdownMenuItem(
+                            child: Text("₹20"),
+                            value: 20,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("₹50"),
+                            value: 50,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("₹100"),
+                            value: 100,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("₹200"),
+                            value: 200,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("₹300"),
+                            value: 300,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("₹400"),
+                            value: 400,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("₹500"),
+                            value: 500,
+                          ),
+                        ],
+                        onChanged: (val) {
+                          setState(() {
+                            _amount = val as int;
+                          });
+                        }),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  )
                 ],
               ),
             ),
-            child: Row(
+            SizedBox(
+              height: 20,
+            ),
+            Container(
+              padding: EdgeInsets.only(left: 10),
+              height: widget.size.height * 48 / 812,
+              width: widget.size.width * 339 / 375,
+              decoration: BoxDecoration(
+                  color: Color(0xff222633),
+                  borderRadius: BorderRadius.circular(10)),
+              child: Row(
+                children: [
+                  Text(
+                    "Select Contest size",
+                    style: TextStyle(color: Color(0xff6B7076)),
+                  ),
+                  Spacer(),
+                  DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                        iconEnabledColor: Colors.white,
+                        style: TextStyle(color: Colors.white),
+                        dropdownColor: Color(0xff020C12),
+                        value: _con_size,
+                        items: [
+                          DropdownMenuItem(
+                            child: Text("2"),
+                            value: 2,
+                          ),
+                          DropdownMenuItem(
+                            child: Text("4"),
+                            value: 4,
+                          ),
+                        ],
+                        onChanged: (val) {
+                          setState(() {
+                            _con_size = val as int;
+                          });
+                        }),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  )
+                ],
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            Visibility(
+              visible: _private,
+              child: Container(
+                padding: EdgeInsets.only(left: 10),
+                height: widget.size.height * 48 / 812,
+                width: widget.size.width * 349 / 375,
+                decoration: BoxDecoration(
+                    color: Color(0xff222633),
+                    borderRadius: BorderRadius.circular(10)),
+                child: TextFormField(
+                  controller: PasswordC,
+                  keyboardType: TextInputType.number,
+                  validator: (value) {
+                    if (value == null || value.isEmpty) {
+                      return ("Contest Pin cannot be empty");
+                    }
+                    if (value.length != 4) {
+                      return ("Please Enter 4 digit Pin");
+                    }
+                  },
+                  cursorColor: Colors.white,
+                  maxLength: 4,
+                  style: TextStyle(color: Colors.white),
+                  decoration: InputDecoration(
+                      contentPadding: EdgeInsets.only(top: 10),
+                      border: InputBorder.none,
+                      hintText: "Set Pin",
+                      hintStyle: TextStyle(color: Color(0xff6B7076))),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 30,
+            ),
+            Text("Winnings",
+                style: TextStyle(
+                    color: Colors.white, fontWeight: FontWeight.bold)),
+            SizedBox(
+              height: 10,
+            ),
+            Row(
               children: [
-                Text(
-                  "01",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500),
-                ),
+                Text("Rank",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500)),
                 Spacer(),
-                Text(
-                  "₹${((_con_size * _amount) / 1.1765).ceil()}",
-                  style: TextStyle(
-                      color: Colors.white, fontWeight: FontWeight.w500),
-                ),
+                Text("Amount",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500)),
               ],
             ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 120 / 812,
-          ),
-          GestureDetector(
-            onTap: () {
-              if (_con_size == 4) {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (_) => CreateContest(
-                      isActive: isActive,
-                      winnerisME: winnerisME,
-                      balance: _balance_amount,
-                      prize: _amount.toString(),
-                      pass: PasswordC.text,
-                      private: _private.toString(),
-                      winnerPrize: "₹${((_con_size * _amount) / 1.18).ceil()}",
-                      ContestName: ContestNameC.text,
-                    ),
-                  ),
-                );
-              }
-              if (_con_size == 3) {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => CreateContest3v3(
-                          balance: _balance_amount,
-                          prize: _amount.toString(),
-                          pass: PasswordC.text,
-                          private: _private.toString(),
-                          winnerPrize:
-                              "₹${((_con_size * _amount) / 1.18).ceil()}",
-                          ContestName: ContestNameC.text,
-                        )));
-              }
-              if (_con_size == 2) {
-                Navigator.of(context).push(MaterialPageRoute(
-                    builder: (_) => CreateContest2v2(
-                          isActive: isActive,
-                          winnerisME: winnerisME,
-                          balance: _balance_amount,
-                          prize: _amount.toString(),
-                          pass: PasswordC.text,
-                          private: _private.toString(),
-                          winnerPrize:
-                              "₹${((_con_size * _amount) / 1.18).ceil()}",
-                          ContestName: ContestNameC.text,
-                        )));
-              }
-            },
-            child: Container(
-              height: MediaQuery.of(context).size.height * 46 / 812,
+            Divider(
+              color: Colors.white,
+            ),
+            Container(
+              padding: EdgeInsets.all(10),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 gradient: LinearGradient(
                   colors: [
-                    Color.fromRGBO(175, 47, 32, 1),
-                    Color.fromRGBO(218, 62, 45, 1),
-                    Color.fromRGBO(244, 157, 99, 1),
-                    Color.fromRGBO(195, 188, 138, 1)
+                    Color.fromRGBO(20, 39, 49, 1),
+                    Color.fromRGBO(0, 0, 0, 0),
                   ],
                 ),
               ),
-              child: Center(
-                child: Text(
-                  "Next",
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
+              child: Row(
+                children: [
+                  Text(
+                    "01",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500),
+                  ),
+                  Spacer(),
+                  Text(
+                    "₹${((_con_size * _amount) / 1.1765).ceil()}",
+                    style: TextStyle(
+                        color: Colors.white, fontWeight: FontWeight.w500),
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 120 / 812,
+            ),
+            GestureDetector(
+              onTap: () {
+                if (_con_size == 4 && _formKey.currentState!.validate()) {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => CreateContest(
+                        isActive: isActive,
+                        winnerisME: winnerisME,
+                        balance: _balance_amount,
+                        prize: _amount.toString(),
+                        pass: int.parse(PasswordC.text),
+                        private: _private,
+                        winnerPrize:
+                            "₹${((_con_size * _amount) / 1.18).ceil()}",
+                        ContestName: ContestNameC.text,
+                      ),
+                    ),
+                  );
+                }
+                if (_con_size == 3 && _formKey.currentState!.validate()) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => CreateContest3v3(
+                            balance: _balance_amount,
+                            prize: _amount.toString(),
+                            pass: int.parse(PasswordC.text),
+                            private: _private,
+                            winnerPrize:
+                                "₹${((_con_size * _amount) / 1.18).ceil()}",
+                            ContestName: ContestNameC.text,
+                          )));
+                }
+                if (_con_size == 2 && _formKey.currentState!.validate()) {
+                  Navigator.of(context).push(MaterialPageRoute(
+                      builder: (_) => CreateContest2v2(
+                            isActive: isActive,
+                            winnerisME: winnerisME,
+                            balance: _balance_amount,
+                            prize: _amount.toString(),
+                            pass: int.parse(PasswordC.text),
+                            private: _private,
+                            winnerPrize:
+                                "₹${((_con_size * _amount) / 1.18).ceil()}",
+                            ContestName: ContestNameC.text,
+                          )));
+                }
+              },
+              child: Container(
+                height: MediaQuery.of(context).size.height * 46 / 812,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  gradient: LinearGradient(
+                    colors: [
+                      Color.fromRGBO(175, 47, 32, 1),
+                      Color.fromRGBO(218, 62, 45, 1),
+                      Color.fromRGBO(244, 157, 99, 1),
+                      Color.fromRGBO(195, 188, 138, 1)
+                    ],
+                  ),
+                ),
+                child: Center(
+                  child: Text(
+                    "Next",
+                    style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 16),
+                  ),
                 ),
               ),
             ),
-          ),
-          SizedBox(
-            height: MediaQuery.of(context).size.height * 50 / 812,
-          ),
-        ],
+            SizedBox(
+              height: MediaQuery.of(context).size.height * 50 / 812,
+            ),
+          ],
+        ),
       ),
     );
   }

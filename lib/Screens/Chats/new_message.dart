@@ -51,18 +51,13 @@ class _NewMessagesState extends State<NewMessages> {
                 _enteredMessage = value;
               },
               decoration: InputDecoration(
-                prefixIcon: Icon(
-                  Icons.add,
-                  color: Colors.grey[500]!,
-                  size: 0,
-                ),
                 filled: true,
                 fillColor: const Color(0xFF263238),
                 hintText: "Type Message",
                 hintStyle: const TextStyle(
                     color: Colors.grey, fontWeight: FontWeight.w400),
                 contentPadding: const EdgeInsets.symmetric(
-                    vertical: 10.0, horizontal: 10.0),
+                    vertical: 10.0, horizontal: 20.0),
                 border: const OutlineInputBorder(
                   borderRadius: BorderRadius.all(Radius.circular(10.0)),
                 ),

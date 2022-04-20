@@ -12,14 +12,14 @@ import '../../main.dart';
 
 class CreateContest3v3 extends StatefulWidget {
   String? prize;
-  String? pass;
-  String private;
+  int? pass;
+  bool private;
   int balance;
   String? winnerPrize;
   String? ContestName;
   CreateContest3v3(
       {required this.prize,
-      required this.pass,
+      this.pass,
       required this.balance,
       required this.private,
       this.winnerPrize,
@@ -79,7 +79,7 @@ class _CreateContest3v3State extends State<CreateContest3v3> {
         "Likes": [0, 0, 0],
         "Participations": [user.uid, "", ""],
         "EntryFee": widget.prize,
-        "password": widget.pass ?? "",
+        "password": widget.pass,
         "Protected": widget.private,
         "winnerPrize": widget.winnerPrize,
         "Voters": []
@@ -113,7 +113,7 @@ class _CreateContest3v3State extends State<CreateContest3v3> {
         "Likes": [0, 0, 0],
         "Participations": [user.uid, "", ""],
         "EntryFee": widget.prize,
-        "password": widget.pass ?? "",
+        "password": widget.pass,
         "Protected": widget.private,
         "winnerPrize": widget.winnerPrize,
         "Voters": []
