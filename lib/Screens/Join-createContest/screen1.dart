@@ -447,6 +447,8 @@ class _CreateConSState extends State<CreateConS> {
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return ("Contest Pin cannot be empty");
+                    }if( value.length!=4){
+                      return ("Please Enter 4 digit Pin");
                     }
                     },
                   cursorColor: Colors.white,
