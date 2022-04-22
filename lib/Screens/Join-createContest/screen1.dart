@@ -22,6 +22,7 @@ bool _private = false;
 int _amount = 50;
 int _balance_amount = 0;
 int _con_size = 2;
+int PIN = 09090;
 final _formKey = GlobalKey<FormState>();
 bool winnerisME = false;
 bool isActive = true;
@@ -554,7 +555,7 @@ class _CreateConSState extends State<CreateConS> {
                             winnerisME: winnerisME,
                             balance: _balance_amount,
                             prize: _amount.toString(),
-                            pass: int.parse(PasswordC.text),
+                            pass: _private ? int.parse(PasswordC.text) : 0000,
                             private: _private,
                             winnerPrize:
                                 "₹${((_con_size * _amount) / 1.18).ceil()}",
@@ -630,6 +631,8 @@ class _JOinConSState extends State<JOinConS> {
                               if (futureSnapshot.requireData.docs[index]
                                           ["CreatorID"] !=
                                       app_user.uid &&
+                                  !futureSnapshot.requireData.docs[index]
+                                      ["Protected"] &&
                                   !futureSnapshot
                                       .requireData.docs[index]["Participations"]
                                       .contains(app_user.uid) &&
@@ -656,6 +659,13 @@ class _JOinConSState extends State<JOinConS> {
                                     contestID: futureSnapshot
                                         .requireData.docs[index]["ContestID"],
                                     participants: join,
+                                    private: futureSnapshot.requireData.docs[index]
+                                        ["Protected"],
+                                    checkpin: futureSnapshot.requireData.docs[index]
+                                            ["Protected"]
+                                        ? futureSnapshot.requireData.docs[index]
+                                            ["password"]
+                                        : 10101,
                                     players: futureSnapshot.requireData
                                         .docs[index]["Participations"].length,
                                     EntryFee: futureSnapshot
@@ -705,6 +715,10 @@ class _JOinConSState extends State<JOinConS> {
               contestID: (key.data() as dynamic)["ContestID"],
               participants: join,
               players: (key.data() as dynamic)["Participations"].length,
+              checkpin: (key.data() as dynamic)["Protected"]
+                  ? (key.data() as dynamic)["password"]
+                  : 10101,
+              private: (key.data() as dynamic)["Protected"],
               EntryFee: (key.data() as dynamic)["EntryFee"],
               winningPrize: (key.data() as dynamic)["winnerPrize"],
               isVisible:
@@ -783,47 +797,46 @@ class MyConS extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: [
-        Container(
-          margin: EdgeInsets.symmetric(horizontal: 18),
-          height: MediaQuery.of(context).size.height * 42 / 812,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(10),
-          ),
-          child: Row(
-            children: [
-              SizedBox(
-                width: 10,
-              ),
-              Expanded(
-                  child: TextField(
-                cursorColor: Colors.white,
-                style: TextStyle(color: Colors.white),
-                decoration: InputDecoration(
-                    border: InputBorder.none,
-                    hintText: "Search by contest code.",
-                    hintStyle: TextStyle(color: Colors.white)),
-              )),
-              Spacer(),
-              Icon(
-                Icons.search,
-                color: Colors.white,
-              ),
-              SizedBox(
-                width: 10,
-              )
-            ],
-          ),
-        ),
-        SizedBox(
-          height: 15,
-        ),
+        // Container(
+        //   margin: EdgeInsets.symmetric(horizontal: 18),
+        //   height: MediaQuery.of(context).size.height * 42 / 812,
+        //   decoration: BoxDecoration(
+        //     color: Colors.white.withOpacity(0.2),
+        //     borderRadius: BorderRadius.circular(10),
+        //   ),
+        //   child: Row(
+        //     children: [
+        //       SizedBox(
+        //         width: 10,
+        //       ),
+        //       Expanded(
+        //           child: TextField(
+        //         cursorColor: Colors.white,
+        //         style: TextStyle(color: Colors.white),
+        //         decoration: InputDecoration(
+        //             border: InputBorder.none,
+        //             hintText: "Search by contest code.",
+        //             hintStyle: TextStyle(color: Colors.white)),
+        //       )),
+        //       Spacer(),
+        //       Icon(
+        //         Icons.search,
+        //         color: Colors.white,
+        //       ),
+        //       SizedBox(
+        //         width: 10,
+        //       )
+        //     ],
+        //   ),
+        // ),
+
         Container(
           child: StreamBuilder(
               stream: FirebaseFirestore.instance
                   .collection("Users")
                   .doc(_auth.currentUser!.uid)
                   .collection("Contests")
+                  .orderBy("DateTime", descending: true)
                   .snapshots(),
               builder: (context, AsyncSnapshot futureSnapshot) {
                 if (futureSnapshot.connectionState == ConnectionState.waiting) {
@@ -894,12 +907,16 @@ class _joinBlock extends StatelessWidget {
   String? EntryFee;
   int? players, participants;
   bool isVisible;
+  bool private;
+  int checkpin;
   String? CreatorID;
   _joinBlock(
       {Key? key,
       this.contestID,
+      required this.checkpin,
       this.winningPrize,
       this.EntryFee,
+      required this.private,
       required this.players,
       required this.participants,
       required this.isVisible,
@@ -966,19 +983,100 @@ class _joinBlock extends StatelessWidget {
                         ),
                         child: InkWell(
                           onTap: () {
-                            Navigator.of(context)
-                                .push(MaterialPageRoute(builder: (_) {
-                              return JoinContest(
-                                isActive: isActive,
-                                winnerisME: winnerisME,
-                                balance: _balance_amount,
-                                ContestID: contestID,
-                                contestSize: players,
-                                CreatorID: CreatorID,
-                                EntryFee: EntryFee,
-                                winnerPrize: winningPrize,
+                            if (!private) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) {
+                                    return JoinContest(
+                                      isActive: isActive,
+                                      winnerisME: winnerisME,
+                                      balance: _balance_amount,
+                                      ContestID: contestID,
+                                      contestSize: players,
+                                      CreatorID: CreatorID,
+                                      EntryFee: EntryFee,
+                                      winnerPrize: winningPrize,
+                                    );
+                                  },
+                                ),
                               );
-                            }));
+                            } else if (private) {
+                              showDialog(
+                                context: context,
+                                builder: (BuildContext context) => Dialog(
+                                  backgroundColor: Colors.transparent,
+                                  child: Container(
+                                    padding: EdgeInsets.all(10),
+                                    height: MediaQuery.of(context).size.height *
+                                        0.22,
+                                    decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(10),
+                                        color: Colors.white,
+                                        border: Border.all(color: Colors.red)),
+                                    child: Column(
+                                      children: [
+                                        Text(
+                                          "Enter Pin to Enter",
+                                          style: TextStyle(
+                                              color: Color(0xffAF2F20),
+                                              fontWeight: FontWeight.w700,
+                                              fontSize: 20),
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        TextField(
+                                          onChanged: (val) {
+                                            PIN = int.parse(val);
+                                          },
+                                          maxLength: 4,
+                                          keyboardType: TextInputType.number,
+                                          decoration: InputDecoration(
+                                              hintText: "Enter PIN",
+                                              hoverColor: Colors.blueGrey),
+                                        ),
+                                        SizedBox(
+                                          height: 5,
+                                        ),
+                                        IconButton(
+                                            onPressed: () {
+                                              if (PIN == checkpin) {
+                                                Navigator.pop(context);
+                                                Navigator.of(context).push(
+                                                  MaterialPageRoute(
+                                                    builder: (_) {
+                                                      return JoinContest(
+                                                        isActive: isActive,
+                                                        winnerisME: winnerisME,
+                                                        balance:
+                                                            _balance_amount,
+                                                        ContestID: contestID,
+                                                        contestSize: players,
+                                                        CreatorID: CreatorID,
+                                                        EntryFee: EntryFee,
+                                                        winnerPrize:
+                                                            winningPrize,
+                                                      );
+                                                    },
+                                                  ),
+                                                );
+                                              } else {
+                                                Fluttertoast.showToast(
+                                                    msg: "Wrong PIN !");
+                                                Navigator.pop(context);
+                                              }
+                                            },
+                                            icon: Icon(
+                                              Icons.done,
+                                              size: 30,
+                                              color: Color(0xffAF2F20),
+                                            ))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              );
+                            }
                           },
                           child: Text(
                             "Join",

@@ -135,6 +135,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     .doc(i.data()["ContestID"])
                     .set({"isActive": false, "Winner": false, "Status": "Tie"},
                         SetOptions(merge: true));
+
                 FirebaseFirestore.instance.collection("Users").doc(j).set({
                   "Wallet": {
                     "Balance": FieldValue.increment(i.data()['EntryFee'])
@@ -156,6 +157,17 @@ class _HomeScreenState extends State<HomeScreen> {
                       "The result of contest with id ${i.data()["ContestID"]} is declared with a tie! Entry fee will be refunded!",
                   "Time": DateTime.now().toString()
                 }, SetOptions(merge: true));
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(j)
+                    .collection("ContestTrans")
+                    .doc(DateTime.now().toString())
+                    .set({
+                  "id": i.data()["ContestID"],
+                  "Type": "Added",
+                  "status": "Tie",
+                  "Amount": int.parse(i.data()['EntryFee'])
+                }, SetOptions(merge: true));
                 send_noti(
                     token,
                     int.parse(i.data()['EntryFee']),
@@ -168,18 +180,26 @@ class _HomeScreenState extends State<HomeScreen> {
                   .doc(i.data()["ContestID"])
                   .set({"Declared": true}, SetOptions(merge: true));
             }
+
+            //4 tie
+
             if (is4_tie(i.data()["Likes"])[0] == true &&
                 i.data()["Likes"].length == 4) {
               print("checking func!");
 
               List parts = [];
+              int prize = 0;
 
               for (int j in is4_tie(i.data()["Likes"])[1]) {
                 parts.add(i.data()["Participations"][j]);
               }
 
-              int prize = int.parse(
-                  i.data()["winnerPrize"].replaceAll("₹", "") / parts.length);
+              if (parts.length != 4) {
+                prize = int.parse(
+                    i.data()["winnerPrize"].replaceAll("₹", "") / parts.length);
+              } else {
+                prize = int.parse(i.data()['EntryFee']);
+              }
 
               for (var j in parts) {
                 store.collection("Users").doc(j).set({
@@ -210,6 +230,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   "body":
                       "The result of contest with id ${i.data()["ContestID"]} is declared with a tie with an another entry! Price money of Rs $prize shared with other entry will be added!",
                   "Time": DateTime.now().toString()
+                }, SetOptions(merge: true));
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(j)
+                    .collection("ContestTrans")
+                    .doc(DateTime.now().toString())
+                    .set({
+                  "id": i.data()["ContestID"],
+                  "Type": "Added",
+                  "status": "Tie",
+                  "Amount": int.parse(i.data()['EntryFee'])
                 }, SetOptions(merge: true));
                 send_noti(
                     token,
@@ -281,6 +312,20 @@ class _HomeScreenState extends State<HomeScreen> {
                 "Time": DateTime.now().toString()
               }, SetOptions(merge: true));
 
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(winner_id)
+                  .collection("ContestTrans")
+                  .doc(DateTime.now().toString())
+                  .set({
+                "id": i.data()["ContestID"],
+                "Type": "Added",
+                "status": "Won",
+                "Amount": int.parse(
+                  i.data()["winnerPrize"].replaceAll("₹", ""),
+                ),
+              }, SetOptions(merge: true));
+
               send_noti(
                   token,
                   int.parse(
@@ -316,6 +361,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     "body":
                         "Better Luck next time! You lost the contest with id ${i.data()["ContestID"]}. Don't worry, participate in some other contest to win!",
                     "Time": DateTime.now().toString()
+                  }, SetOptions(merge: true));
+                  FirebaseFirestore.instance
+                      .collection("Users")
+                      .doc(j)
+                      .collection("ContestTrans")
+                      .doc(DateTime.now().toString())
+                      .set({
+                    "id": i.data()["ContestID"],
+                    "Type": "Withdrawn",
+                    "status": "Lost",
+                    "Amount": int.parse(i.data()['EntryFee'])
                   }, SetOptions(merge: true));
                   send_noti(
                       token,
@@ -372,6 +428,17 @@ class _HomeScreenState extends State<HomeScreen> {
                     "The result of contest with id ${i.data()["ContestID"]} is declared with a tie! Entry fee will be refunded!",
                 "Time": DateTime.now().toString()
               }, SetOptions(merge: true));
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(j)
+                  .collection("ContestTrans")
+                  .doc(DateTime.now().toString())
+                  .set({
+                "id": i.data()["ContestID"],
+                "Type": "Added",
+                "status": "Tie",
+                "Amount": int.parse(i.data()['EntryFee'])
+              }, SetOptions(merge: true));
               send_noti(
                   token,
                   int.parse(i.data()['EntryFee']),
@@ -392,15 +459,18 @@ class _HomeScreenState extends State<HomeScreen> {
             print("checking func!");
 
             List parts = [];
+            int prize = 0;
 
             for (int j in is4_tie(i.data()["Likes"])[1]) {
               parts.add(i.data()["Participations"][j]);
             }
 
-            int prize =
-                (int.parse(i.data()["winnerPrize"].replaceAll("₹", "")) /
-                        parts.length)
-                    .round();
+            if (parts.length != 4) {
+              prize = int.parse(
+                  i.data()["winnerPrize"].replaceAll("₹", "") / parts.length);
+            } else {
+              prize = int.parse(i.data()['EntryFee']);
+            }
 
             for (var j in parts) {
               store.collection("Users").doc(j).set({
@@ -431,6 +501,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 "body":
                     "The result of contest with id ${i.data()["ContestID"]} is declared with a tie with an another entry! Price money of Rs $prize shared with other entry will be added!",
                 "Time": DateTime.now().toString()
+              }, SetOptions(merge: true));
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(j)
+                  .collection("ContestTrans")
+                  .doc(DateTime.now().toString())
+                  .set({
+                "id": i.data()["ContestID"],
+                "Type": "Added",
+                "status": "Tie",
+                "Amount": int.parse(i.data()['EntryFee'])
               }, SetOptions(merge: true));
               send_noti(
                   token,
@@ -499,6 +580,20 @@ class _HomeScreenState extends State<HomeScreen> {
               "Time": DateTime.now().toString()
             }, SetOptions(merge: true));
 
+            FirebaseFirestore.instance
+                .collection("Users")
+                .doc(winner_id)
+                .collection("ContestTrans")
+                .doc(DateTime.now().toString())
+                .set({
+              "id": i.data()["ContestID"],
+              "Type": "Added",
+              "status": "Won",
+              "Amount": int.parse(
+                i.data()["winnerPrize"].replaceAll("₹", ""),
+              ),
+            }, SetOptions(merge: true));
+
             send_noti(
                 token,
                 int.parse(
@@ -535,6 +630,17 @@ class _HomeScreenState extends State<HomeScreen> {
                   "body":
                       "Better Luck next time! You lost the contest with id ${i.data()["ContestID"]}. Don't worry, participate in some other contest to win!",
                   "Time": DateTime.now().toString()
+                }, SetOptions(merge: true));
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(j)
+                    .collection("ContestTrans")
+                    .doc(DateTime.now().toString())
+                    .set({
+                  "id": i.data()["ContestID"],
+                  "Type": "Withdrawn",
+                  "status": "Lost",
+                  "Amount": int.parse(i.data()['EntryFee'])
                 }, SetOptions(merge: true));
                 send_noti(
                     token,
@@ -604,6 +710,18 @@ class _HomeScreenState extends State<HomeScreen> {
                   "Time": DateTime.now().toString()
                 }, SetOptions(merge: true));
 
+                FirebaseFirestore.instance
+                    .collection("Users")
+                    .doc(person)
+                    .collection("ContestTrans")
+                    .doc(DateTime.now().toString())
+                    .set({
+                  "id": i.data()["ContestID"],
+                  "Type": "Added",
+                  "status": "No Participation",
+                  "Amount": int.parse(i.data()['EntryFee'])
+                }, SetOptions(merge: true));
+
                 send_noti(
                     token,
                     int.parse(i.data()["EntryFee"].replaceAll("₹", "")),
@@ -652,6 +770,18 @@ class _HomeScreenState extends State<HomeScreen> {
                 "body":
                     "There was no participation for your contest with id ${i.data()["ContestID"]}. Don't worry, keep sharing your contests! Entry fee will be refunded!",
                 "Time": DateTime.now().toString()
+              }, SetOptions(merge: true));
+
+              FirebaseFirestore.instance
+                  .collection("Users")
+                  .doc(person)
+                  .collection("ContestTrans")
+                  .doc(DateTime.now().toString())
+                  .set({
+                "id": i.data()["ContestID"],
+                "Type": "Added",
+                "status": "No Participation",
+                "Amount": int.parse(i.data()['EntryFee'])
               }, SetOptions(merge: true));
 
               send_noti(

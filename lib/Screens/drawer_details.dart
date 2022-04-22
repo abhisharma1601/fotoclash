@@ -8,6 +8,7 @@ import 'package:fotoclash/Screens/leader_board.dart';
 import 'package:fotoclash/Screens/Profile/set_profile.dart';
 import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
+import 'package:fotoclash/Wallet/contest_transactions.dart';
 import 'package:fotoclash/Wallet/wallet.dart';
 import 'package:fotoclash/Widgets/webview.dart';
 import 'package:fotoclash/main.dart';
@@ -70,6 +71,15 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
               },
               child: _RowBox(
                   ico: Icons.account_balance_wallet_rounded, body: "Wallet")),
+          GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => ContestTransactions()));
+              },
+              child: _RowBox(
+                  ico: Icons.history_sharp, body: "Contest Transactions")),
           GestureDetector(
               onTap: () {
                 Navigator.push(
