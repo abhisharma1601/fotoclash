@@ -182,12 +182,12 @@ class _AddBalanceState extends State<AddBalance> {
                           borderRadius: BorderRadius.circular(16)),
                     )),
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => py_pg(amount: amount.text),
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => py_pg(amount: amount.text),
+                  //   ),
+                  // );
                 },
                 child: GestureDetector(
                   onTap: () {

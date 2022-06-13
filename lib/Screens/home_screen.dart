@@ -183,7 +183,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             //4 tie
 
-            if (is4_tie(i.data()["Likes"])[0] == true &&
+            else if (is4_tie(i.data()["Likes"])[0] == true &&
                 i.data()["Likes"].length == 4) {
               print("checking func!");
 
@@ -454,7 +454,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           //4 tie
 
-          if (is4_tie(i.data()["Likes"])[0] == true &&
+          else if (is4_tie(i.data()["Likes"])[0] == true &&
               i.data()["Likes"].length == 4) {
             print("checking func!");
 

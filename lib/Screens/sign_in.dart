@@ -1,6 +1,9 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Controllers/auth_controller.dart';
+import 'package:fotoclash/Screens/emailVerification.dart';
 import 'package:fotoclash/Screens/forget_pass.dart';
 import 'package:fotoclash/Screens/home_screen.dart';
 import 'package:fotoclash/Screens/sign_up.dart';
@@ -27,8 +30,23 @@ class _LoginState extends State<Login> {
       authMethods.signIn(email: email, password: password).then((value) async {
         Fluttertoast.showToast(msg: "Login Successful");
 
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => HomeScreen()));
+        try {
+          var key = await FirebaseFirestore.instance
+              .collection("Users")
+              .doc(FirebaseAuth.instance.currentUser!.uid)
+              .get();
+          if ((key.data() as dynamic)["verified"]) {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => HomeScreen()));
+          } else {
+            Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => EmailverificationScreen()));
+          }
+        } catch (e) {
+          print("with error");
+          Navigator.of(context).pushReplacement(MaterialPageRoute(
+              builder: (context) => EmailverificationScreen()));
+        }
       }).catchError((e) {
         Fluttertoast.showToast(msg: e.toString());
       });

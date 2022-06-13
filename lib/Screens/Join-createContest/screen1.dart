@@ -314,7 +314,7 @@ class _CreateConSState extends State<CreateConS> {
                   }
                 },
                 decoration: InputDecoration(
-                    contentPadding: EdgeInsets.only(top: 10),
+                    contentPadding: EdgeInsets.only(top: 10, bottom: 10),
                     border: InputBorder.none,
                     hintText: "Enter contest name",
                     hintStyle: TextStyle(color: Color(0xff6B7076))),
@@ -527,7 +527,7 @@ class _CreateConSState extends State<CreateConS> {
                         winnerisME: winnerisME,
                         balance: _balance_amount,
                         prize: _amount.toString(),
-                        pass: int.parse(PasswordC.text),
+                        pass: _private ? int.parse(PasswordC.text) : 0000,
                         private: _private,
                         winnerPrize:
                             "₹${((_con_size * _amount) / 1.18).ceil()}",

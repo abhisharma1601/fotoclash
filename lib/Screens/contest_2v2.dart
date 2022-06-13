@@ -10,7 +10,10 @@ import 'package:share_plus/share_plus.dart';
 
 class Contest2v2 extends StatefulWidget {
   Contest2v2(
-      {required this.images, required this.likes, required this.contest_id,required this.participations});
+      {required this.images,
+      required this.likes,
+      required this.contest_id,
+      required this.participations});
   List images, likes;
   String contest_id;
   List participations;
@@ -51,31 +54,15 @@ class _Contest2v2State extends State<Contest2v2> {
         ),
         Column(mainAxisAlignment: MainAxisAlignment.center, children: [
           Row(children: [
-            imageContainer(context, widget.images[0],widget.participations[0]),
-            imageContainer(context, widget.images[1],widget.participations[1])
+            imageContainer(context, widget.images[0], widget.participations[0]),
+            imageContainer(context, widget.images[1], widget.participations[1])
           ]),
         ]),
         Positioned(
-          left: MediaQuery.of(context).size.width * 160 / 375,
+          left: MediaQuery.of(context).size.width * 130 / 375,
           top: MediaQuery.of(context).size.height * 380 / 865,
-          child: Container(
-            decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(35)),
-                gradient: LinearGradient(colors: [
-                  Color.fromRGBO(195, 188, 138, 1),
-                  Color.fromRGBO(244, 157, 99, 1),
-                  Color.fromRGBO(218, 62, 45, 1),
-                  Color.fromRGBO(175, 47, 32, 1),
-                ])),
-            child: const CircleAvatar(
-              child: Text(
-                "VS",
-                style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-              ),
-              radius: 30,
-              backgroundColor: Colors.transparent,
-            ),
-          ),
+          child: Image(
+              height: 110, width: 110, image: AssetImage("assets/vs.png")),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 30, left: 20),
@@ -147,7 +134,7 @@ class _Contest2v2State extends State<Contest2v2> {
             },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.5,
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
               child: Column(
                 children: [
                   Icon(
@@ -210,7 +197,7 @@ class _Contest2v2State extends State<Contest2v2> {
             },
             child: Container(
               width: MediaQuery.of(context).size.width * 0.5,
-              decoration: BoxDecoration(color: Colors.black.withOpacity(0.8)),
+              decoration: BoxDecoration(color: Colors.black.withOpacity(0.1)),
               child: Column(
                 children: [
                   Icon(
@@ -256,13 +243,13 @@ class _Contest2v2State extends State<Contest2v2> {
   }
 }
 
-imageContainer(BuildContext context, String image,String Participations) {
+imageContainer(BuildContext context, String image, String Participations) {
   return InkWell(
     onTap: () {
       Navigator.of(context).push(MaterialPageRoute(
           builder: (context) => SingleImage(
                 image: image,
-                 Participations:Participations,
+                Participations: Participations,
               )));
     },
     child: Container(

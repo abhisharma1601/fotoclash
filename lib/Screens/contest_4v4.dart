@@ -11,7 +11,10 @@ import 'drawer_details.dart';
 
 class Contest4v4 extends StatefulWidget {
   Contest4v4(
-      {required this.images, required this.likes, required this.contest_id,required this.participations});
+      {required this.images,
+      required this.likes,
+      required this.contest_id,
+      required this.participations});
   List images;
   List likes;
   String contest_id;
@@ -29,18 +32,18 @@ class _Contest4v4State extends State<Contest4v4> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-            key: _scaffoldkey,
-      drawer: const Drawer(
-        backgroundColor: Color(0xffbac333863),
-        child: ProfileDrawer(),
-      ),
+        key: _scaffoldkey,
+        drawer: const Drawer(
+          backgroundColor: Color(0xffbac333863),
+          child: ProfileDrawer(),
+        ),
         body: _Comp4v4(
             contest_id: widget.contest_id,
             images: widget.images,
             likes: widget.likes,
             scaffoldkey: _scaffoldkey,
             isLiked: isLiked,
-            participations:widget.participations));
+            participations: widget.participations));
   }
 }
 
@@ -58,7 +61,7 @@ class _Comp4v4 extends StatefulWidget {
   })  : _scaffoldkey = scaffoldkey,
         super(key: key);
 
-  final List images, likes,participations;
+  final List images, likes, participations;
   final GlobalKey<ScaffoldState> _scaffoldkey;
   final bool isLiked;
   final String contest_id;
@@ -87,36 +90,20 @@ class _Comp4v4State extends State<_Comp4v4> {
       Column(children: [
         // SizedBox(height: 50,),
         Row(children: [
-          imageContainer(context, widget.images[0],widget.participations[0]),
-          imageContainer(context, widget.images[1],widget.participations[1])
+          imageContainer(context, widget.images[0], widget.participations[0]),
+          imageContainer(context, widget.images[1], widget.participations[1])
         ]),
 
         Row(children: [
-          imageContainer(context, widget.images[2],widget.participations[2]),
-          imageContainer(context, widget.images[3],widget.participations[3])
+          imageContainer(context, widget.images[2], widget.participations[2]),
+          imageContainer(context, widget.images[3], widget.participations[3])
         ])
       ]),
       Positioned(
-        left: MediaQuery.of(context).size.width * 160 / 375,
-        top: MediaQuery.of(context).size.height * 380 / 865,
-        child: Container(
-          decoration: const BoxDecoration(
-              borderRadius: BorderRadius.all(Radius.circular(35)),
-              gradient: LinearGradient(colors: [
-                Color.fromRGBO(195, 188, 138, 1),
-                Color.fromRGBO(244, 157, 99, 1),
-                Color.fromRGBO(218, 62, 45, 1),
-                Color.fromRGBO(175, 47, 32, 1),
-              ])),
-          child: const CircleAvatar(
-            child: Text(
-              "VS",
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: 22),
-            ),
-            radius: 30,
-            backgroundColor: Colors.transparent,
-          ),
-        ),
+        left: MediaQuery.of(context).size.width * 130 / 375,
+        top: MediaQuery.of(context).size.height * 360 / 865,
+        child:
+            Image(height: 110, width: 110, image: AssetImage("assets/vs.png")),
       ),
       Padding(
         padding: const EdgeInsets.only(left: 20, top: 30),
@@ -205,7 +192,6 @@ class _Comp4v4State extends State<_Comp4v4> {
             }
           },
           child: Container(
-
             child: Column(
               children: [
                 Icon(
@@ -224,7 +210,7 @@ class _Comp4v4State extends State<_Comp4v4> {
             ),
           ),
         ),
-        left:  MediaQuery.of(context).size.width * 187 / 375,
+        left: MediaQuery.of(context).size.width * 187 / 375,
         right: 0,
         top: MediaQuery.of(context).size.height * 330 / 812,
       ),
@@ -306,8 +292,8 @@ class _Comp4v4State extends State<_Comp4v4> {
             ),
           ),
         ),
-        left:0,
-        right:  MediaQuery.of(context).size.width * 185 / 375,
+        left: 0,
+        right: MediaQuery.of(context).size.width * 185 / 375,
         top: MediaQuery.of(context).size.height * 330 / 812,
       ),
       Positioned(
@@ -390,12 +376,10 @@ class _Comp4v4State extends State<_Comp4v4> {
           ),
         ),
         left: 0,
-                right: MediaQuery.of(context).size.width * 185 / 375,
-
+        right: MediaQuery.of(context).size.width * 185 / 375,
         top: MediaQuery.of(context).size.height * 410 / 812,
       ),
       Positioned(
-        
         child: GestureDetector(
           onTap: () {
             FirebaseFirestore.instance
@@ -623,9 +607,9 @@ imageContainer(BuildContext context, String image, String Participations) {
   return InkWell(
     onTap: () {
       Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => SingleImage(            
+          builder: (context) => SingleImage(
                 image: image,
-                Participations:Participations,
+                Participations: Participations,
               )));
     },
     child: Container(

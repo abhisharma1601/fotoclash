@@ -90,6 +90,7 @@ class _SignUpState extends State<SignUp> {
       'State': value,
       "Data": [0, 0, 0],
       "isComplete": false,
+      "verified": false,
       "Followers": [],
       "Following": [],
       "Wallet": {"Balance": 0, "Added": 0, "Withdrawn": 0, "Pending": 0},

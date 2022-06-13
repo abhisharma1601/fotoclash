@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class HowTo extends StatelessWidget {
-  const HowTo({Key? key}) : super(key: key);
+class Refund extends StatelessWidget {
+  const Refund({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -14,29 +14,45 @@ class HowTo extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 const Text(
-                  "How to Play",
+                  "Refund/Cancellation policy",
                   style: TextStyle(fontSize: 25),
                 ),
-                const Text("Home/ How to Play"),
+                const Text("Home/ Refund/Cancellation policy"),
                 const SizedBox(height: 10),
+                const Text(
+                  "Refund/Cancellation policy",
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
                 const SizedBox(
                   height: 15,
                 ),
                 const Text(
-                    "• Download our ‘Mobile App’ from https://fotoclash.com/ and sign up with basic details."),
+                    "a) In the event, that there is an error in the Services provided by us, we may refund the Entry Fee, provided the reasons are genuine and proved after investigation by Fotoclash."),
                 const SizedBox(
                   height: 15,
                 ),
-                const Text("• Login with registered email and password."),
+                const Text(
+                    "b) Please read the rules of Contest before participating."),
                 const SizedBox(
                   height: 15,
                 ),
-                const Text("• Recharge your wallet with desired amount."),
+                const Text(
+                    "c) We do not cancel registrations once entered, however, in case of exceptional circumstances wherein the fault may lie with the payment gateway or from Our side, We will cancel your participation on request and refund the Entry Fee to You within a reasonable amount of time."),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text(
+                    "d) In case we cancel your participation in any Contest as a result of this, We will return Your Entry Fee to You within a reasonable amount of time for You to redeem the same by playing other Contests on Fotoclash."),
+                const SizedBox(
+                  height: 15,
+                ),
+                const Text(
+                    "e) We will try Our best to create the best user experience for You. If paid by credit card, refunds will be issued to the original credit card provided at the time of purchase and in case of payments made through a payment gateway, payment refunds will be made to the same account."),
                 const SizedBox(
                   height: 25,
                 ),
                 const Text(
-                  "TO JOIN CONTEST",
+                  "Refund Policy",
                   style: const TextStyle(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(
@@ -48,72 +64,27 @@ class HowTo extends StatelessWidget {
                   height: 15,
                 ),
                 const Text(
-                    "• Tap on Create btn (Plus btn) then you will see live contests on the ‘Join Contest’ , join contests of your choice by paying the entry fee and uploading your photograph."),
+                    "a) Please Email us at helpdesk@fotoclash.com from your registered Email ID & also mention the registered phone number. We will call you to verify the request."),
                 const SizedBox(
                   height: 15,
                 ),
                 const Text(
-                    "• As all the participants of the contests join successfully the contest will be live on home page."),
+                    "b) Please mention the reason for which you’re requesting to withdraw the deposit funds."),
                 const SizedBox(
                   height: 15,
                 ),
                 const Text(
-                    "• Share your contest ID with your friends to like your photo."),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text("• After 24 hrs the result will be announced."),
+                    "c) Give us your correct Bank account number with IFSC code to get back the deposit money."),
                 const SizedBox(
                   height: 15,
                 ),
                 const Text(
-                    "• The winner of the contest will get its winning amount updated in his/her wallet."),
-                const SizedBox(
-                  height: 25,
-                ),
-                const Text(
-                  "TO CREATE CONTEST",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text("• Tap on Create btn (Plus btn) -> Create Contest"),
+                    "d) We will process the refund validating the reason within 7-14 working days."),
                 const SizedBox(
                   height: 15,
                 ),
                 const Text(
-                    "• Enter Contest name, select entry fee, select contest size."),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text("• Then upload your photograph"),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text(
-                    "• Now your contest is live on ‘JOIN CONTEST’ now any one join your contets."),
-                const SizedBox(
-                  height: 25,
-                ),
-                const Text(
-                  "SHARE YOUR CONTEST TO INVITE YOUR FRIENDS",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text("• Tap on Create btn (Plus btn) ->My Contests"),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text(
-                    "• Copy the contest ID and share it directly with friends (OR)"),
-                const SizedBox(
-                  height: 15,
-                ),
-                const Text(
-                    "• Tap on share button to share the contest details in a single click. "),
+                    "In order to comply with extant law relating to deposit regulations, please note that the Users must withdraw any idle Balance lying in their Account within 365 days of having won a particular Contest. Similarly, Users must use any money in their Account within 365 days. If not, the said Balance will have to be forfeited by Fotoclash."),
                 const SizedBox(
                   height: 25,
                 ),
@@ -137,7 +108,7 @@ class HowTo extends StatelessWidget {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // Text("How To Play Privacy Policy Terms & Conditions"),
+                    // Text("How To Play/ Privacy Policy/ Terms & Conditions"),
                     // Text(
                     //     "Contact Us / About Us / Refund / Cancellation policy"),
                     Text(

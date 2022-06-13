@@ -40,6 +40,7 @@ class _CreateContest2v2State extends State<CreateContest2v2> {
     File? pickedFile;
 
     var image = await picker.pickImage(
+      imageQuality: 20,
       source: ImageSource.gallery,
     );
     pickedFile = File(image!.path);

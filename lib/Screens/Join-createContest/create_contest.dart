@@ -27,8 +27,7 @@ class CreateContest extends StatefulWidget {
       this.winnerPrize,
       this.ContestName,
       required this.isActive,
-      required this.winnerisME}
-      );
+      required this.winnerisME});
   @override
   State<CreateContest> createState() => _CreateContestState();
 }
@@ -43,6 +42,7 @@ class _CreateContestState extends State<CreateContest> {
     File? pickedFile;
 
     var image = await picker.pickImage(
+      imageQuality: 20,
       source: ImageSource.gallery,
     );
     pickedFile = File(image!.path);

@@ -36,6 +36,7 @@ class _CreateContest3v3State extends State<CreateContest3v3> {
     File? pickedFile;
 
     var image = await picker.pickImage(
+      imageQuality: 20,
       source: ImageSource.gallery,
     );
     pickedFile = File(image!.path);

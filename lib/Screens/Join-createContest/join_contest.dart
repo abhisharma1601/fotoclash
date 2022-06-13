@@ -44,10 +44,12 @@ class _JoinContestState extends State<JoinContest> {
     XFile? pickedFile;
     if (gallery) {
       pickedFile = await picker.pickImage(
+        imageQuality: 20,
         source: ImageSource.gallery,
       );
     } else {
       pickedFile = await picker.pickImage(
+        imageQuality: 20,
         source: ImageSource.camera,
       );
     }
@@ -66,10 +68,12 @@ class _JoinContestState extends State<JoinContest> {
     XFile? pickedFile;
     if (gallery) {
       pickedFile = await picker.pickImage(
+        imageQuality: 20,
         source: ImageSource.gallery,
       );
     } else {
       pickedFile = await picker.pickImage(
+        imageQuality: 20,
         source: ImageSource.camera,
       );
     }
@@ -89,10 +93,12 @@ class _JoinContestState extends State<JoinContest> {
     XFile? pickedFile;
     if (gallery) {
       pickedFile = await picker.pickImage(
+        imageQuality: 20,
         source: ImageSource.gallery,
       );
     } else {
       pickedFile = await picker.pickImage(
+        imageQuality: 20,
         source: ImageSource.camera,
       );
     }
@@ -112,10 +118,12 @@ class _JoinContestState extends State<JoinContest> {
     XFile? pickedFile;
     if (gallery) {
       pickedFile = await picker.pickImage(
+        imageQuality: 20,
         source: ImageSource.gallery,
       );
     } else {
       pickedFile = await picker.pickImage(
+        imageQuality: 20,
         source: ImageSource.camera,
       );
     }

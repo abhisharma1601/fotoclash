@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fotoclash/Screens/emailVerification.dart';
 import 'package:fotoclash/Screens/home_screen.dart';
 import 'package:fotoclash/Screens/Profile/set_profile.dart';
 import 'package:fotoclash/Screens/sign_in.dart';
@@ -106,7 +107,6 @@ class _MyAppState extends State<MyApp> {
         await FirebaseFirestore.instance.collection("Users").doc(uid).get();
     try {
       var image = (key.data() as dynamic)["imageUrl"];
-      print(image.toString());
       if (image.toString() == 'null') {
         setState(() {
           screen = SetProfile();
@@ -115,6 +115,10 @@ class _MyAppState extends State<MyApp> {
         if (await update()) {
           setState(() {
             screen = UpdateApp();
+          });
+        } else if (!(key.data() as dynamic)["verified"]) {
+          setState(() {
+            screen = EmailverificationScreen();
           });
         } else {
           setState(() {
