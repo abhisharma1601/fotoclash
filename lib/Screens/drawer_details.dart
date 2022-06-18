@@ -1,21 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fotoclash/Pages/about.dart';
 import 'package:fotoclash/Pages/contactus.dart';
 import 'package:fotoclash/Pages/instructions.dart';
 import 'package:fotoclash/Pages/privacypolicy.dart';
 import 'package:fotoclash/Pages/refund.dart';
+import 'package:fotoclash/Pages/legality.dart';
 import 'package:fotoclash/Pages/terms.dart';
 import 'package:fotoclash/Screens/Notification/notification.dart';
 import 'package:fotoclash/Screens/Profile/edit_profile.dart';
 import 'package:fotoclash/Screens/leader_board.dart';
-import 'package:fotoclash/Screens/Profile/set_profile.dart';
 import 'package:fotoclash/Screens/sign_in.dart';
-import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:fotoclash/Wallet/contest_transactions.dart';
 import 'package:fotoclash/Wallet/wallet.dart';
-import 'package:fotoclash/Widgets/webview.dart';
 import 'package:fotoclash/main.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -103,7 +100,7 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
               },
               child: _RowBox(
                   ico: Icons.integration_instructions_outlined,
-                  body: "Instruction"),
+                  body: "How to play?"),
             ),
             GestureDetector(
                 onTap: () {
@@ -114,7 +111,7 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
             GestureDetector(
                 onTap: () {
                   Share.share(
-                      "Hey, look at this new DP battle app with an actual chance of winning real money. Try it now by downloading using the link provided below:\n",
+                      "Hey, look at this new DP battle app with an actual chance of winning real money. Try it now by downloading using the link provided below:\nhttps://fotoclash.com",
                       subject: "Fotoclash Invitation!");
                 },
                 child: _RowBox(ico: Icons.share, body: "Share App")),
@@ -127,10 +124,11 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
             GestureDetector(
                 onTap: () {
                   Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => Legal()));
+                      MaterialPageRoute(builder: (context) => Terms()));
                 },
                 child: _RowBox(
-                    ico: Icons.fact_check_outlined, body: "Terms of Services")),
+                    ico: Icons.fact_check_outlined,
+                    body: "Terms and Conditions")),
             GestureDetector(
                 onTap: () {
                   Navigator.push(context,
@@ -141,9 +139,18 @@ class _ProfileDrawerState extends State<ProfileDrawer> {
             GestureDetector(
                 onTap: () {
                   Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => Legal()));
+                },
+                child:
+                    _RowBox(ico: Icons.privacy_tip_outlined, body: "Legality")),
+            GestureDetector(
+                onTap: () {
+                  Navigator.push(context,
                       MaterialPageRoute(builder: (context) => Refund()));
                 },
-                child: _RowBox(ico: Icons.money, body: "Refund Policy")),
+                child: _RowBox(
+                    ico: Icons.paid_outlined,
+                    body: "Refund / Cancellation policy")),
             GestureDetector(
                 onTap: () {
                   Navigator.push(context,

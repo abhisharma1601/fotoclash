@@ -78,7 +78,7 @@ class _ForgetPassState extends State<ForgetPass> {
                                   MediaQuery.of(context).size.height * 10 / 865,
                             ),
                             const Text(
-                              "An OTP will be sent to",
+                              "A link will be sent to",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17,

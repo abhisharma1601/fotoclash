@@ -43,7 +43,7 @@ class _HomeBodyState extends State<HomeBody> {
                         height: 16,
                         width: 16,
                         decoration: BoxDecoration(
-                            color: Colors.red,
+                            color: Colors.transparent,
                             shape: BoxShape.circle,
                             border: Border.all()),
                       ),
@@ -65,7 +65,7 @@ class _HomeBodyState extends State<HomeBody> {
                       ),
                       Opacity(
                         opacity: 0.6,
-                        child: Text("Hi this is test .................",
+                        child: Text("recent message............",
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
@@ -77,7 +77,7 @@ class _HomeBodyState extends State<HomeBody> {
                   const Opacity(
                       opacity: 0.6,
                       child: Text(
-                        "3m ago",
+                        "",
                         style: TextStyle(color: Colors.white),
                       ))
                 ],

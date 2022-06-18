@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fotoclash/Wallet/Payment/cashfree.dart';
 import 'package:fotoclash/Wallet/Payment/payment.dart';
 import 'package:fotoclash/Wallet/withdraw_balance.dart';
 import 'package:fotoclash/main.dart';
@@ -191,12 +192,7 @@ class _AddBalanceState extends State<AddBalance> {
                 },
                 child: GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => py_pg(amount: amount.text),
-                      ),
-                    );
+                    handle_payment(amount.text);
                   },
                   child: Text(
                     "Add Money",

@@ -5,6 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Screens/home_screen.dart';
+import 'package:fotoclash/Screens/sign_up.dart';
 import 'package:fotoclash/Screens/smtp.dart';
 
 class EmailverificationScreen extends StatefulWidget {
@@ -31,9 +32,9 @@ class _EmailverificationScreenState extends State<EmailverificationScreen> {
   }
 
   void send_otp() {
-    Fluttertoast.showToast(msg: "Sending OTP!");
     String email = FirebaseAuth.instance.currentUser!.email!;
-    Fluttertoast.showToast(msg: email);
+    Fluttertoast.showToast(
+        msg: "OTP sent on $email, check your spam folder if not recieved!");
     _sentOtp = Random().nextInt(1000000) +
         Random().nextInt(10000) +
         Random().nextInt(100);
@@ -72,7 +73,7 @@ class _EmailverificationScreenState extends State<EmailverificationScreen> {
           children: [
             Image(
               image: NetworkImage(
-                  "https://exotel.com/wp-content/uploads/2020/02/EXOTEL_nOTP_ANIMATION_SS_v03.gif"),
+                  "https://cdn2.iconfinder.com/data/icons/infinity-office/48/005_084_email_mail_verification_tick-1024.png"),
               height: 280,
             ),
             Padding(
@@ -174,7 +175,22 @@ class _EmailverificationScreenState extends State<EmailverificationScreen> {
                       fontSize: 18),
                 ),
               ),
-            )
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            GestureDetector(
+                onTap: () {
+                  Navigator.pushReplacement(context,
+                      MaterialPageRoute(builder: (context) => SignUp()));
+                },
+                child: Text(
+                  "Wrong email ?",
+                  style: TextStyle(
+                      color: Colors.orange,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16),
+                ))
           ],
         ),
       ),

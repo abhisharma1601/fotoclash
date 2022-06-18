@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:fotoclash/Controllers/auth_controller.dart';
 import 'package:fotoclash/Models/userModel.dart';
+import 'package:fotoclash/Pages/terms.dart';
 import 'package:fotoclash/Screens/sign_in.dart';
 import 'package:get/get.dart';
 import '../Widgets/webview.dart';
@@ -19,19 +20,36 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   // final _auth = FirebaseAuth.instance;
   final states = [
-    'Delhi',
-    'Maharashtra',
-    "Andaman and Nicobar",
-    "Andhra Pradesh",
+    "Andaman & Nicobar Islands",
+    "Arunachal Pradesh",
+    "Bihar",
+    "Chandigarh",
+    "Chhattisgarh",
+    "Dadra and Nagar Haveli",
+    "Daman and Diu",
+    "Delhi",
     "Goa",
     "Gujarat",
+    "Haryana",
     "Himachal Pradesh",
-    "Jammu and Kashmir",
+    "Jammu & Kashmir",
+    "Jharkhand",
+    "Karnataka",
     "Kerala",
-    "	Bihar",
-    "	Madhya Pradesh",
-    "Rajasthan"
-        "	Tamil Nadu"
+    "Lakshadweep",
+    "Madhya Pradesh",
+    "Maharashtra,"
+        "Manipur",
+    "Meghalaya",
+    "Mizoram",
+    "Puducherry",
+    "Punjab",
+    "Rajasthan",
+    "Tamil Nadu",
+    "Tripura",
+    "Uttar Pradesh",
+    "Uttarakhand",
+    "West Bengal",
   ];
   String? value;
   bool isChecked = false;
@@ -117,7 +135,7 @@ class _SignUpState extends State<SignUp> {
             return ("UserName cannot be empty");
           }
           if (!regex.hasMatch(value)) {
-            return ("Enter Valid Name");
+            return ("Enter Valid username");
           }
         },
         textInputAction: TextInputAction.next,
@@ -126,7 +144,7 @@ class _SignUpState extends State<SignUp> {
             Icons.person,
             color: Colors.white,
           ),
-          hintText: "User Name",
+          hintText: "Username",
           hintStyle: const TextStyle(color: Color.fromRGBO(107, 112, 118, 1)),
           filled: true,
           fillColor: const Color.fromRGBO(34, 38, 51, 1),
@@ -254,10 +272,10 @@ class _SignUpState extends State<SignUp> {
         validator: (value) {
           RegExp regex = new RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
-            return ("Fullname cannot be empty");
+            return ("password cannot be empty");
           }
           if (!regex.hasMatch(value)) {
-            return ("Enter Valid Name");
+            return ("Enter Valid password");
           }
         },
         textInputAction: TextInputAction.next,
@@ -428,9 +446,7 @@ class _SignUpState extends State<SignUp> {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => WebSurf(
-                                          url:
-                                              "https://fotoclash.com/terms.html")));
+                                      builder: (context) => Terms()));
                             },
                             child: Text("I agree with Terms and Privacy policy",
                                 style: TextStyle(

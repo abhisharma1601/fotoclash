@@ -93,10 +93,10 @@ class _LoginState extends State<Login> {
         validator: (value) {
           RegExp regex = new RegExp(r'^.{6,}$');
           if (value!.isEmpty) {
-            return ("Fullname cannot be empty");
+            return ("Password cannot be empty");
           }
           if (!regex.hasMatch(value)) {
-            return ("Enter Valid Name");
+            return ("Enter Valid password");
           }
         },
         onSaved: (value) {

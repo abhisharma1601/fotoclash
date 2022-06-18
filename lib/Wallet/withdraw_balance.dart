@@ -279,8 +279,7 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                           Navigator.pop(context);
                           Navigator.pop(context);
                           Fluttertoast.showToast(
-                              msg:
-                                  "Withdrawl initiated with amount \u{20B9}$_amount!");
+                              msg: "Withdrawl initiated of \u{20B9}$_amount!");
                         } else {
                           Fluttertoast.showToast(msg: "Low Balance!");
                         }

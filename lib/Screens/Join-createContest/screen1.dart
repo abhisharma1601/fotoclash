@@ -762,7 +762,7 @@ class _JOinConSState extends State<JOinConS> {
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     border: InputBorder.none,
-                    hintText: "Search by contest code.",
+                    hintText: "Search by contest ID",
                     hintStyle: TextStyle(color: Colors.white)),
               )),
               Spacer(),
@@ -1270,7 +1270,7 @@ class _joinBlockMy extends StatelessWidget {
                         child: InkWell(
                           onTap: () {
                             Share.share(
-                                "Hey, look at the contest I'm participating in vote me and you can also win upto Rs. 2000 by competing in the contest with id: $contestID",
+                                "Hey, look at the contest I’m participating in, vote me and you can also win real money by competing with me in the contest with ID: $contestID",
                                 subject: "Fotoclash Contest Invitation!");
                           },
                           child: Text(

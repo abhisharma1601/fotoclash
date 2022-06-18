@@ -1,6 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:fotoclash/Screens/Chats/chat_home.dart';
 import 'package:fotoclash/main.dart';
 
 import '../../Models/databse.dart';
@@ -9,7 +11,7 @@ import '../Chats/messages.dart';
 class UserProfile extends StatefulWidget {
   String username;
   int index;
-  UserProfile(this.username,this.index, {Key? key}) : super(key: key);
+  UserProfile(this.username, this.index, {Key? key}) : super(key: key);
 
   @override
   _UserProfileState createState() => _UserProfileState();
@@ -91,12 +93,12 @@ class _UserProfileState extends State<UserProfile> {
                               top: MediaQuery.of(context).size.height *
                                   340 /
                                   812,
-                              left:0,
+                              left: 0,
                               right: 0,
-                                                            child: Container(
+                              child: Container(
                                 padding: EdgeInsets.fromLTRB(10, 5, 10, 10),
-                        decoration:
-                            BoxDecoration(color: Colors.black.withOpacity(0.7)),
+                                decoration: BoxDecoration(
+                                    color: Colors.black.withOpacity(0.7)),
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
@@ -137,8 +139,12 @@ class _UserProfileState extends State<UserProfile> {
                               ),
                               // _shocase(head: snapshot.requireData.docs[0]["Data"][1], body: "Following"),
                               _shocase(
-                                  head: snapshot.requireData.docs[0]["WinningData"]["Contest Tie"]
-                                  + snapshot.requireData.docs[0]["WinningData"]["Lost"]+ snapshot.requireData.docs[0]["WinningData"]["Won"],
+                                  head: snapshot.requireData.docs[0]
+                                          ["WinningData"]["Contest Tie"] +
+                                      snapshot.requireData.docs[0]
+                                          ["WinningData"]["Lost"] +
+                                      snapshot.requireData.docs[0]
+                                          ["WinningData"]["Won"],
                                   body: "Contests")
                             ],
                           ),
@@ -227,7 +233,9 @@ class _UserProfileState extends State<UserProfile> {
                                               ),
                                       );
                                     })),
-                                    SizedBox(width: 5,),
+                            SizedBox(
+                              width: 5,
+                            ),
                             StreamBuilder(
                                 stream: chatRoomsStream,
                                 builder: (context, AsyncSnapshot snapshot) {
@@ -266,33 +274,17 @@ class _UserProfileState extends State<UserProfile> {
                                               Navigator.push(
                                                   context,
                                                   MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Messages(
-                                                      snapshot
-                                                          .requireData.docs[widget.index]
-                                                          .get("chatRoomId")
-                                                          .toString(),
-                                                      snapshot
-                                                          .requireData.docs[widget.index]
-                                                          .get("chatRoomId")
-                                                          .toString()
-                                                          .replaceAll("_", "")
-                                                          .replaceAll(
-                                                              app_user.username,
-                                                              ""),
-                                                      app_user.photo ==
-                                                              snapshot.requireData
-                                                                      .docs[widget.index]
-                                                                  ["image"][0]
-                                                          ? snapshot.requireData
-                                                                  .docs[widget.index]
-                                                              ["image"][1]
-                                                          : snapshot.requireData
-                                                                  .docs[widget.index]
-                                                              ["image"][0],
-                                                              2
-                                                    ),
-                                                  ));
+                                                      builder: (context) =>
+                                                          HomeChats()));
+                                              Clipboard.setData(
+                                                  new ClipboardData(
+                                                      text: widget.username));
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "${widget.username} copied!");
+                                              Fluttertoast.showToast(
+                                                  msg:
+                                                      "Sarch username and start chating!");
                                             },
                                             child: const Text(
                                               "Message",
@@ -312,9 +304,15 @@ class _UserProfileState extends State<UserProfile> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             _winDetails(
-                                head: "Won", body: snapshot.requireData.docs[0]["WinningData"]["Won"], color: Colors.green),
+                                head: "Won",
+                                body: snapshot.requireData.docs[0]
+                                    ["WinningData"]["Won"],
+                                color: Colors.green),
                             _winDetails(
-                                head: "Lost", body: snapshot.requireData.docs[0]["WinningData"]["Lost"], color: Colors.red),
+                                head: "Lost",
+                                body: snapshot.requireData.docs[0]
+                                    ["WinningData"]["Lost"],
+                                color: Colors.red),
                           ],
                         ),
                         Divider(

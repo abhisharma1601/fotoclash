@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.fotoclash">
    <application
-        android:label="fotoclash"
+        android:label="FotoClash"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity
