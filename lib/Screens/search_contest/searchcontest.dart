@@ -42,7 +42,7 @@ class _SearchContestState extends State<SearchContest> {
                   .difference(DateTime.now()) >
               Duration(seconds: 0)),
           CreatorID: (key.data() as dynamic)["CreatorID"],
-          participations:(key.data() as dynamic)["Participations"]),
+          participations: (key.data() as dynamic)["Participations"]),
     );
     setState(() {});
   }
@@ -82,7 +82,7 @@ class _SearchContestState extends State<SearchContest> {
                       },
                       decoration: InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Search by contest code.",
+                          hintText: "Enter Constest ID",
                           hintStyle: TextStyle(color: Colors.white)),
                     )),
                     Spacer(),
@@ -206,19 +206,21 @@ class _ContestBlock extends StatelessWidget {
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Contest2v2(
-                                          images: images,
-                                          likes: likes,
-                                          contest_id: contestID!,
-                                          participations: participations,)));
+                                            images: images,
+                                            likes: likes,
+                                            contest_id: contestID!,
+                                            participations: participations,
+                                          )));
                             } else if (participants == 4) {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
                                       builder: (context) => Contest4v4(
-                                          images: images,
-                                          likes: likes,
-                                          contest_id: contestID!,
-                                          participations: participations,)));
+                                            images: images,
+                                            likes: likes,
+                                            contest_id: contestID!,
+                                            participations: participations,
+                                          )));
                             }
                           }
                         },

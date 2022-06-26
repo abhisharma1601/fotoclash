@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:math';
 import 'package:cashfree_pg/cashfree_pg.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:http/http.dart' as http;
@@ -28,11 +29,11 @@ Future<void> handle_payment(String amount) async {
   Map final_res = Map<String, String>();
 
   var res = await http.post(
-      Uri.parse("https://test.cashfree.com/api/v2/cftoken/order"),
+      Uri.parse("https://api.cashfree.com/api/v2/cftoken/order"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8',
-        'x-client-id': '145515ec0b50381b388f0f6d9a515541',
-        'x-client-secret': '56102f71c2420adbf328a005aad5ae95098a8612'
+        'x-client-id': '19460540b98d1f530b1ce80f28506491',
+        'x-client-secret': '4a48945a1670d17d15988747329b17ceabbddaae'
       },
       body: jsonEncode(
         {
@@ -48,10 +49,10 @@ Future<void> handle_payment(String amount) async {
     "customerName": "TEST",
     "orderNote": "Nothing!",
     "orderCurrency": "INR",
-    "appId": "145515ec0b50381b388f0f6d9a515541",
-    "customerPhone": "7018036347",
-    "customerEmail": "4abhi45@gmail.com",
-    "stage": "TEST",
+    "appId": "19460540b98d1f530b1ce80f28506491",
+    "customerPhone": app_user.phone,
+    "customerEmail": FirebaseAuth.instance.currentUser!.email.toString(),
+    "stage": "PROD",
     "tokenData": jsonDecode(res.body)["cftoken"]
   };
   await CashfreePGSDK.doPayment(input_params)
@@ -91,7 +92,6 @@ void _handlePaymentSuccess(String amount) async {
     "Time": "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
     "Amount": int.parse(amount)
   });
-
   Fluttertoast.showToast(msg: "₹${int.parse(amount)} added!");
   _showtoastsuc();
 }

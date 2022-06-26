@@ -192,7 +192,10 @@ class _AddBalanceState extends State<AddBalance> {
                 },
                 child: GestureDetector(
                   onTap: () {
-                    handle_payment(amount.text);
+                    handle_payment(amount.text).then((value) {
+                      Navigator.pop(context);
+                      Navigator.pop(context);
+                    });
                   },
                   child: Text(
                     "Add Money",

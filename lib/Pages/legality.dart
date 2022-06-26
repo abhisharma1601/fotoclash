@@ -70,19 +70,19 @@ class Legal extends StatelessWidget {
                 ),
                 const Text(
                     "If you are accessing this site from Andhra Pradesh, Assam, Orissa, Telangana, Sikkim or Nagaland, we hope you will enjoy our practice contests. However, the law in these states is unclear on playing games of skill with entry fees for cash prizes. You are therefore prohibited from playing cash contests on FotoClash from any of these states."),
-                const SizedBox(
-                  height: 25,
-                ),
-                const Text(
-                  "Safe & Secure transactions Powered by:",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Image(
-                  image: AssetImage("images/razorpay.png"),
-                ),
+                // const SizedBox(
+                //   height: 25,
+                // ),
+                // const Text(
+                //   "Safe & Secure transactions Powered by:",
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // Image(
+                //   image: AssetImage("images/razorpay.png"),
+                // ),
                 const SizedBox(
                   height: 25,
                 ),

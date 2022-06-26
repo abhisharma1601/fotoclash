@@ -3,11 +3,13 @@ import 'package:mailer/smtp_server.dart';
 
 // Use the SmtpServer class to configure an SMTP server:
 
-String username = "init@stackxsolutions.in";
-final smtpServer = SmtpServer("stackxsolutions.in",
+String username = "verifyfotoclash@fotoclash.com";
+final smtpServer = SmtpServer("smtp.hostinger.com",
     ignoreBadCertificate: true,
     username: username,
-    password: "StackX@123",
+    port: 465,
+    password: "SamSung@44",
+    ssl: true,
     allowInsecure: true);
 
 void verify_email(email, OTP) async {
@@ -21,7 +23,6 @@ void verify_email(email, OTP) async {
 
   try {
     final sendReport = await send(message, smtpServer);
-
     print('Message sent: ' + sendReport.toString());
   } on MailerException catch (e) {
     print(e);

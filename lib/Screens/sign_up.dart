@@ -20,6 +20,7 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   // final _auth = FirebaseAuth.instance;
   final states = [
+    "Select State",
     "Andaman & Nicobar Islands",
     "Arunachal Pradesh",
     "Bihar",
@@ -38,8 +39,8 @@ class _SignUpState extends State<SignUp> {
     "Kerala",
     "Lakshadweep",
     "Madhya Pradesh",
-    "Maharashtra,"
-        "Manipur",
+    "Maharashtra",
+    "Manipur",
     "Meghalaya",
     "Mizoram",
     "Puducherry",
@@ -51,7 +52,7 @@ class _SignUpState extends State<SignUp> {
     "Uttarakhand",
     "West Bengal",
   ];
-  String? value;
+  String state = "Select State";
   bool isChecked = false;
   bool _isObscure = false;
   final _formKey = GlobalKey<FormState>();
@@ -105,7 +106,7 @@ class _SignUpState extends State<SignUp> {
       'userName': username,
       'fullname': fullname,
       'phoneNo': mobileC,
-      'State': value,
+      'State': state,
       "Data": [0, 0, 0],
       "isComplete": false,
       "verified": false,
@@ -218,7 +219,7 @@ class _SignUpState extends State<SignUp> {
         color: const Color.fromRGBO(34, 38, 51, 1),
       ),
       child: DropdownButton(
-          value: value,
+          value: state,
           style: const TextStyle(color: Colors.white),
           iconEnabledColor: Colors.white,
           hint: const Text(
@@ -230,7 +231,7 @@ class _SignUpState extends State<SignUp> {
           isExpanded: true,
           iconSize: 36,
           onChanged: (value) {
-            setState(() => this.value = value.toString());
+            setState(() => this.state = value.toString());
           }),
     );
     final mailField = TextFormField(
@@ -412,7 +413,12 @@ class _SignUpState extends State<SignUp> {
                                           )),
                                       onPressed: () {
                                         if (isChecked == true) {
-                                          signUp(emailC, passC);
+                                          if (state != "Select State") {
+                                            signUp(emailC, passC);
+                                          } else {
+                                            Fluttertoast.showToast(
+                                                msg: "Select State!");
+                                          }
                                         } else {
                                           Fluttertoast.showToast(
                                               msg:
@@ -448,7 +454,7 @@ class _SignUpState extends State<SignUp> {
                                   MaterialPageRoute(
                                       builder: (context) => Terms()));
                             },
-                            child: Text("I agree with Terms and Privacy policy",
+                            child: Text("I agree with Terms and conditions",
                                 style: TextStyle(
                                     fontWeight: FontWeight.w400,
                                     color: Color.fromRGBO(107, 112, 118, 1),

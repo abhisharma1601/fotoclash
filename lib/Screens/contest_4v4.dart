@@ -468,7 +468,7 @@ class _Comp4v4State extends State<_Comp4v4> {
           child: InkWell(
             onTap: () {
               Share.share(
-                  "Hey, look at the contest I’m participating in, vote me and you can also win real money by competing with me in the contest with ID: ${widget.contest_id}",
+                  "Hey, look at the contest I’m participating in, vote me and you can also win real money by competing with me in the contest with ID: ${widget.contest_id}\nlink: https://fotoclash.com",
                   subject: "Fotoclash Contest Invitation!");
               // showModalBottomSheet(
               //     shape: const RoundedRectangleBorder(

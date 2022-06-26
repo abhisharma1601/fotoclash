@@ -229,7 +229,7 @@ class _Contest2v2State extends State<Contest2v2> {
             child: GestureDetector(
               onTap: () {
                 Share.share(
-                    "Hey, look at the contest I’m participating in, vote me and you can also win real money by competing with me in the contest with ID: ${widget.contest_id}",
+                    "Hey, look at the contest I’m participating in, vote me and you can also win real money by competing with me in the contest with ID: ${widget.contest_id}\nlink: https://fotoclash.com",
                     subject: "Fotoclash Contest Invitation!");
               },
               child: const Icon(

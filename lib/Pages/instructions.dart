@@ -114,19 +114,19 @@ class HowTo extends StatelessWidget {
                 ),
                 const Text(
                     "• Tap on share button to share the contest details in a single click. "),
-                const SizedBox(
-                  height: 25,
-                ),
-                const Text(
-                  "Safe & Secure transactions Powered by:",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Image(
-                  image: AssetImage("images/razorpay.png"),
-                ),
+                // const SizedBox(
+                //   height: 25,
+                // ),
+                // const Text(
+                //   "Safe & Secure transactions Powered by:",
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // Image(
+                //   image: AssetImage("images/razorpay.png"),
+                // ),
                 const SizedBox(
                   height: 25,
                 ),

@@ -229,59 +229,73 @@ class _WithdrawBalanceState extends State<WithdrawBalance> {
                                 borderRadius: BorderRadius.circular(16)),
                           )),
                       onPressed: () {
-                        if (int.parse(_amount) <= widget.balance) {
-                          FirebaseFirestore.instance
-                              .collection("Users")
-                              .doc(app_user.uid)
-                              .set({
-                            "Wallet": {
-                              "Balance": widget.balance - int.parse(_amount),
-                              "Withdrawn":
-                                  widget.withdrawn + int.parse(_amount),
-                              "Pending": widget.pending + int.parse(_amount),
-                            }
-                          }, SetOptions(merge: true));
-                          FirebaseFirestore.instance
-                              .collection("Users")
-                              .doc(app_user.uid)
-                              .collection("Transactions")
-                              .doc(DateTime.now().toString())
-                              .set({
-                            "Type": "Withdrawn",
-                            "Date":
-                                "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
-                            "Time":
-                                "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
-                            "Amount": int.parse(_amount),
-                            "Method": gate,
-                            "UPI": _upi,
-                            "Account_No.": _accnumber,
-                            "IFSC": _ifsc,
-                            "Account_Holder": _accholdername
-                          }, SetOptions(merge: true));
-                          FirebaseFirestore.instance
-                              .collection("Withdrawls")
-                              .doc(DateTime.now().toString())
-                              .set({
-                            "Status": false,
-                            "Date":
-                                "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
-                            "Time":
-                                "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
-                            "Amount": int.parse(_amount),
-                            "Method": gate,
-                            "UPI": _upi,
-                            "Account_No.": _accnumber,
-                            "IFSC": _ifsc,
-                            "UserID": app_user.uid,
-                            "Account_Holder": _accholdername
-                          }, SetOptions(merge: true));
-                          Navigator.pop(context);
-                          Navigator.pop(context);
-                          Fluttertoast.showToast(
-                              msg: "Withdrawl initiated of \u{20B9}$_amount!");
+                        if (int.parse(_amount) <= widget.balance &&
+                            int.parse(_amount) >= 30) {
+                          if (_accholdername != "" &&
+                              (_upi != "" ||
+                                  (_ifsc != "" && _accnumber != ""))) {
+                            FirebaseFirestore.instance
+                                .collection("Users")
+                                .doc(app_user.uid)
+                                .set({
+                              "Wallet": {
+                                "Balance": widget.balance - int.parse(_amount),
+                                "Withdrawn":
+                                    widget.withdrawn + int.parse(_amount),
+                                "Pending": widget.pending + int.parse(_amount),
+                              }
+                            }, SetOptions(merge: true));
+                            FirebaseFirestore.instance
+                                .collection("Users")
+                                .doc(app_user.uid)
+                                .collection("Transactions")
+                                .doc(DateTime.now().toString())
+                                .set({
+                              "Type": "Withdrawn",
+                              "Date":
+                                  "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
+                              "Time":
+                                  "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
+                              "Amount": int.parse(_amount),
+                              "Method": gate,
+                              "UPI": _upi,
+                              "Account_No.": _accnumber,
+                              "IFSC": _ifsc,
+                              "Account_Holder": _accholdername
+                            }, SetOptions(merge: true));
+                            FirebaseFirestore.instance
+                                .collection("Withdrawls")
+                                .doc(DateTime.now().toString())
+                                .set({
+                              "Status": false,
+                              "Date":
+                                  "${DateTime.now().day}-${DateTime.now().month}-${DateTime.now().year}",
+                              "Time":
+                                  "${TimeOfDay.now().hour}:${TimeOfDay.now().minute}",
+                              "Amount": int.parse(_amount),
+                              "Method": gate,
+                              "UPI": _upi,
+                              "Account_No.": _accnumber,
+                              "IFSC": _ifsc,
+                              "UserID": app_user.uid,
+                              "Account_Holder": _accholdername
+                            }, SetOptions(merge: true));
+                            Navigator.pop(context);
+                            Navigator.pop(context);
+                            Fluttertoast.showToast(
+                                msg:
+                                    "Withdrawal initiated of \u{20B9}$_amount!");
+                          } else {
+                            Fluttertoast.showToast(
+                                msg: "Enter details correctly!!");
+                          }
                         } else {
-                          Fluttertoast.showToast(msg: "Low Balance!");
+                          if (int.parse(_amount) < 30) {
+                            Fluttertoast.showToast(
+                                msg: "withdrawal invalid (Min Rs. 30)");
+                          } else {
+                            Fluttertoast.showToast(msg: "Low Balance!");
+                          }
                         }
                       },
                       child: const Text(

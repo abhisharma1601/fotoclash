@@ -21,7 +21,7 @@ class AboutUs extends StatelessWidget {
                 const Text("Home/ About Us "),
                 const SizedBox(height: 25),
                 const Text(
-                    "Owned and operated by SHAAN Tech Solutions Private Limited (CIN- U72900UP2022PTC162667) is an Indian company incorporated under the Companies Act, 2013."),
+                    "Owned and operated by SHAAN Tech Solutions Private Limited is an Indian company incorporated under the Companies Act, 2013."),
                 const SizedBox(
                   height: 15,
                 ),
@@ -52,19 +52,19 @@ class AboutUs extends StatelessWidget {
                 ),
                 const Text(
                     "So what are you waiting for? Download the app NOW and start winning!"),
-                const SizedBox(
-                  height: 25,
-                ),
-                const Text(
-                  "Safe & Secure transactions Powered by:",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Image(
-                  image: AssetImage("images/razorpay.png"),
-                ),
+                // const SizedBox(
+                //   height: 25,
+                // ),
+                // const Text(
+                //   "Safe & Secure transactions Powered by:",
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // Image(
+                //   image: AssetImage("images/razorpay.png"),
+                // ),
                 const SizedBox(
                   height: 25,
                 ),

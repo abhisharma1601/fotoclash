@@ -86,7 +86,7 @@ class _ForgetPassState extends State<ForgetPass> {
                               ),
                             ),
                             const Text(
-                              "the email to reset Password",
+                              "the email to reset password",
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 17,
@@ -157,7 +157,8 @@ class _ForgetPassState extends State<ForgetPass> {
                                                     .then((value) =>
                                                         Fluttertoast.showToast(
                                                             msg:
-                                                                "OTP is sent to your email address"));
+                                                                "Reset link sent to your email address"));
+                                                Navigator.pop(context);
                                               },
                                               child: const Text(
                                                 "Submit",

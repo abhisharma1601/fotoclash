@@ -85,19 +85,19 @@ class Refund extends StatelessWidget {
                 ),
                 const Text(
                     "In order to comply with extant law relating to deposit regulations, please note that the Users must withdraw any idle Balance lying in their Account within 365 days of having won a particular Contest. Similarly, Users must use any money in their Account within 365 days. If not, the said Balance will have to be forfeited by Fotoclash."),
-                const SizedBox(
-                  height: 25,
-                ),
-                const Text(
-                  "Safe & Secure transactions Powered by:",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Image(
-                  image: AssetImage("images/razorpay.png"),
-                ),
+                // const SizedBox(
+                //   height: 25,
+                // ),
+                // const Text(
+                //   "Safe & Secure transactions Powered by:",
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // Image(
+                //   image: AssetImage("images/razorpay.png"),
+                // ),
                 const SizedBox(
                   height: 25,
                 ),

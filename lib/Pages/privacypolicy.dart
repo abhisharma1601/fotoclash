@@ -23,7 +23,7 @@ class Privacy extends StatelessWidget {
                   height: 15,
                 ),
                 const Text(
-                    "SHAAN Tech Solutions Private Limited (CIN- U72900UP2022PTC162667) is an Indian company incorporated under the Companies Act, 2013. Which offers Photo Contests through the web-portal FotoClash.com and partner website(s) and mobile application(s) (collectively referred to as the “Portal”) (SHAAN Tech Solutions Private Limited referred to herein as “FotoClash” or “we” or “us” “our”). "),
+                    "SHAAN Tech Solutions Private Limited is an Indian company incorporated under the Companies Act, 2013. Which offers Photo Contests through the web-portal FotoClash.com and partner website(s) and mobile application(s) (collectively referred to as the “Portal”) (SHAAN Tech Solutions Private Limited referred to herein as “FotoClash” or “we” or “us” “our”). "),
                 const SizedBox(
                   height: 15,
                 ),
@@ -238,19 +238,19 @@ class Privacy extends StatelessWidget {
                 ),
                 Text(
                     "Any questions or clarifications with respect to this Policy or any complaints, comments, concerns or feedback can be sent to FotoClash at: helpdesk@FotoClash.com .Attn: FotoClash Team@SHAAN Tech Solutions Pvt Ltd "),
-                const SizedBox(
-                  height: 25,
-                ),
-                const Text(
-                  "Safe & Secure transactions Powered by:",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
-                ),
-                const SizedBox(
-                  height: 20,
-                ),
-                Image(
-                  image: AssetImage("images/razorpay.png"),
-                ),
+                // const SizedBox(
+                //   height: 25,
+                // ),
+                // const Text(
+                //   "Safe & Secure transactions Powered by:",
+                //   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 25),
+                // ),
+                // const SizedBox(
+                //   height: 20,
+                // ),
+                // Image(
+                //   image: AssetImage("images/razorpay.png"),
+                // ),
                 const SizedBox(
                   height: 25,
                 ),

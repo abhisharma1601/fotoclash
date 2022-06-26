@@ -113,7 +113,7 @@ class _ProfileState extends State<Profile> {
                                 IconButton(
                                     onPressed: () {
                                       Share.share(
-                                          "Hey, visit my Fotoclash Profile. Here is my username ${app_user.username}");
+                                          "Hey, visit my Fotoclash Profile. Here is my username ${app_user.username}\nlink: https://fotoclash.com");
                                     },
                                     icon: Icon(
                                       Icons.share,

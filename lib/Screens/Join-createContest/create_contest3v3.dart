@@ -333,7 +333,7 @@ class _CreateContest3v3State extends State<CreateContest3v3> {
                                             }
                                           }, SetOptions(merge: true));
                                           Fluttertoast.showToast(
-                                              msg: "Contest Creted!");
+                                              msg: "Contest Created!");
                                         } else {
                                           Fluttertoast.showToast(
                                               msg: "Low Wallet Balance!");

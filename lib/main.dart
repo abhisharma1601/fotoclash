@@ -147,7 +147,7 @@ class _MyAppState extends State<MyApp> {
     return GetMaterialApp(
         debugShowCheckedModeBanner: false,
         initialBinding: HomeBinding(),
-        title: 'Flutter Demo',
+        title: 'FotoClash',
         theme: ThemeData(
             textTheme: Theme.of(context).textTheme.apply(
                   fontFamily: 'Mulish',
